@@ -142,11 +142,6 @@ resource "aws_iam_role_policy_attachment" "eb_rds_policy_attachment" {
   policy_arn = "arn:aws:iam::aws:policy/AmazonRDSFullAccess"
   role       = aws_iam_role.eb_instance_role.name
 }
-
-resource "aws_iam_role_policy_attachment" "eb_s3_policy_attachment" {
-  policy_arn = "arn:aws:iam::aws:policy/AmazonS3FullAccess"
-  role       = aws_iam_role.eb_instance_role.name
-}
 #endregion
 
 #region API Infrastructure
