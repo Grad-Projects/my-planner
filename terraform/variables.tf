@@ -38,11 +38,6 @@ variable "environment_variables" {
   description = "Environment variables to set on the Elastic Beanstalk environment."
 }
 
-variable "cors_allowed_origins" {
-  type        = list(string)
-  description = "The domains allowed in the CORS configuration."
-}
-
 variable "bucket_name" {
   type        = string
   description = "Name of the bucket."
