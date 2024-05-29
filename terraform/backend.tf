@@ -94,9 +94,9 @@ resource "aws_elastic_beanstalk_environment" "env" {
     value     = aws_security_group.eb_sg.id
   }
   setting {
-    namespace = "aws:elasticbeanstalk:environment"
-    name      = "EnvironmentType"
-    value     = "SingleInstance"
+    namespace = "aws:autoscaling:asg"
+    name      = "MaxSize"
+    value     = "2"
   }
   setting {
     namespace = "aws:elasticbeanstalk:environment"
@@ -107,11 +107,6 @@ resource "aws_elastic_beanstalk_environment" "env" {
     namespace = "aws:elasticbeanstalk:healthreporting:system"
     name      = "SystemType"
     value     = "basic"
-  }
-  setting {
-    namespace = "aws:elasticbeanstalk:application"
-    name      = "Application Healthcheck URL"
-    value     = "/healthcheck"
   }
   dynamic "setting" {
     for_each = var.environment_variables
