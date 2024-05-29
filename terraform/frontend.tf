@@ -43,10 +43,8 @@ resource "aws_s3_bucket_cors_configuration" "app" {
   bucket = aws_s3_bucket.app.bucket
 
   cors_rule {
-    allowed_headers = ["Authorization", "Content-Length"]
-    allowed_methods = ["GET", "PUT", "POST", "DELETE"]
+    allowed_methods = ["GET"]
     allowed_origins = var.cors_allowed_origins
     max_age_seconds = 3000
   }
 }
-
