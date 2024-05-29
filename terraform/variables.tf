@@ -23,11 +23,6 @@ variable "vpc_public_subnets" {
   description = "The public subnets for the VPC."
 }
 
-variable "ec2_public_key" {
-  type        = string
-  description = "The public key to use for the EC2 instance."
-}
-
 variable "db_username" {
   type        = string
   description = "The username for the database."

@@ -1,9 +1,3 @@
-# Key pair
-resource "aws_key_pair" "ec2_key_pair" {
-  key_name   = "${var.naming_prefix}-key-pair"
-  public_key = var.ec2_public_key
-}
-
 # EB Instance Profile
 resource "aws_iam_instance_profile" "eb_instance_profile" {
   name = "${var.naming_prefix}-eb-instance-profile"
@@ -82,11 +76,6 @@ resource "aws_elastic_beanstalk_environment" "env" {
     namespace = "aws:autoscaling:launchconfiguration"
     name      = "IamInstanceProfile"
     value     = aws_iam_instance_profile.eb_instance_profile.name
-  }
-  setting {
-    namespace = "aws:autoscaling:launchconfiguration"
-    name      = "EC2KeyName"
-    value     = aws_key_pair.ec2_key_pair.key_name
   }
   setting {
     namespace = "aws:autoscaling:launchconfiguration"
