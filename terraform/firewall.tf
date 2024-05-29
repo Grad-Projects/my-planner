@@ -38,5 +38,5 @@ resource "aws_wafv2_web_acl" "api_rate_limit_acl" {
 
 resource "aws_wafv2_web_acl_association" "api_rate_limit_acl_association" {
   web_acl_arn = aws_wafv2_web_acl.api_rate_limit_acl.arn
-  resource_arn = aws_elastic_beanstalk_environment.app.load_balancers[0].arn
+  resource_arn = aws_elastic_beanstalk_environment.env.load_balancers[0]
 }
