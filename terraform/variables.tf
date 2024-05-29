@@ -58,3 +58,14 @@ variable "bucket_name" {
   type        = string
   description = "Name of the bucket."
 }
+
+variable "client_id" {
+  type        = string
+  description = "The client ID for the identity provider."
+}
+
+variable "client_secret" {
+  type        = string
+  description = "The client secret for the identity provider."
+  sensitive   = true
+}
