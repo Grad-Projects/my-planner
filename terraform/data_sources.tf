@@ -39,7 +39,3 @@ data "aws_iam_policy_document" "bucket-policy" {
     }
   }
 }
-
-data "aws_elastic_beanstalk_environment" "env" {
-  name = "${var.naming_prefix}-env"
-}
