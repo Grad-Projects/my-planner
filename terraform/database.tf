@@ -21,21 +21,21 @@ resource "aws_vpc_security_group_ingress_rule" "rds_sg" {
 
 # RDS
 resource "aws_db_instance" "main_db" {
-  identifier             = "${var.naming_prefix}-db"
-  username               = var.db_username
-  password               = var.db_password
-  allocated_storage      = 10
-  storage_type           = "gp2"
-  engine                 = "mysql"
-  engine_version         = "8.0.36"
-  instance_class         = "db.t3.micro"
-  db_subnet_group_name   = aws_db_subnet_group.db_subnet_group.name
-  vpc_security_group_ids = [aws_security_group.rds_sg.id]
-  license_model          = "general-public-license"
-  maintenance_window     = "Mon:00:00-Mon:01:00"
-  publicly_accessible    = true
-  skip_final_snapshot    = true
-  apply_immediately      = true
-  copy_tags_to_snapshot  = true
-  multi_az               = false
+  identifier                  = "${var.naming_prefix}-db"
+  username                    = var.db_username
+  manage_master_user_password = true
+  allocated_storage           = 10
+  storage_type                = "gp2"
+  engine                      = "mysql"
+  engine_version              = "8.0.36"
+  instance_class              = "db.t3.micro"
+  db_subnet_group_name        = aws_db_subnet_group.db_subnet_group.name
+  vpc_security_group_ids      = [aws_security_group.rds_sg.id]
+  license_model               = "general-public-license"
+  maintenance_window          = "Mon:00:00-Mon:01:00"
+  publicly_accessible         = true
+  skip_final_snapshot         = true
+  apply_immediately           = true
+  copy_tags_to_snapshot       = true
+  multi_az                    = false
 }

@@ -33,12 +33,6 @@ variable "db_username" {
   description = "The username for the database."
 }
 
-variable "db_password" {
-  type        = string
-  description = "The password for the database."
-  sensitive   = true
-}
-
 variable "naming_prefix" {
   type        = string
   description = "The prefix to use for naming resources."
