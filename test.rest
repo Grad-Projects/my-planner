@@ -1,0 +1,11 @@
+#Get the REST Client extension by Huachao Mao and click Send Request above each endpoint 
+#on this file if you would like to test these endpoints in vscode 👍
+
+GET http://localhost:3000/hello
+###
+GET http://localhost:3000/api/v1/notes
+###
+GET http://localhost:3000/api/v1/todo-items
+###
+GET http://localhost:3000/api/v1/time-tracker-items
+
