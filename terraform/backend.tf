@@ -51,6 +51,45 @@ resource "aws_elastic_beanstalk_application" "app" {
   description = "Beanstalk application"
 }
 
+# Domain
+resource "aws_route53_zone" "main" {
+  name = var.backend_domain_name
+}
+
+# ACM cert
+resource "aws_acm_certificate" "main" {
+  domain_name       = var.backend_domain_name
+  validation_method = "DNS"
+
+  lifecycle {
+    create_before_destroy = true
+  }
+
+  depends_on = [aws_route53_zone.main]
+}
+
+resource "aws_route53_record" "validation" {
+  for_each = {
+    for dvo in aws_acm_certificate.main.domain_validation_options : dvo.domain_name => {
+      name   = dvo.resource_record_name
+      type   = dvo.resource_record_type
+      value  = dvo.resource_record_value
+    }
+  }
+
+  zone_id = aws_route53_zone.main.zone_id
+  name    = each.value.name
+  type    = each.value.type
+  records = [each.value.value]
+  ttl     = 300
+}
+
+resource "aws_acm_certificate_validation" "main" {
+  certificate_arn         = aws_acm_certificate.main.arn
+  validation_record_fqdns = [for record in aws_route53_record.validation : record.fqdn]
+}
+
+##### ENSURE TO ENABLE HTTPS FOR EB (Need an ACM certificate) #####
 resource "aws_elastic_beanstalk_environment" "env" {
   name                = "${var.naming_prefix}-env"
   application         = aws_elastic_beanstalk_application.app.name
@@ -64,8 +103,13 @@ resource "aws_elastic_beanstalk_environment" "env" {
   }
   setting {
     namespace = "aws:ec2:vpc"
-    name      = "Subnets"
+    name      = "ELBSubnets"
     value     = join(",", aws_subnet.public_subnets[*].id)
+  }
+  setting {
+    namespace = "aws:ec2:vpc"
+    name      = "Subnets"
+    value     = join(",", aws_subnet.private_subnets[*].id)
   }
   setting {
     namespace = "aws:ec2:instances"
@@ -93,9 +137,34 @@ resource "aws_elastic_beanstalk_environment" "env" {
     value     = aws_iam_role.elastic_beanstalk_service_role.name
   }
   setting {
+    namespace = "aws:elasticbeanstalk:environment"
+    name = "LoadBalancerType"
+    value = "application"
+  }
+  setting {
     namespace = "aws:elasticbeanstalk:healthreporting:system"
     name      = "SystemType"
     value     = "basic"
+  }
+  setting {
+    namespace = "aws:elbv2:loadbalancer"
+    name      = "IdleTimeout"
+    value     = "60"
+  }
+  setting {
+    namespace = "aws:elbv2:listener:443"
+    name = "Protocol"
+    value = "HTTPS"
+  }
+  setting {
+    namespace = "aws:elbv2:listener:443"
+    name = "ListenerEnabled"
+    value = "true"
+  }
+  setting {
+    namespace = "aws:elbv2:listener:443"
+    name = "SSLCertificateArns"
+    value = aws_acm_certificate.main.arn
   }
   dynamic "setting" {
     for_each = var.environment_variables
@@ -106,5 +175,5 @@ resource "aws_elastic_beanstalk_environment" "env" {
     }
   }
 
-  depends_on = [aws_db_instance.main_db]
+  depends_on = [aws_db_instance.main_db, aws_acm_certificate_validation.main]
 }

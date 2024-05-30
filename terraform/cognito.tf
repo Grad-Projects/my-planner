@@ -21,6 +21,8 @@ resource "aws_cognito_user_pool_client" "client" {
   logout_urls                          = ["http://localhost:5000/logout"]
   supported_identity_providers         = ["COGNITO", "Google"]
   generate_secret                      = false # Public client cannot store the secret securely, so we won't use one
+
+  depends_on = [aws_cognito_identity_provider.google]
 }
 
 # Create the Cognito User Pool Domain
@@ -39,6 +41,12 @@ resource "aws_cognito_identity_provider" "google" {
     client_id        = var.client_id
     client_secret    = var.client_secret
     authorize_scopes = "email openid profile"
+    attributes_url                = "https://people.googleapis.com/v1/people/me?personFields="
+    attributes_url_add_attributes = "true"
+    authorize_url                 = "https://accounts.google.com/o/oauth2/v2/auth"
+    oidc_issuer                   = "https://accounts.google.com"
+    token_request_method          = "POST"
+    token_url                     = "https://www.googleapis.com/oauth2/v4/token"
   }
 
   attribute_mapping = {

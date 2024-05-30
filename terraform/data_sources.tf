@@ -1,3 +1,5 @@
+data "aws_caller_identity" "current" {}
+
 data "aws_iam_policy_document" "ec2_assume_role" {
   statement {
     effect = "Allow"
@@ -38,4 +40,8 @@ data "aws_iam_policy_document" "bucket-policy" {
       identifiers = ["*"]
     }
   }
+}
+
+data "aws_lb" "eb_env_lb" {
+  name = aws_elastic_beanstalk_environment.env.load_balancers[0]
 }

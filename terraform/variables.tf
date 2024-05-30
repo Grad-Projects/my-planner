@@ -23,6 +23,16 @@ variable "vpc_public_subnets" {
   description = "The public subnets for the VPC."
 }
 
+variable "vpc_private_subnets" {
+  type        = list(string)
+  description = "The private subnets for the VPC."
+}
+
+variable "backend_domain_name" {
+  type        = string
+  description = "The domain name for the backend."
+}
+
 variable "db_username" {
   type        = string
   description = "The username for the database."

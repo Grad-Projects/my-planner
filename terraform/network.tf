@@ -24,6 +24,17 @@ resource "aws_subnet" "public_subnets" {
   tags = { Name = "${var.naming_prefix}-public-subnet-${count.index}" }
 }
 
+# Private Subnets
+resource "aws_subnet" "private_subnets" {
+  count                   = length(var.vpc_private_subnets)
+  cidr_block              = var.vpc_private_subnets[count.index]
+  vpc_id                  = aws_vpc.vpc.id
+  map_public_ip_on_launch = false
+  availability_zone       = var.vpc_azs[count.index % length(var.vpc_azs)]
+
+  tags = { Name = "${var.naming_prefix}-private-subnet-${count.index}" }
+}
+
 # Routing
 resource "aws_route_table" "public" {
   vpc_id = aws_vpc.vpc.id
