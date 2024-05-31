@@ -45,51 +45,20 @@ resource "aws_vpc_security_group_ingress_rule" "eb_sg" {
   cidr_ipv4         = "0.0.0.0/0"
 }
 
+resource "aws_vpc_security_group_ingress_rule" "eb_sg_https" {
+  security_group_id = aws_security_group.eb_sg.id
+  from_port         = 443
+  to_port           = 443
+  ip_protocol       = "tcp"
+  cidr_ipv4         = "0.0.0.0/0"
+}
+
 # Elastic Beanstalk
 resource "aws_elastic_beanstalk_application" "app" {
   name        = "${var.naming_prefix}-app"
   description = "Beanstalk application"
 }
 
-# Domain
-resource "aws_route53_zone" "main" {
-  name = var.backend_domain_name
-}
-
-# ACM cert
-resource "aws_acm_certificate" "main" {
-  domain_name       = var.backend_domain_name
-  validation_method = "DNS"
-
-  lifecycle {
-    create_before_destroy = true
-  }
-
-  depends_on = [aws_route53_zone.main]
-}
-
-resource "aws_route53_record" "validation" {
-  for_each = {
-    for dvo in aws_acm_certificate.main.domain_validation_options : dvo.domain_name => {
-      name   = dvo.resource_record_name
-      type   = dvo.resource_record_type
-      value  = dvo.resource_record_value
-    }
-  }
-
-  zone_id = aws_route53_zone.main.zone_id
-  name    = each.value.name
-  type    = each.value.type
-  records = [each.value.value]
-  ttl     = 300
-}
-
-resource "aws_acm_certificate_validation" "main" {
-  certificate_arn         = aws_acm_certificate.main.arn
-  validation_record_fqdns = [for record in aws_route53_record.validation : record.fqdn]
-}
-
-##### ENSURE TO ENABLE HTTPS FOR EB (Need an ACM certificate) #####
 resource "aws_elastic_beanstalk_environment" "env" {
   name                = "${var.naming_prefix}-env"
   application         = aws_elastic_beanstalk_application.app.name
@@ -164,7 +133,7 @@ resource "aws_elastic_beanstalk_environment" "env" {
   setting {
     namespace = "aws:elbv2:listener:443"
     name = "SSLCertificateArns"
-    value = aws_acm_certificate.main.arn
+    value = "arn:aws:acm:us-east-1:774089569115:certificate/49f58547-f866-447b-a849-25aab91cf43c"
   }
   dynamic "setting" {
     for_each = var.environment_variables
@@ -175,5 +144,5 @@ resource "aws_elastic_beanstalk_environment" "env" {
     }
   }
 
-  depends_on = [aws_db_instance.main_db, aws_acm_certificate_validation.main]
+  depends_on = [aws_db_instance.main_db]
 }

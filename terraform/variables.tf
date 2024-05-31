@@ -28,11 +28,6 @@ variable "vpc_private_subnets" {
   description = "The private subnets for the VPC."
 }
 
-variable "backend_domain_name" {
-  type        = string
-  description = "The domain name for the backend."
-}
-
 variable "db_username" {
   type        = string
   description = "The username for the database."
