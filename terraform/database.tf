@@ -13,8 +13,8 @@ resource "aws_security_group" "rds_sg" {
 
 resource "aws_vpc_security_group_ingress_rule" "rds_sg" {
   security_group_id = aws_security_group.rds_sg.id
-  from_port         = 1433
-  to_port           = 1433
+  from_port         = 5432
+  to_port           = 5432
   ip_protocol       = "tcp"
   cidr_ipv4         = "0.0.0.0/0"
 }
