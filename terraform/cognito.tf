@@ -31,7 +31,7 @@ resource "aws_cognito_user_pool_domain" "user_pool_domain" {
   user_pool_id = aws_cognito_user_pool.user_pool.id
 }
 
-# Configure GitHub as an Identity Provider
+# Configure Google as an Identity Provider
 resource "aws_cognito_identity_provider" "google" {
   user_pool_id  = aws_cognito_user_pool.user_pool.id
   provider_name = "Google"
