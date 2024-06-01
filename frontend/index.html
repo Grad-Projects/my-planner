@@ -3,16 +3,93 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="styles/styles.css">
+    <link rel="stylesheet" href="/styles/styles.css">
     <title>My Planner</title>
-    <h1>Welcome to my planner!</h1>
-    <ul id="weekListView">
+    <h1>My Planner</h1>
+    <ul id="weekListView" class="weekList">
         
     </ul>
+    <section class="plannerCards">
+        <section class="card">
+            <h2>Notes</h2>
+            <ul>
+                <li class="innerCard">
+                    <section >
+                        <h3>Note Title</h3>
+                        <p>Note content content content</p>
+                        <h4>Date note created</h4>
+                    </section>
+                    <section class="deleteHolder">
+                        🗑️
+                    </section>
+                </li>
+                <li class="innerCard">
+                    <section >
+                        <h3>Note Title</h3>
+                        <p>Note content content content</p>
+                        <h4>Date note created</h4>
+                    </section>
+                    <section class="deleteHolder">
+                        🗑️
+                    </section>
+                </li>
+                <li class="innerCard">
+                    <section >
+                        <h3>Note Title</h3>
+                        <p>Note content content content</p>
+                        <h4>Date note created</h4>
+                    </section>
+                    <section class="deleteHolder">
+                        🗑️
+                    </section>
+                </li>
+                <li class="innerCard">
+                    <section >
+                        <h3>Note Title</h3>
+                        <p>Note content content content</p>
+                        <h4>Date note created</h4>
+                    </section>
+                    <section class="deleteHolder">
+                        🗑️
+                    </section>
+                </li>
+
+            </ul>
+        </section>
+        <section class="card">
+            <h2>Checklist</h2>
+            <ul>
+                <li>check item</li>
+                <li>check item</li>
+                <li>check item</li>
+                <li>check item</li>
+                <li>check item</li>
+                <li>check item</li>
+
+            </ul>
+
+            
+        </section>
+        <section class="card">
+            <h2>Time Tracker</h2>
+            <ul>
+                <li>Time item</li>
+                <li>Time item</li>
+                <li>Time item</li>
+                <li>Time item</li>
+                <li>Time item</li>
+                <li>Time item</li>
+                <li>Time item</li>
+            </ul>
+            
+        </section>
+    </section>
 
 </head>
 <body>
     
 </body>
-<script src="scripts/weeklyListRender.js"></script>
+<script src="node_modules/dayjs/dayjs.min.js"></script>
+<script src="node_modules/dayjs/plugin/weekday.js"></script>
+<script src="/scripts/weeklyListRender.js"></script>
 </html>
