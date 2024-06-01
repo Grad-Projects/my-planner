@@ -19,10 +19,10 @@ GET http://localhost:3000/api/v1/appointments
 
 
 #__________________________________PATCH is_deleted_____________________________________________________
-# "delete" a :table item at specified :id...  /remove/:table/:id
-PATCH http://localhost:3000/api/v1/remove/time_tracker_items/2
+# "delete" a :table item at specified :id...  /remove/:table/:id  The table name must match the database
+PATCH http://localhost:3000/api/v1/remove/TimeTrackerItems/1
 ###
-PATCH http://localhost:3000/api/v1/remove/appointments/2
+PATCH http://localhost:3000/api/v1/remove/Appointments/1
 ###
 #_______________________________________________________________________________________________________
 
@@ -30,10 +30,10 @@ PATCH http://localhost:3000/api/v1/remove/appointments/2
 #__________________________________PATCH updates________________________________________________________
 
 #the endpoint below toggles between true and false for is_completed
-PATCH http://localhost:3000/api/v1/update/todo-item-completion/2   
+PATCH http://localhost:3000/api/v1/update/todo-item-completion/1   
 ###
 
-PATCH http://localhost:3000/api/v1/update/time-tracker-unit/6
+PATCH http://localhost:3000/api/v1/update/time-tracker-unit/1
 Content-Type: application/json
 
 {
@@ -43,7 +43,7 @@ Content-Type: application/json
 ###
 
 #update length of time tracker item
-PATCH http://localhost:3000/api/v1/update/time-tracker-length/6
+PATCH http://localhost:3000/api/v1/update/time-tracker-length/1
 Content-Type: application/json
 
 {
@@ -63,7 +63,7 @@ Content-Type: application/json
   "title": "Team Meeting",
   "description": "Discuss project updates and upcoming tasks.",
   "start_time": "2024-06-15T10:00:00Z",
-  "length": 60
+  "length": 6
 }
 
 ###
