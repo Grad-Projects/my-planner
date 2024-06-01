@@ -1,0 +1,46 @@
+name: Terraform Format and Validate
+
+on:
+    pull_request:
+      branches:
+        - main
+      paths:
+        - 'terraform/**.tf'
+
+env:
+  TF_IN_AUTOMATION: true
+  TF_LOG: INFO
+  TF_INPUT: false
+
+jobs:
+  terrform:
+    name: 'Terraform Format and Validate'
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        shell: bash
+
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v4
+
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v2
+
+    - name: Terraform Init
+      id: init
+      run: terraform init
+      working-directory: terraform
+
+    - name: Terraform Format
+      id: fmt
+      run: terraform fmt -recursive -check
+      working-directory: terraform
+
+    # Run even if formatting fails
+    - name: Terraform Validate
+      id: validate
+      if: (success() || failure())
+      run: terraform validate
+      working-directory: terraform
