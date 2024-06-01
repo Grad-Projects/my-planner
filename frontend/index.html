@@ -19,69 +19,9 @@
     <section class="plannerCards">
         <section class="card">
             <h2>Notes</h2>
-            <ul>
+            <ul id="noteList">
                 <li class="addCard">
-                    <p id="addNote" onclick="addNote()" class="addItem">+</p>
-                </li>
-                <li class="innerCard">
-                    <section >
-                        <h3>Note Title</h3>
-                        <p>Note content content content</p>
-                        <h4>Date note created</h4>
-                    </section>
-                    <span onclick="deleteNoteItem(event)" class="material-symbols-outlined deleteHolder">
-                        delete
-                    </span>
-                </li>
-                <li class="innerCard">
-                    <section >
-                        <h3>Note Title</h3>
-                        <p>Note content content content</p>
-                        <h4>Date note created</h4>
-                    </section>
-                    <span onclick="deleteNoteItem(event)" class="material-symbols-outlined deleteHolder">
-                        delete
-                    </span>
-                </li>
-                <li class="innerCard">
-                    <section >
-                        <h3>Note Title</h3>
-                        <p>Note content content content</p>
-                        <h4>Date note created</h4>
-                    </section>
-                    <span onclick="deleteNoteItem(event)" class="material-symbols-outlined deleteHolder">
-                        delete
-                    </span>
-                </li>
-                <li class="innerCard">
-                    <section >
-                        <h3>Note Title</h3>
-                        <p>Note content content content</p>
-                        <h4>Date note created</h4>
-                    </section>
-                    <span onclick="deleteNoteItem(event)" class="material-symbols-outlined deleteHolder">
-                        delete
-                    </span>
-                </li>
-                <li class="innerCard">
-                    <section >
-                        <h3>Note Title</h3>
-                        <p>Note content content content</p>
-                        <h4>Date note created</h4>
-                    </section>
-                    <span onclick="deleteNoteItem(event)" class="material-symbols-outlined deleteHolder">
-                        delete
-                    </span>
-                </li>
-                <li class="innerCard">
-                    <section >
-                        <h3>Note Title</h3>
-                        <p>Note content content content</p>
-                        <h4>Date note created</h4>
-                    </section>
-                    <span onclick="deleteNoteItem(event)" class="material-symbols-outlined deleteHolder">
-                        delete
-                    </span>
+                    <p id="addNote" onclick="popUpCreateNote()" class="addItem">+</p>
                 </li>
 
             </ul>
@@ -217,6 +157,15 @@
             
         </section>
     </section>
+
+    <section id="notePopUp" class="makeNotePopUp hide">
+        <label for="noteTitle">Title of note:</label>
+        <input type="text" id="noteTitle">
+        <label for="noteContent">Note content:</label>
+        <textArea id="noteContent"></textArea>
+        <h3 onclick="addNoteItem()" class="doneButton">Done!</h3>
+    </section>
+    <div id="overlay" class="hide"></div>
 
 </head>
 <body>
