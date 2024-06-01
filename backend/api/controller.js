@@ -1,10 +1,18 @@
 const pool = require("../database_connection");
 const queries = require("./queries");
 const { getUserEmail } = require("./cognito_utils.js");
+const { allowedTables, checkUserExists } = require("./utils.js");
+
 
 const getUserNotes = async (req, res) => {
     try {
         const userEmail = await getUserEmail();
+        const userExists = await checkUserExists(userEmail);
+
+        if (!userExists) {
+            return res.status(404).json({ error: 'User not found' });
+        }
+
         pool.query(queries.getUserNotes, [userEmail], (error, results) => {
             if (error) {
                 console.error('Error executing query', error);
@@ -24,6 +32,12 @@ const getUserNotes = async (req, res) => {
 const getUserTodoItems = async (req, res) => {
     try {
         const userEmail = await getUserEmail();
+        const userExists = await checkUserExists(userEmail);
+
+        if (!userExists) {
+            return res.status(404).json({ error: 'User not found' });
+        }
+
         pool.query(queries.getUserTodoItems, [userEmail], (error, results) => {
             if (error) {
                 console.error('Error executing query', error);
@@ -43,6 +57,12 @@ const getUserTodoItems = async (req, res) => {
 const getUserTimeTrackerItems = async (req, res) => {
     try {
         const userEmail = await getUserEmail();
+        const userExists = await checkUserExists(userEmail);
+
+        if (!userExists) {
+            return res.status(404).json({ error: 'User not found' });
+        }
+        
         pool.query(queries.getUserTimeTrackerItems, [userEmail], (error, results) => {
             if (error) {
                 console.error('Error executing query', error);
@@ -62,6 +82,12 @@ const getUserTimeTrackerItems = async (req, res) => {
 const getUserAppointments = async (req, res) => {
     try {
         const userEmail = await getUserEmail();
+        const userExists = await checkUserExists(userEmail);
+
+        if (!userExists) {
+            return res.status(404).json({ error: 'User not found' });
+        }
+        
         pool.query(queries.getUserAppointments, [userEmail], (error, results) => {
             if (error) {
                 console.error('Error executing query', error);
@@ -80,7 +106,6 @@ const getUserAppointments = async (req, res) => {
 
 const updateIsDeleted = async (req, res) => {
     const { id, table } = req.params;
-    const allowedTables = ["notes", "todo_items", "time_tracker_items", "appointments"];
 
     if (!allowedTables.includes(table)) {
         return res.status(400).json({ error: "Invalid table name" });
@@ -88,6 +113,12 @@ const updateIsDeleted = async (req, res) => {
 
     try {
         const userEmail = await getUserEmail();
+        const userExists = await checkUserExists(userEmail);
+
+        if (!userExists) {
+            return res.status(404).json({ error: 'User not found' });
+        }
+        
         pool.query(queries.updateIsDeleted(table), [id, userEmail], (error, results) => {
             if (error) {
                 console.error('Error executing query', error);
@@ -109,6 +140,12 @@ const updateTodoItemCompleted = async (req, res) => {
 
     try {
         const userEmail = await getUserEmail();
+        const userExists = await checkUserExists(userEmail);
+
+        if (!userExists) {
+            return res.status(404).json({ error: 'User not found' });
+        }
+        
         pool.query(queries.updateTodoItemCompleted, [id, userEmail], (error, results) => {
             if (error) {
                 console.error('Error executing query', error);
@@ -131,6 +168,12 @@ const updateTimeUnit = async (req, res) => {
 
     try {
         const userEmail = await getUserEmail();
+        const userExists = await checkUserExists(userEmail);
+
+        if (!userExists) {
+            return res.status(404).json({ error: 'User not found' });
+        }
+        
         if (![1, 2].includes(time_unit)) {
             return res.status(400).json({ error: 'Invalid time unit value. Must be 1 or 2.' });
         }
@@ -158,6 +201,12 @@ const updateTimeTrackerItemLength = async (req, res) => {
 
     try {
         const userEmail = await getUserEmail();
+        const userExists = await checkUserExists(userEmail);
+
+        if (!userExists) {
+            return res.status(404).json({ error: 'User not found' });
+        }
+        
 
         if (!Number.isInteger(length) || length <= 0) {
             return res.status(400).json({ error: 'Length must be a positive integer' });
@@ -184,6 +233,12 @@ const createAppointment = async (req, res) => {
     try {
         const { title, description, start_time, length } = req.body;
         const userEmail = await getUserEmail();
+        const userExists = await checkUserExists(userEmail);
+
+        if (!userExists) {
+            return res.status(404).json({ error: 'User not found' });
+        }
+        
 
         if (!title || !description || !start_time || length <= 0) {
             return res.status(400).json({ error: "Invalid input data" });
@@ -206,6 +261,12 @@ const createNote = async (req, res) => {
     try {
         const { title, content } = req.body;
         const userEmail = await getUserEmail();
+        const userExists = await checkUserExists(userEmail);
+
+        if (!userExists) {
+            return res.status(404).json({ error: 'User not found' });
+        }
+        
 
         if (!title || !content) {
             return res.status(400).json({ error: "Invalid input data" });
@@ -228,6 +289,12 @@ const createTodoItem = async (req, res) => {
     try {
         const { item } = req.body;
         const userEmail = await getUserEmail();
+        const userExists = await checkUserExists(userEmail);
+
+        if (!userExists) {
+            return res.status(404).json({ error: 'User not found' });
+        }
+        
 
         if (!item) {
             return res.status(400).json({ error: "Invalid input data" });
@@ -250,6 +317,12 @@ const createTimeTrackerItem = async (req, res) => {
     try {
         const { description, length, time_unit } = req.body;
         const userEmail = await getUserEmail();
+        const userExists = await checkUserExists(userEmail);
+
+        if (!userExists) {
+            return res.status(404).json({ error: 'User not found' });
+        }
+        
 
         if (!description || !length || length <= 0 || ![1, 2].includes(time_unit)) {
             return res.status(400).json({ error: "Invalid input data" });
@@ -273,9 +346,9 @@ const createUser = async (req, res) => {
     try {
         const userEmail = await getUserEmail();
 
-        const existingUser = await pool.query('SELECT * FROM Users WHERE email = $1', [userEmail]);
+        const userExists = await checkUserExists(userEmail);
 
-        if (existingUser.rows.length > 0) {
+        if (userExists) {
             return res.status(400).json({ error: "User already exists" });
         }
 
