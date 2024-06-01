@@ -15,14 +15,15 @@ function makeWeekList()
             const outerListNode = document.createElement("li");
             const listNode = document.createElement("ul");
             const innerListNodeDay = document.createElement("li");
-            const innerListNodeDate = document.createElement("li");
-            const textnodeDay = document.createTextNode(daysOfWeek[i % daysOfWeek.length]);
-            const textnodeDate = document.createTextNode(now.date() + counter);
+            const innerListNodeEvents = document.createElement("li");
+            const textnodeDay = document.createTextNode(daysOfWeek[i % daysOfWeek.length] + " " + (now.date() + counter));
+            const textnodeEvents = document.createTextNode("No events");
             innerListNodeDay.appendChild(textnodeDay);
-            innerListNodeDate.appendChild(textnodeDate);
+            innerListNodeEvents.appendChild(textnodeEvents);
             listNode.appendChild(innerListNodeDay);
-            listNode.appendChild(innerListNodeDate);
+            listNode.appendChild(innerListNodeEvents);
             outerListNode.appendChild(listNode);
+            outerListNode.classList.add("weekItem")
             weekViewList.appendChild(outerListNode);
             counter++;
         }

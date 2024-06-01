@@ -3,9 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/styles/styles.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+    <link rel="stylesheet" href="styles/styles.css">
     <title>My Planner</title>
-    <h1>My Planner</h1>
+    <section class="header">
+        <h1>My Planner</h1>
+        <h1 id="emailAddress">myemail@email.com</h1>
+        <h1 class="logoutButton">Logout</h1>
+    </section>
+    
     <ul id="weekListView" class="weekList">
         
     </ul>
@@ -13,15 +20,8 @@
         <section class="card">
             <h2>Notes</h2>
             <ul>
-                <li class="innerCard">
-                    <section >
-                        <h3>Note Title</h3>
-                        <p>Note content content content</p>
-                        <h4>Date note created</h4>
-                    </section>
-                    <section class="deleteHolder">
-                        🗑️
-                    </section>
+                <li class="addCard">
+                    <p id="addNote" onclick="addNote()" class="addItem">+</p>
                 </li>
                 <li class="innerCard">
                     <section >
@@ -29,9 +29,9 @@
                         <p>Note content content content</p>
                         <h4>Date note created</h4>
                     </section>
-                    <section class="deleteHolder">
-                        🗑️
-                    </section>
+                    <span onclick="deleteNoteItem(event)" class="material-symbols-outlined deleteHolder">
+                        delete
+                    </span>
                 </li>
                 <li class="innerCard">
                     <section >
@@ -39,9 +39,9 @@
                         <p>Note content content content</p>
                         <h4>Date note created</h4>
                     </section>
-                    <section class="deleteHolder">
-                        🗑️
-                    </section>
+                    <span onclick="deleteNoteItem(event)" class="material-symbols-outlined deleteHolder">
+                        delete
+                    </span>
                 </li>
                 <li class="innerCard">
                     <section >
@@ -49,9 +49,39 @@
                         <p>Note content content content</p>
                         <h4>Date note created</h4>
                     </section>
-                    <section class="deleteHolder">
-                        🗑️
+                    <span onclick="deleteNoteItem(event)" class="material-symbols-outlined deleteHolder">
+                        delete
+                    </span>
+                </li>
+                <li class="innerCard">
+                    <section >
+                        <h3>Note Title</h3>
+                        <p>Note content content content</p>
+                        <h4>Date note created</h4>
                     </section>
+                    <span onclick="deleteNoteItem(event)" class="material-symbols-outlined deleteHolder">
+                        delete
+                    </span>
+                </li>
+                <li class="innerCard">
+                    <section >
+                        <h3>Note Title</h3>
+                        <p>Note content content content</p>
+                        <h4>Date note created</h4>
+                    </section>
+                    <span onclick="deleteNoteItem(event)" class="material-symbols-outlined deleteHolder">
+                        delete
+                    </span>
+                </li>
+                <li class="innerCard">
+                    <section >
+                        <h3>Note Title</h3>
+                        <p>Note content content content</p>
+                        <h4>Date note created</h4>
+                    </section>
+                    <span onclick="deleteNoteItem(event)" class="material-symbols-outlined deleteHolder">
+                        delete
+                    </span>
                 </li>
 
             </ul>
@@ -59,12 +89,75 @@
         <section class="card">
             <h2>Checklist</h2>
             <ul>
-                <li>check item</li>
-                <li>check item</li>
-                <li>check item</li>
-                <li>check item</li>
-                <li>check item</li>
-                <li>check item</li>
+                <section class="addCard">
+                    <p id="addCheckItem" onclick="addCheckItem()" class="addItem">+</p>
+                </section>
+                <li class="checkItem">
+                    <p class="checkDesc">Item description</p>
+                    <section class="checkActions">
+                        <span onclick="changeIcon(event)" class="material-symbols-outlined checkBox">
+                            radio_button_unchecked
+                        </span>
+                        <span onclick="deleteCheckItem(event)"  class="material-symbols-outlined deleteHolder checkDelete">
+                            delete
+                        </span>
+                    </section>
+                </li>
+                <li class="checkItem">
+                    <p class="checkDesc">Item description</p>
+                    <section class="checkActions">
+                        <span onclick="changeIcon(event)" class="material-symbols-outlined checkBox">
+                            radio_button_unchecked
+                        </span>
+                        <span onclick="deleteCheckItem(event)"  class="material-symbols-outlined deleteHolder checkDelete">
+                            delete
+                        </span>
+                    </section>
+                </li>
+                <li class="checkItem">
+                    <p class="checkDesc">Item description</p>
+                    <section class="checkActions">
+                        <span onclick="changeIcon(event)" class="material-symbols-outlined checkBox">
+                            radio_button_unchecked
+                        </span>
+                        <span onclick="deleteCheckItem(event)"  class="material-symbols-outlined deleteHolder checkDelete">
+                            delete
+                        </span>
+                    </section>
+                </li>
+                <li class="checkItem">
+                    <p class="checkDesc">Item description</p>
+                    <section class="checkActions">
+                        <span onclick="changeIcon(event)" class="material-symbols-outlined checkBox">
+                            radio_button_unchecked
+                        </span>
+                        <span onclick="deleteCheckItem(event)"  class="material-symbols-outlined deleteHolder checkDelete">
+                            delete
+                        </span>
+                    </section>
+                </li>
+                <li class="checkItem">
+                    <p class="checkDesc">Item description</p>
+                    <section class="checkActions">
+                        <span onclick="changeIcon(event)" class="material-symbols-outlined checkBox">
+                            radio_button_unchecked
+                        </span>
+                        <span onclick="deleteCheckItem(event)"  class="material-symbols-outlined deleteHolder checkDelete">
+                            delete
+                        </span>
+                    </section>
+                </li>
+                <li class="checkItem">
+                    <p class="checkDesc">Item description</p>
+                    <section class="checkActions">
+                        <span onclick="changeIcon(event)" class="material-symbols-outlined checkBox">
+                            radio_button_unchecked
+                        </span>
+                        <span onclick="deleteCheckItem(event)"  class="material-symbols-outlined deleteHolder checkDelete">
+                            delete
+                        </span>
+                    </section>
+                </li>
 
             </ul>
 
@@ -73,13 +166,53 @@
         <section class="card">
             <h2>Time Tracker</h2>
             <ul>
-                <li>Time item</li>
-                <li>Time item</li>
-                <li>Time item</li>
-                <li>Time item</li>
-                <li>Time item</li>
-                <li>Time item</li>
-                <li>Time item</li>
+                <li class="addCard">
+                    <p id="addTimeItem" onclick="addTimeItem()" class="addItem">+</p>
+                </li>
+                <li class="timeItem">
+                    <p>Watering plants</p>
+                    <input class="inputTime" type="text">
+                    <select name="time">
+                        <option value="volvo">Min</option>
+                        <option value="saab">Hr</option>
+                      </select>
+                    <span onclick="deleteTimeItem(event)"  class="material-symbols-outlined deleteHolder checkDelete">
+                        delete
+                    </span>
+                </li>
+                <li class="timeItem">
+                    <p>Watering plants</p>
+                    <input class="inputTime" type="text">
+                    <select name="time">
+                        <option value="volvo">Min</option>
+                        <option value="saab">Hr</option>
+                      </select>
+                    <span onclick="deleteTimeItem(event)"  class="material-symbols-outlined deleteHolder checkDelete">
+                        delete
+                    </span>
+                </li>
+                <li class="timeItem">
+                    <p>Watering plants</p>
+                    <input class="inputTime" type="text">
+                    <select name="time">
+                        <option value="volvo">Min</option>
+                        <option value="saab">Hr</option>
+                      </select>
+                    <span onclick="deleteTimeItem(event)"  class="material-symbols-outlined deleteHolder checkDelete">
+                        delete
+                    </span>
+                </li>
+                <li class="timeItem">
+                    <p>Watering plants</p>
+                    <input class="inputTime" type="text">
+                    <select name="time">
+                        <option value="volvo">Min</option>
+                        <option value="saab">Hr</option>
+                      </select>
+                    <span onclick="deleteTimeItem(event)"  class="material-symbols-outlined deleteHolder checkDelete">
+                        delete
+                    </span>
+                </li>
             </ul>
             
         </section>
@@ -91,5 +224,8 @@
 </body>
 <script src="node_modules/dayjs/dayjs.min.js"></script>
 <script src="node_modules/dayjs/plugin/weekday.js"></script>
-<script src="/scripts/weeklyListRender.js"></script>
+<script src="scripts/weeklyListRender.js"></script>
+<script src="scripts/checkBox.js"></script>
+<script src="scripts/itemManager.js"></script>
+
 </html>

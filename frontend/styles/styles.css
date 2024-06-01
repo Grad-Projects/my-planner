@@ -11,13 +11,124 @@ ul{
     list-style-type: none;
 }
 
+.header{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+
+}
+
+.logoutButton{
+    background-color: black;
+    color:white;
+    font-size: 1em;
+    margin: 2em;
+    padding: 0.5em;
+    border-radius: 0.5em;
+    transition: 0.2s;
+}
+
+.logoutButton:hover{
+    cursor: pointer;
+    transform: scale(1.1);
+    transition: 0.2s;
+
+}
+
+.checkItem{
+    display: flex;
+    flex-direction: row;
+    align-items: baseline;
+    justify-content: space-between;
+    background-color: white;
+    border-radius: 0.5em;
+    margin-left: -0.9em;
+    width: 95%;
+    height: 3.5em;
+    margin-bottom: 0.5em;
+}
+
+.checkDesc{
+    padding: 0.3em;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.checkBox:hover{
+    cursor: pointer;
+}
+
+.checkActions{
+    align-self: flex-end;
+    text-align: center;
+    vertical-align: middle;
+    width: 25%;
+}
+
+
 .weekList{
     list-style-type: none;
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: space-around;
+
+    background-color: #ADE6E2;
+    border-radius: 0.5em;
+    width: 90em;
+    margin:auto;
+    margin-bottom: 1em;
 }
+
+
+.weekItem{
+    background-color: white;
+    border-radius: 0.5em;
+    width: 10em;
+    margin: 1em;
+}
+
+.addCard{
+    display: flex;
+    background-color: rgb(255, 255, 255);
+    border-radius: 0.5em;
+    width: 95%;
+    margin: 0.5em;
+    margin-left: -1em;
+
+    justify-content: space-around;
+}
+.addItem{
+    background-color: #E4CCFF;
+    width: 1.2em;
+    line-height: 1.2em;
+    text-align: center;
+    vertical-align: middle;
+    border-radius: 100%;
+    font-size: 1.2em;
+    transition: 0.3s;
+
+}
+
+.addItem:hover{
+    cursor: pointer;
+    transform: scale(1.5);
+    transition: 0.3s;
+}
+
+
+.deleteHolder{
+    transition:0.2s;
+}
+
+.deleteHolder:hover{
+    cursor: pointer;
+    transform: scale(1.1);
+    transition: 0.2s;
+}
+
+
 
 .plannerCards{
     display: flex;
@@ -50,6 +161,25 @@ ul{
 
 .deleteHolder{
     padding: 1em;
+}
+
+.timeItem{
+    background-color: white;
+    padding: 0.3em;
+    width: 95%;
+    display: flex;
+    flex-direction: row;
+    margin-left: -1em;
+    justify-content: space-around;
+    align-items: baseline;
+    height: 3.5em;
+    border-radius: 0.5em;
+    margin-bottom:0.5em;
+
+}
+
+.inputTime{
+    width: 20%;
 }
 
 h2{
