@@ -38,9 +38,9 @@ resource "aws_cognito_identity_provider" "google" {
   provider_type = "Google"
 
   provider_details = {
-    client_id        = var.client_id
-    client_secret    = var.client_secret
-    authorize_scopes = "email openid profile"
+    client_id                     = var.client_id
+    client_secret                 = var.client_secret
+    authorize_scopes              = "email openid profile"
     attributes_url                = "https://people.googleapis.com/v1/people/me?personFields="
     attributes_url_add_attributes = "true"
     authorize_url                 = "https://accounts.google.com/o/oauth2/v2/auth"

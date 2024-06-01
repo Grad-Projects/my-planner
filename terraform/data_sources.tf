@@ -43,5 +43,5 @@ data "aws_iam_policy_document" "bucket-policy" {
 }
 
 data "aws_lb" "eb_env_lb" {
-  name = aws_elastic_beanstalk_environment.env.load_balancers[0]
+  arn = aws_elastic_beanstalk_environment.env.load_balancers[0]
 }

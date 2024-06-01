@@ -88,9 +88,9 @@ resource "aws_cloudfront_distribution" "app" {
   aliases = ["myplanner.projects.bbdgrad.com"]
 
   viewer_certificate {
-    acm_certificate_arn            = "arn:aws:acm:us-east-1:774089569115:certificate/0292fc3d-f0a7-4d3b-991a-62677288ad48"
-    ssl_support_method             = "sni-only"
-    minimum_protocol_version       = "TLSv1.2_2018"
+    acm_certificate_arn      = "arn:aws:acm:us-east-1:774089569115:certificate/0292fc3d-f0a7-4d3b-991a-62677288ad48"
+    ssl_support_method       = "sni-only"
+    minimum_protocol_version = "TLSv1.2_2018"
   }
 
   price_class = "PriceClass_100"
