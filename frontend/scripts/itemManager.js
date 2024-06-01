@@ -3,6 +3,7 @@ window.deleteCheckItem = deleteCheckItem;
 window.deleteTimeItem = deleteTimeItem;
 window.popUpCreateNote = popUpCreateNote;
 window.addNoteItem = addNoteItem;
+window.cancelAddNote = cancelAddNote;
 
 let noteList = document.getElementById("noteList");
 let overlay = document.getElementById("overlay");
@@ -10,6 +11,11 @@ let notePopUp = document.getElementById("notePopUp");
 
 let noteTitleInput = document.getElementById("noteTitle");
 let noteContentInput = document.getElementById("noteContent");
+
+function cancelAddNote(){
+    overlay.classList.add("hide");
+    notePopUp.classList.add("hide");
+}
 
 function deleteNoteItem(event){
     const item = event.target;
