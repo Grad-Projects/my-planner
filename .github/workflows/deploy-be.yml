@@ -41,7 +41,7 @@ jobs:
         working-directory: backend
 
       - name: Upload artifact to S3
-        run: aws s3 cp dist.zip s3://${{ secrets.BUCKET_NAME }}/application-${{ github.run_id }}.zip
+        run: aws s3 cp dist.zip s3://${{ secrets.BACKEND_BUCKET_NAME }}/application-${{ github.run_id }}.zip
 
   deploy:
     runs-on: ubuntu-latest
@@ -57,5 +57,5 @@ jobs:
 
       - name: Deploy to Elastic Beanstalk
         run: |
-          aws elasticbeanstalk create-application-version --application-name ${{ secrets.APP_NAME }} --version-label ${{ github.run_id }} --source-bundle S3Bucket="${{ secrets.BUCKET_NAME }}",S3Key="application-${{ github.run_id }}.zip"
+          aws elasticbeanstalk create-application-version --application-name ${{ secrets.APP_NAME }} --version-label ${{ github.run_id }} --source-bundle S3Bucket="${{ secrets.BACKEND_BUCKET_NAME }}",S3Key="application-${{ github.run_id }}.zip"
           aws elasticbeanstalk update-environment --application-name ${{ secrets.APP_NAME }} --environment-name ${{ secrets.ENV_NAME }} --version-label ${{ github.run_id }}

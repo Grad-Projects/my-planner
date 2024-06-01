@@ -26,5 +26,5 @@ jobs:
           aws-region: eu-west-1
 
       - name: Deploy to AWS S3
-        run: aws s3 sync . s3://${{ secrets.BUCKET_NAME }} --delete
+        run: aws s3 sync . s3://${{ secrets.FRONTEND_BUCKET_NAME }} --delete
         working-directory: frontend
