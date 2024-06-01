@@ -174,7 +174,7 @@ const updateTimeUnit = async (req, res) => {
             return res.status(404).json({ error: 'User not found' });
         }
         
-        if (![1, 2].includes(time_unit)) {
+        if (![1, 2, 3].includes(time_unit)) {
             return res.status(400).json({ error: 'Invalid time unit value. Must be 1 or 2.' });
         }
         
