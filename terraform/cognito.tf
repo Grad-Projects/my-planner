@@ -16,7 +16,7 @@ resource "aws_cognito_user_pool_client" "client" {
   user_pool_id                         = aws_cognito_user_pool.user_pool.id
   allowed_oauth_flows_user_pool_client = true
   allowed_oauth_flows                  = ["code"] # Use with PKCE (Does not require client secret)
-  allowed_oauth_scopes                 = ["email", "openid", "profile"]
+  allowed_oauth_scopes                 = ["email", "openid", "profile", "aws.cognito.signin.user.admin"]
   callback_urls                        = var.callback_urls
   logout_urls                          = var.logout_urls
   supported_identity_providers         = ["Google"]
