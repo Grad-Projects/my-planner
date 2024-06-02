@@ -6,6 +6,7 @@ window.addNoteItem = addNoteItem;
 window.cancelAddNote = cancelAddNote;
 window.addCheckItem = addCheckItem;
 window.popUpCreateCheckListItem = popUpCreateCheckListItem;
+window.changeIcon = changeIcon;
 
 let noteList = document.getElementById("noteList");
 let overlay = document.getElementById("overlay");
@@ -109,6 +110,7 @@ function addCheckListItem()
         checkListContent.value = "";
         const listNode = document.createElement("li");
         listNode.classList.add("checkItem");
+        //PERHAPS: Here when we create the item in the db we make the ID of the li element the id in the db
 
         const pNode = document.createElement("p");
         const checkTextNode = document.createTextNode(checkContent);
@@ -145,5 +147,18 @@ function addCheckListItem()
     else
     {
         alert("PUT SOME CONTENT IN THERE BIG DAWG >:(")
+    }
+}
+
+function changeIcon(event){
+    const item = event.target;
+    const itemParent = item.parentElement;
+    const checkParent = itemParent.parentElement; //Here we can get the parent container of the checkList item
+                                                  //It might be a good idea to make the id of the item the id in the database so we set the checked/unchecked
+    console.log(checkParent);
+    if(item.innerText == "radio_button_unchecked"){
+        item.innerText = "check_circle";
+    }else{
+        item.innerText = "radio_button_unchecked";
     }
 }
