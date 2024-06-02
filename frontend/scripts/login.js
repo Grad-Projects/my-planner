@@ -1,4 +1,4 @@
-import { isTokenValid } from "./authManager";
+import { isTokenValid } from "./authManager.js";
 
 if (isTokenValid()) {
   window.location.href = '/index.html';
