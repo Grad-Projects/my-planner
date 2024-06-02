@@ -16,8 +16,15 @@ ul{
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
+    flex-wrap: wrap;
 
 }
+
+.header h1{
+    margin: 0.3em;
+}
+
+
 
 .logoutButton{
     background-color: black;
@@ -88,6 +95,26 @@ ul{
     border-radius: 0.5em;
     width: 10em;
     margin: 1em;
+    transition: 0.5s
+}
+
+.hoverCalendar:hover
+{
+    transition: 0.2s;
+}
+
+.hoverCalendar:hover{
+    background-color: black;
+    color: white;
+    transition: 0.2s;
+}
+
+.weekItem:hover{
+    cursor: pointer;
+    background-color: black;
+    color:white;
+    transform: scale(1.1);
+    transition: 0.5s;
 }
 
 .weekActions{
@@ -179,6 +206,26 @@ ul{
     justify-content: space-between;
 }
 
+.eventCardHolder{
+    display:flex;
+    overflow: auto;
+}
+
+.eventCard{
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    margin: 1em;
+}
+p{
+    padding: 0.5em;
+}
+
+.eventTimes{
+    display: flex;
+    flex-direction: row;
+}
+
 .deleteHolder{
     padding: 1em;
 }
@@ -198,18 +245,23 @@ ul{
 
 }
 
+.eventsTitle{
+    font-size: 1.5em;
+}
+
 .inputTime{
     width: 20%;
 }
 
 .makeNotePopUp{
     background-color: #E4CCFF;
-    width: 30em;
-    max-width: 100em;
+    width: 50%;
+    max-width: 100%;
 
     position: fixed;
-    left:30em;
-    bottom: 10em;
+    bottom: 30%;
+    left: 30%;
+    overflow: auto;
 
     z-index: 100;
 
@@ -228,8 +280,8 @@ ul{
     height: 80%;
 
     position: fixed;
-    left:4em;
-    bottom: 5em;
+    bottom: 5%;
+    left: 5%;
 
     z-index: 100;
 

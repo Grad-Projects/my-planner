@@ -8,7 +8,7 @@ const pool = new Pool({
     user: "postgres",
     host: "localhost",
     database:"PlannerDB",
-    password: "admin",
+    password: "password",
     port: 5432,
     ssl: false
 });

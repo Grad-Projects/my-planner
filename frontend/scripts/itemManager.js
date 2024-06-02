@@ -32,9 +32,11 @@ let eventDate = document.getElementById("eventDate");
 let eventTime = document.getElementById("eventTime");
 let calendar = document.getElementById("calendar");
 let monthYear = document.getElementById("monthTitle");
-let eventLength = document.getElementById("inputEventLength")
-
-
+let eventLength = document.getElementById("inputEventLength");
+let eventListPopUp = document.getElementById("eventListPopUp");
+const titleEventsPage = document.getElementById("titleEventsPage");
+let counter = 0;
+let tempInt = 0;
 let weekViewList = document.getElementById("weekListView");
 
 let daysOfWeek = ["Sunday","Monday", "Tuesday", "Wednesday","Thursday","Friday","Saturday"];
@@ -51,7 +53,7 @@ let calendarDayIDs = [
 ];
 
 let months = [
-    "January","February","March","April","May","June","July","August","September","October","November","December"
+    "Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"
 ]
 
 document.getElementById("eventTime").addEventListener('input', function(event) {
@@ -153,6 +155,23 @@ function popUpCreateEvent(){
     eventPopUp.classList.remove("hide");
 }
 
+function popUpShowEvents(date,month,year)
+{
+    overlay.classList.remove("hide");
+    eventListPopUp.classList.remove("hide");
+    console.log("DATE: " + date + " MONTH: " + months[month-1] + " YEAR: " + year);
+
+    //need to get date from object clicked on
+
+    titleEventsPage.innerText = "Events for: " + date + " " +  months[month-1] +  " " + year;
+}
+
+function closeEvents()
+{
+    overlay.classList.add("hide");
+    eventListPopUp.classList.add("hide");
+}
+
 function addNoteItem(){
     const noteTitle = noteTitleInput.value;
     const noteContent = noteContentInput.value;
@@ -174,7 +193,7 @@ function addNoteItem(){
     const titleTextNode = document.createTextNode(noteTitle);
     const contentTextNode = document.createTextNode(noteContent);
     var nowDate = dayjs();
-    const dateTextNode = document.createTextNode(nowDate.date() + "/" + nowDate.month() + "/" + nowDate.year());
+    const dateTextNode = document.createTextNode(nowDate.date() + "/" + (nowDate.month()+1) + "/" + nowDate.year());
 
     titleNode.appendChild(titleTextNode);
     contentNode.appendChild(contentTextNode);
@@ -302,16 +321,20 @@ function addTimeItem()
 
 function createCalendarEvent()
 {
+    let eventDateObj = dayjs(eventDate.value, "MM-DD-YYYY")
+    let date = eventDateObj.date();
+    let month = eventDateObj.month()+1;
+    let year = eventDateObj.year();
+    let dateString = date + "-" + month + "-" + year;
     
     let newEvent = 
     {
         eventTitle: eventTitle.value,
         eventDescription: eventDesc.value,
-        eventDate: eventDate.value,
+        eventDate: dateString,
         eventStartTime: eventTime.value,
         eventLength: eventLength.value
     };
-    console.log(newEvent);
     testEvents.push(newEvent);
     eventTitle.value = "";
     eventDesc.value = "";
@@ -321,7 +344,6 @@ function createCalendarEvent()
     makeWeekList();
 
 
-    console.log("event created yay");
     overlay.classList.add("hide");
     eventPopUp.classList.add("hide");
 }
@@ -359,7 +381,6 @@ function changeIcon(event){
     const itemParent = item.parentElement;
     const checkParent = itemParent.parentElement; //Here we can get the parent container of the checkList item
                                                   //It might be a good idea to make the id of the item the id in the database so we set the checked/unchecked
-    console.log(checkParent);
     if(item.innerText == "radio_button_unchecked"){
         item.innerText = "check_circle";
     }else{
@@ -375,11 +396,11 @@ function openCalendarInit()
 
 function initializeCalendar(month, year)
 {
-calendarDayIDs.forEach(element => {
-    let dayElement = document.getElementById(element);
-    dayElement.innerText = "";
-    
-});
+    calendarDayIDs.forEach(element => {
+        let dayElement = document.getElementById(element);
+        dayElement.innerText = "";
+        dayElement.removeAttribute("onclick");
+    });
 
     let date = dayjs().month(month);
     date = date.date(1);
@@ -387,10 +408,12 @@ calendarDayIDs.forEach(element => {
     currentDate = date;
     let weekDay = dayjs(date).day();
     let numDays = dayjs(date).daysInMonth();
-    console.log(date);
     for (let index = 1; index <= numDays; index++) {
         let dateBox = document.getElementById("cal" + (weekDay + (index)));
         dateBox.innerText = index;
+        dateBox.classList.add("hoverCalendar");
+        tempInt = index;
+        dateBox.setAttribute("onclick","popUpShowEvents("+(tempInt)+"," + (currentDate.month()+1) + "," + currentDate.year() + ")");        
         
     }
     monthTitle.innerText = months[month] + " " + year;
@@ -399,30 +422,31 @@ calendarDayIDs.forEach(element => {
 
 var textNodeEvents;
 
+
 function makeWeekList()
 {
 
     while((weekViewList.getElementsByTagName("li")).length > 0) {
 	    weekViewList.removeChild(weekViewList.getElementsByTagName("li")[0]);
     }
-
+    counter = 0;
     const start = now.day();
-    console.log("Start: " + start);
-    let counter = 0;
         for (let i = start; i < daysOfWeek.length + start; i++) 
         {
             const outerListNode = document.createElement("li");
+            console.log("Now date: " + now.date()); 
+            console.log("counter: " + counter);
+            tempInt = now.date() + counter;
+            console.log(tempInt);
+            outerListNode.setAttribute("onclick","popUpShowEvents("+(tempInt)+","+ (now.month()+1) +"," + now.year() + ")");
             const listNode = document.createElement("ul");
             const innerListNodeDay = document.createElement("li");
             const innerListNodeEvents = document.createElement("li");
-            console.log(i % daysOfWeek.length);
             const textnodeDay = document.createTextNode(daysOfWeek[i % daysOfWeek.length] + " " + (now.date() + counter));
             //check for events here
             //populate with number of events
             let eventCounter = 0;
-            console.log("CHECKING DATE: " + (now.date()+counter) + "-" + (now.month()+1) + "-" + (now.year()));
             testEvents.forEach(element => {
-                console.log("CHECKED AGAINST: " + element.eventDate);
                 if((+ (now.date()+counter) + "-" + (now.month()+1) + "-" + (now.year())) == element.eventDate){
                     eventCounter++;
                 }
