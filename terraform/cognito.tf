@@ -51,5 +51,6 @@ resource "aws_cognito_identity_provider" "google" {
 
   attribute_mapping = {
     username = "email"
+    email    = "email"
   }
 }
