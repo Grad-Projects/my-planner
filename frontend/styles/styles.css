@@ -76,9 +76,10 @@ ul{
 
     background-color: #ADE6E2;
     border-radius: 0.5em;
-    width: 90em;
+    max-width: 90em;
     margin:auto;
     margin-bottom: 1em;
+    overflow: auto;
 }
 
 

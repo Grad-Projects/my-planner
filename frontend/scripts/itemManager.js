@@ -32,6 +32,13 @@ let eventDate = document.getElementById("eventDate");
 let eventTime = document.getElementById("eventTime");
 let calendar = document.getElementById("calendar");
 let monthYear = document.getElementById("monthTitle");
+let eventLength = document.getElementById("inputEventLength")
+
+
+let weekViewList = document.getElementById("weekListView");
+
+let daysOfWeek = ["Sunday","Monday", "Tuesday", "Wednesday","Thursday","Friday","Saturday"];
+var now = dayjs();
 
 let calendarDayIDs = [
     "cal1", "cal2", "cal3", "cal4", "cal5", "cal6", "cal7",
@@ -56,6 +63,35 @@ document.getElementById("eventTime").addEventListener('input', function(event) {
         event.target.value = hours + ':00';
     }
 });
+
+let testEvents = [
+    {
+        eventTitle: "event1",
+        eventDescription: "this is an event!",
+        eventDate: "4-6-2024",
+        eventStartTime: "13:00",
+        eventLength: 2,
+
+    },
+    {
+        eventTitle: "Water Plants Day",
+        eventDescription: "Gotta water the plants on this day",
+        eventDate: "4-6-2024",
+        eventStartTime: "09:00",
+        eventLength: 2,
+
+    },
+    {
+        eventTitle: "Bug Day",
+        eventDescription: "day all about bugs",
+        eventDate: "8-6-2024",
+        eventStartTime: "15:00",
+        eventLength: 2,
+
+    }
+];
+
+makeWeekList();
 
 var currentDate;
 function cancelAddNote()
@@ -266,10 +302,25 @@ function addTimeItem()
 
 function createCalendarEvent()
 {
+    
+    let newEvent = 
+    {
+        eventTitle: eventTitle.value,
+        eventDescription: eventDesc.value,
+        eventDate: eventDate.value,
+        eventStartTime: eventTime.value,
+        eventLength: eventLength.value
+    };
+    console.log(newEvent);
+    testEvents.push(newEvent);
     eventTitle.value = "";
     eventDesc.value = "";
     eventDate.value = "";
     eventTime.value = "";
+    eventLength.value = "";
+    makeWeekList();
+
+
     console.log("event created yay");
     overlay.classList.add("hide");
     eventPopUp.classList.add("hide");
@@ -345,3 +396,60 @@ calendarDayIDs.forEach(element => {
     monthTitle.innerText = months[month] + " " + year;
 
 }
+
+var textNodeEvents;
+
+function makeWeekList()
+{
+
+    while((weekViewList.getElementsByTagName("li")).length > 0) {
+	    weekViewList.removeChild(weekViewList.getElementsByTagName("li")[0]);
+    }
+
+    const start = now.day();
+    console.log("Start: " + start);
+    let counter = 0;
+        for (let i = start; i < daysOfWeek.length + start; i++) 
+        {
+            const outerListNode = document.createElement("li");
+            const listNode = document.createElement("ul");
+            const innerListNodeDay = document.createElement("li");
+            const innerListNodeEvents = document.createElement("li");
+            console.log(i % daysOfWeek.length);
+            const textnodeDay = document.createTextNode(daysOfWeek[i % daysOfWeek.length] + " " + (now.date() + counter));
+            //check for events here
+            //populate with number of events
+            let eventCounter = 0;
+            console.log("CHECKING DATE: " + (now.date()+counter) + "-" + (now.month()+1) + "-" + (now.year()));
+            testEvents.forEach(element => {
+                console.log("CHECKED AGAINST: " + element.eventDate);
+                if((+ (now.date()+counter) + "-" + (now.month()+1) + "-" + (now.year())) == element.eventDate){
+                    eventCounter++;
+                }
+            });
+            
+            if(eventCounter == 0)
+                {
+                     textNodeEvents = document.createTextNode("No events");
+                }
+                else if(eventCounter == 1)
+                {
+                    textNodeEvents = document.createTextNode("1 Event")
+                }else
+                {
+                    textNodeEvents = document.createTextNode(eventCounter + " Events");
+                }
+            
+            innerListNodeDay.appendChild(textnodeDay);
+            innerListNodeEvents.appendChild(textNodeEvents);
+            listNode.appendChild(innerListNodeDay);
+            listNode.appendChild(innerListNodeEvents);
+            outerListNode.appendChild(listNode);
+            outerListNode.classList.add("weekItem")
+            weekViewList.appendChild(outerListNode);
+            counter++;
+        }
+}
+
+
+
