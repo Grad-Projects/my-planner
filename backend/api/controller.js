@@ -3,6 +3,33 @@ const queries = require("./queries");
 const { getUserEmail } = require("./cognito_utils.js");
 const { allowedTables, checkUserExists } = require("./utils.js");
 
+const getOauthStateAndCodeVerifier = async (req, res) => {
+    try {
+        const { state } = req.query;
+        pool.query(queries.getCodeVerifierByState, [state], (error, results) => {
+            if (error) {
+                console.error('Error executing query', error);
+                return res.status(500).json({ error: 'Internal Server Error' });
+            }
+            if (results.rows.length === 0) {
+                return res.status(404).json({ error: 'State not found' });
+            }
+            
+            // delete state after retrieving it
+            pool.query(queries.deleteOauthStateAndCodeVerifier, [state], (error, results) => {
+                if (error) {
+                    console.error('Error deleting oauth state and code verifier', error);
+                    return res.status(500).json({ error: 'Internal Server Error' });
+                }
+            });
+
+            res.status(200).json(results.rows[0]);
+        });
+    } catch (error) {
+        console.error('Error getting oauth state and code verifier', error);
+        return res.status(500).json({ error: 'Internal Server Error' });
+    }
+};
 
 const getUserNotes = async (req, res) => {
     try {
@@ -360,7 +387,19 @@ const createUser = async (req, res) => {
     }
 };
 
+const createOauthStateAndCodeVerifier = async (req, res) => {
+    try {
+        const { state, code_verifier } = req.body;
+        pool.query(queries.createOauthStateAndCodeVerifier, [state, code_verifier]);
+        res.status(201).json({ message: 'State and code verifier created successfully' });
+    } catch (error) {
+        console.error('Error creating oauth state and code verifier', error);
+        return res.status(500).json({ error: 'Internal Server Error' });
+    }
+};
+
 module.exports = {
+    getOauthStateAndCodeVerifier,
     getUserNotes,
     getUserTodoItems,
     getUserTimeTrackerItems,
@@ -374,4 +413,5 @@ module.exports = {
     createTodoItem,
     createTimeTrackerItem,
     createUser,
+    createOauthStateAndCodeVerifier,
 };

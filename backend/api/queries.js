@@ -1,3 +1,7 @@
+const getCodeVerifierByState = `
+  SELECT code_verifier FROM "OauthStates"
+  WHERE "state" = $1
+`;
 const getUserNotes = `
   SELECT * FROM "Notes" 
   WHERE "user_id" = (SELECT id FROM "Users" WHERE "email" = $1) 
@@ -94,7 +98,19 @@ const createUser = `
   VALUES ($1)
 `;
 
+const createOauthStateAndCodeVerifier = `
+  INSERT INTO "OauthStates" (state, code_verifier, created_at)
+  VALUES ($1, $2, CURRENT_TIMESTAMP)
+  RETURNING id;
+`;
+
+const deleteOauthStateAndCodeVerifier = `
+  DELETE FROM "OauthStates"
+  WHERE "state" = $1
+`;
+
 module.exports = {
+    getCodeVerifierByState,
     getUserNotes,
     getUserTodoItems,
     getUserTimeTrackerItems,
@@ -109,4 +125,6 @@ module.exports = {
     createTimeTrackerItem,
     getUser,
     createUser,
+    createOauthStateAndCodeVerifier,
+    deleteOauthStateAndCodeVerifier,
 }

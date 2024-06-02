@@ -8,18 +8,20 @@ const redirectUri = 'http://localhost:5500/frontend/callback.html';
 
 if (code && state) {
   // Get saved code verifier and state
-  // const savedCodeVerifier = sessionStorage.getItem('codeVerifier');
-  const savedCodeVerifier = "renut754nT8fc14ugCU6bqideJVWf0rdnmkoReIc1iW9AGPaLtXS4aHNYfzy8hWd"
-  // const savedState = sessionStorage.getItem('state');
-  const savedState = "ByZYt1EVIyA01Hes";
-  console.log(savedState);
+  let response = await fetch(`http://localhost:8080/api/v1/oauth-state?state=${state}`, {
+    method: 'GET',
+    headers: { 'Content-Type': 'application/json' }
+  });
 
-  if (state === savedState) {
-    // Perform token exchange with code and code verifier
+  if (response.ok) {
+    const data = await response.json();
+    const savedCodeVerifier = data.code_verifier;
     exchangeAuthorizationCodeForTokens(code, savedCodeVerifier);
-    // window.location.href = "/frontend/index.html"
-  } else {
-    console.error('State mismatch. Possible CSRF attack.');
+    window.location.href = "/frontend/index.html"
+  }
+  else {
+    console.error('Failed to retrieve state and code verifier');
+    window.location.href = "/frontend/index.html"
   }
 }
 
@@ -44,7 +46,6 @@ if (code && state) {
     console.log(response);
 
     const tokens = await response.json();
-    console.log(tokens); // Handle tokens as needed
     localStorage.setItem('accessToken', tokens.access_token);
     localStorage.setItem('idToken', tokens.id_token);
     localStorage.setItem('refreshToken', tokens.refresh_token);

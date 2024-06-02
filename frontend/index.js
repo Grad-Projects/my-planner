@@ -16,8 +16,7 @@ function base64UrlEncode(arrayBuffer) {
 }
 
 async function generateCodeVerifierAndChallenge() {
-  // const codeVerifier = generateRandomString(64);
-  const codeVerifier = "renut754nT8fc14ugCU6bqideJVWf0rdnmkoReIc1iW9AGPaLtXS4aHNYfzy8hWd";
+  const codeVerifier = generateRandomString(64);
 
   // Hash the code verifier using SHA-256
   const hashed = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(codeVerifier));
@@ -30,15 +29,26 @@ async function generateCodeVerifierAndChallenge() {
 
 document.getElementById('loginBtn').addEventListener('click', async () => {
   const { codeVerifier, codeChallenge } = await generateCodeVerifierAndChallenge();
-  // const state = generateRandomString(16);
-  const state = "ByZYt1EVIyA01Hes";
+  const state = generateRandomString(16);
   console.log(state);
 
-  sessionStorage.setItem('codeVerifier', codeVerifier);
-  sessionStorage.setItem('codeChallenge', codeChallenge);
-  sessionStorage.setItem('state', state);
+  // Store in DB
+  let response = await fetch('http://localhost:8080/api/v1/create/oauth-state', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ 
+      state: state, 
+      code_verifier: codeVerifier 
+    })
+  });
 
-  const authUrl = `https://${cognitoDomain}/oauth2/authorize?response_type=code&client_id=${clientId}&redirect_uri=${redirectUri}&scope=openid+email+profile&code_challenge_method=S256&code_challenge=${codeChallenge}&state=${state}`;
-  console.log(authUrl);
-  window.location.href = authUrl;
+  if (response.ok) {
+    // Redirect to cognito authentication
+    const authUrl = `https://${cognitoDomain}/oauth2/authorize?response_type=code&client_id=${clientId}&redirect_uri=${redirectUri}&scope=openid+email+profile&code_challenge_method=S256&code_challenge=${codeChallenge}&state=${state}`;
+    console.log(authUrl);
+    window.location.href = authUrl;
+  }
+  else {
+    console.error('Failed to store state and code verifier');
+  }
 });
