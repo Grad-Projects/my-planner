@@ -9,8 +9,9 @@ let backendUrl = 'https://myplannerapi.projects.bbdgrad.com';
 let redirectUri = 'https://myplanner.projects.bbdgrad.com/callback.html';
 if (hostname.includes("localhost") || hostname.includes("127.0.0.1")) {
   backendUrl = 'http://localhost:8080';
-  redirectUri = 'http://localhost:5500/frontend/callback.html';
+  redirectUri = 'http://localhost:5500/callback.html';
 }
+let email;
 
 if (code && state) {
   // Retrieve code verifier from DB
@@ -24,11 +25,11 @@ if (code && state) {
     const savedCodeVerifier = data.code_verifier;
     await exchangeAuthorizationCodeForTokens(code, savedCodeVerifier);
     await createUser();
-    window.location.href = "/frontend/index.html"
+    window.location.href = "/index.html"
   }
   else {
     console.error('Failed to retrieve state and code verifier');
-    window.location.href = "/frontend/index.html"
+    window.location.href = "/index.html"
   }
 }
 
@@ -66,7 +67,11 @@ async function createUser() {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${localStorage.getItem('accessToken')}` }
   });
-  if (!response.ok) {
+  if (response.ok) {
+    const data = await response.json();
+    email = data.email;
+    localStorage.setItem('email', email);
+  }else {
     console.error('Failed to create user');
   }
 }
