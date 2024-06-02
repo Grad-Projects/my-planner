@@ -8,6 +8,7 @@ window.addCheckItem = addCheckItem;
 window.popUpCreateCheckListItem = popUpCreateCheckListItem;
 window.changeIcon = changeIcon;
 window.addTimeItem = addTimeItem;
+window.createCalendarEvent = createCalendarEvent;
 
 let noteList = document.getElementById("noteList");
 let overlay = document.getElementById("overlay");
@@ -15,14 +16,30 @@ let notePopUp = document.getElementById("notePopUp");
 let checkListPopUp = document.getElementById("checkListPopUp")
 let checkList = document.getElementById("checkList");
 let timeList = document.getElementById("timeList");
+let eventPopUp = document.getElementById("eventPopUp");
 
 let noteTitleInput = document.getElementById("noteTitle");
 let noteContentInput = document.getElementById("noteContent");
 let checkListContent = document.getElementById("checkListDesc");
 let timePopUp = document.getElementById("timePopUp");
 let timeTrackContent = document.getElementById("timeTrackDesc");
+let eventTitle = document.getElementById("eventTitle");
+let eventDesc = document.getElementById("eventDesc");
+let eventDate = document.getElementById("eventDate");
+let eventTime = document.getElementById("eventTime");
 
-function cancelAddNote(){
+document.getElementById("eventTime").addEventListener('input', function(event) {
+    const value = event.target.value;
+    const minutes = value.split(':')[1];
+    if (minutes !== '00') {
+        // Reset to the closest whole hour if minutes are not zero
+        const hours = value.split(':')[0];
+        event.target.value = hours + ':00';
+    }
+});
+
+function cancelAddNote()
+{
     noteTitleInput.value = "";
     noteContentInput.value = "";
     checkListContent.value = "";
@@ -32,40 +49,52 @@ function cancelAddNote(){
     notePopUp.classList.add("hide");
     checkListPopUp.classList.add("hide");
     timePopUp.classList.add("hide");
+    eventPopUp.classList.add("hide");
 }
 
-function deleteNoteItem(event){
+function deleteNoteItem(event)
+{
     const item = event.target;
     const parent1 = item.parentElement;
     parent1.remove();
 }
 
-function deleteTimeItem(event){
+function deleteTimeItem(event)
+{
     const item = event.target;
     const parent1 = item.parentElement;
     parent1.remove();
 }
 
-function deleteCheckItem(event){
+function deleteCheckItem(event)
+{
     const item = event.target;
     const parent1 = item.parentElement;
     const parent2 = parent1.parentElement;
     parent2.remove();
 }
 
-function popUpCreateNote(){
+function popUpCreateNote()
+{
     overlay.classList.remove("hide");
     notePopUp.classList.remove("hide");
 }
 
-function popUpCreateCheckListItem(){
+function popUpCreateCheckListItem()
+{
     overlay.classList.remove("hide");
     checkListPopUp.classList.remove("hide");
 }
 
-function popUpCreateTimeItem(){
+function popUpCreateTimeItem()
+{
     overlay.classList.remove("hide");
     timePopUp.classList.remove("hide");
+}
+
+function popUpCreateEvent(){
+    overlay.classList.remove("hide");
+    eventPopUp.classList.remove("hide");
 }
 
 function addNoteItem(){
@@ -215,7 +244,16 @@ function addTimeItem()
     }
 }
 
-
+function createCalendarEvent()
+{
+    eventTitle.value = "";
+    eventDesc.value = "";
+    eventDate.value = "";
+    eventTime.value = "";
+    console.log("event created yay");
+    overlay.classList.add("hide");
+    eventPopUp.classList.add("hide");
+}
 
 function changeIcon(event){
     const item = event.target;
