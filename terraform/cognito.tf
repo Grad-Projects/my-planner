@@ -17,9 +17,9 @@ resource "aws_cognito_user_pool_client" "client" {
   allowed_oauth_flows_user_pool_client = true
   allowed_oauth_flows                  = ["code"] # Use with PKCE (Does not require client secret)
   allowed_oauth_scopes                 = ["email", "openid", "profile"]
-  callback_urls                        = ["http://localhost:5000/callback"]
-  logout_urls                          = ["http://localhost:5000/logout"]
-  supported_identity_providers         = ["COGNITO", "Google"]
+  callback_urls                        = var.callback_urls
+  logout_urls                          = var.logout_urls
+  supported_identity_providers         = ["Google"]
   generate_secret                      = false # Public client cannot store the secret securely, so we won't use one
 
   depends_on = [aws_cognito_identity_provider.google]
