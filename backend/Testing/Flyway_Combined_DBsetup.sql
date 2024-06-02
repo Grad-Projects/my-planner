@@ -6,6 +6,14 @@ DROP TABLE IF EXISTS "TimeTrackerItems" CASCADE;
 DROP TABLE IF EXISTS "TimeUnits" CASCADE;
 DROP TABLE IF EXISTS "Users" CASCADE;
 
+-- Create State table
+CREATE TABLE "OauthStates" (
+    "id" SERIAL PRIMARY KEY,
+    "state" VARCHAR(255) UNIQUE NOT NULL,
+    "code_verifier" VARCHAR(255) NOT NULL,
+    "created_at" TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
 -- Create Users table
 CREATE TABLE "Users" (
   "id" SERIAL PRIMARY KEY,
