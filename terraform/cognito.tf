@@ -50,7 +50,7 @@ resource "aws_cognito_identity_provider" "google" {
   }
 
   attribute_mapping = {
-    username = "email"
+    username = "sub"
     email    = "email"
   }
 }
