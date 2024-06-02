@@ -3,11 +3,179 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+    <link rel="stylesheet" href="styles/styles.css">
     <title>My Planner</title>
-    <h1>Welcome to my planner!</h1>
+    <section class="header">
+        <h1>My Planner</h1>
+        <h1 id="emailAddress">myemail@email.com</h1>
+        <h1 class="logoutButton">Logout</h1>
+    </section>
+    
+    <ul id="weekListView" class="weekList">
+        
+    </ul>
+    <section class="plannerCards">
+        <section class="card">
+            <h2>Notes</h2>
+            <ul id="noteList">
+                <li class="addCard">
+                    <p id="addNote" onclick="popUpCreateNote()" class="addItem">+</p>
+                </li>
+
+            </ul>
+        </section>
+        <section class="card">
+            <h2>Checklist</h2>
+            <ul>
+                <section class="addCard">
+                    <p id="addCheckItem" onclick="addCheckItem()" class="addItem">+</p>
+                </section>
+                <li class="checkItem">
+                    <p class="checkDesc">Item description</p>
+                    <section class="checkActions">
+                        <span onclick="changeIcon(event)" class="material-symbols-outlined checkBox">
+                            radio_button_unchecked
+                        </span>
+                        <span onclick="deleteCheckItem(event)"  class="material-symbols-outlined deleteHolder checkDelete">
+                            delete
+                        </span>
+                    </section>
+                </li>
+                <li class="checkItem">
+                    <p class="checkDesc">Item description</p>
+                    <section class="checkActions">
+                        <span onclick="changeIcon(event)" class="material-symbols-outlined checkBox">
+                            radio_button_unchecked
+                        </span>
+                        <span onclick="deleteCheckItem(event)"  class="material-symbols-outlined deleteHolder checkDelete">
+                            delete
+                        </span>
+                    </section>
+                </li>
+                <li class="checkItem">
+                    <p class="checkDesc">Item description</p>
+                    <section class="checkActions">
+                        <span onclick="changeIcon(event)" class="material-symbols-outlined checkBox">
+                            radio_button_unchecked
+                        </span>
+                        <span onclick="deleteCheckItem(event)"  class="material-symbols-outlined deleteHolder checkDelete">
+                            delete
+                        </span>
+                    </section>
+                </li>
+                <li class="checkItem">
+                    <p class="checkDesc">Item description</p>
+                    <section class="checkActions">
+                        <span onclick="changeIcon(event)" class="material-symbols-outlined checkBox">
+                            radio_button_unchecked
+                        </span>
+                        <span onclick="deleteCheckItem(event)"  class="material-symbols-outlined deleteHolder checkDelete">
+                            delete
+                        </span>
+                    </section>
+                </li>
+                <li class="checkItem">
+                    <p class="checkDesc">Item description</p>
+                    <section class="checkActions">
+                        <span onclick="changeIcon(event)" class="material-symbols-outlined checkBox">
+                            radio_button_unchecked
+                        </span>
+                        <span onclick="deleteCheckItem(event)"  class="material-symbols-outlined deleteHolder checkDelete">
+                            delete
+                        </span>
+                    </section>
+                </li>
+                <li class="checkItem">
+                    <p class="checkDesc">Item description</p>
+                    <section class="checkActions">
+                        <span onclick="changeIcon(event)" class="material-symbols-outlined checkBox">
+                            radio_button_unchecked
+                        </span>
+                        <span onclick="deleteCheckItem(event)"  class="material-symbols-outlined deleteHolder checkDelete">
+                            delete
+                        </span>
+                    </section>
+                </li>
+
+            </ul>
+
+            
+        </section>
+        <section class="card">
+            <h2>Time Tracker</h2>
+            <ul>
+                <li class="addCard">
+                    <p id="addTimeItem" onclick="addTimeItem()" class="addItem">+</p>
+                </li>
+                <li class="timeItem">
+                    <p>Watering plants</p>
+                    <input class="inputTime" type="text">
+                    <select name="time">
+                        <option value="volvo">Min</option>
+                        <option value="saab">Hr</option>
+                      </select>
+                    <span onclick="deleteTimeItem(event)"  class="material-symbols-outlined deleteHolder checkDelete">
+                        delete
+                    </span>
+                </li>
+                <li class="timeItem">
+                    <p>Watering plants</p>
+                    <input class="inputTime" type="text">
+                    <select name="time">
+                        <option value="volvo">Min</option>
+                        <option value="saab">Hr</option>
+                      </select>
+                    <span onclick="deleteTimeItem(event)"  class="material-symbols-outlined deleteHolder checkDelete">
+                        delete
+                    </span>
+                </li>
+                <li class="timeItem">
+                    <p>Watering plants</p>
+                    <input class="inputTime" type="text">
+                    <select name="time">
+                        <option value="volvo">Min</option>
+                        <option value="saab">Hr</option>
+                      </select>
+                    <span onclick="deleteTimeItem(event)"  class="material-symbols-outlined deleteHolder checkDelete">
+                        delete
+                    </span>
+                </li>
+                <li class="timeItem">
+                    <p>Watering plants</p>
+                    <input class="inputTime" type="text">
+                    <select name="time">
+                        <option value="volvo">Min</option>
+                        <option value="saab">Hr</option>
+                      </select>
+                    <span onclick="deleteTimeItem(event)"  class="material-symbols-outlined deleteHolder checkDelete">
+                        delete
+                    </span>
+                </li>
+            </ul>
+            
+        </section>
+    </section>
+
+    <section id="notePopUp" class="makeNotePopUp hide">
+        <label for="noteTitle">Title of note:</label>
+        <input type="text" id="noteTitle">
+        <label for="noteContent">Note content:</label>
+        <textArea id="noteContent"></textArea>
+        <h3 onclick="addNoteItem()" class="doneButton">Done!</h3>
+        <h3 onclick="cancelAddNote()" class="doneButton">Cancel</h3>
+    </section>
+    <div id="overlay" class="hide"></div>
+
 </head>
 <body>
     
 </body>
+<script src="https://cdn.jsdelivr.net/npm/dayjs@1/dayjs.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/dayjs@1/dayjs/plugin/weekday.js"></script>
+<script src="scripts/weeklyListRender.js"></script>
+<script src="scripts/checkBox.js"></script>
+<script src="scripts/itemManager.js"></script>
+
 </html>
