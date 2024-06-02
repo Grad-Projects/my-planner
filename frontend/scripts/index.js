@@ -8,3 +8,4 @@ if (!isTokenValid()) {
 }
 
 document.getElementById('emailAddress').textContent = localStorage.getItem('email');
+document.querySelector('.logoutButton').addEventListener('click', logout);
