@@ -19,3 +19,4 @@ const pool = new Pool({
 });
 
 module.exports = pool;
+//TODO: figure out the ssl stuff, localhost needs ssl: false and aws db needs it as above?
