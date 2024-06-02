@@ -28,77 +28,10 @@
         </section>
         <section class="card">
             <h2>Checklist</h2>
-            <ul>
+            <ul id="checkList">
                 <section class="addCard">
-                    <p id="addCheckItem" onclick="addCheckItem()" class="addItem">+</p>
+                    <p id="addCheckItem" onclick="popUpCreateCheckListItem()" class="addItem">+</p>
                 </section>
-                <li class="checkItem">
-                    <p class="checkDesc">Item description</p>
-                    <section class="checkActions">
-                        <span onclick="changeIcon(event)" class="material-symbols-outlined checkBox">
-                            radio_button_unchecked
-                        </span>
-                        <span onclick="deleteCheckItem(event)"  class="material-symbols-outlined deleteHolder checkDelete">
-                            delete
-                        </span>
-                    </section>
-                </li>
-                <li class="checkItem">
-                    <p class="checkDesc">Item description</p>
-                    <section class="checkActions">
-                        <span onclick="changeIcon(event)" class="material-symbols-outlined checkBox">
-                            radio_button_unchecked
-                        </span>
-                        <span onclick="deleteCheckItem(event)"  class="material-symbols-outlined deleteHolder checkDelete">
-                            delete
-                        </span>
-                    </section>
-                </li>
-                <li class="checkItem">
-                    <p class="checkDesc">Item description</p>
-                    <section class="checkActions">
-                        <span onclick="changeIcon(event)" class="material-symbols-outlined checkBox">
-                            radio_button_unchecked
-                        </span>
-                        <span onclick="deleteCheckItem(event)"  class="material-symbols-outlined deleteHolder checkDelete">
-                            delete
-                        </span>
-                    </section>
-                </li>
-                <li class="checkItem">
-                    <p class="checkDesc">Item description</p>
-                    <section class="checkActions">
-                        <span onclick="changeIcon(event)" class="material-symbols-outlined checkBox">
-                            radio_button_unchecked
-                        </span>
-                        <span onclick="deleteCheckItem(event)"  class="material-symbols-outlined deleteHolder checkDelete">
-                            delete
-                        </span>
-                    </section>
-                </li>
-                <li class="checkItem">
-                    <p class="checkDesc">Item description</p>
-                    <section class="checkActions">
-                        <span onclick="changeIcon(event)" class="material-symbols-outlined checkBox">
-                            radio_button_unchecked
-                        </span>
-                        <span onclick="deleteCheckItem(event)"  class="material-symbols-outlined deleteHolder checkDelete">
-                            delete
-                        </span>
-                    </section>
-                </li>
-                <li class="checkItem">
-                    <p class="checkDesc">Item description</p>
-                    <section class="checkActions">
-                        <span onclick="changeIcon(event)" class="material-symbols-outlined checkBox">
-                            radio_button_unchecked
-                        </span>
-                        <span onclick="deleteCheckItem(event)"  class="material-symbols-outlined deleteHolder checkDelete">
-                            delete
-                        </span>
-                    </section>
-                </li>
-
             </ul>
 
             
@@ -164,6 +97,12 @@
         <label for="noteContent">Note content:</label>
         <textArea id="noteContent"></textArea>
         <h3 onclick="addNoteItem()" class="doneButton">Done!</h3>
+        <h3 onclick="cancelAddNote()" class="doneButton">Cancel</h3>
+    </section>
+    <section id="checkListPopUp" class="makeNotePopUp hide">
+        <label for="checkListDesc">Task description:</label>
+        <input type="text" id="checkListDesc">
+        <h3 onclick="addCheckListItem()" class="doneButton">Done!</h3>
         <h3 onclick="cancelAddNote()" class="doneButton">Cancel</h3>
     </section>
     <div id="overlay" class="hide"></div>

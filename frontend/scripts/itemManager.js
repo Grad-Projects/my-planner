@@ -4,17 +4,23 @@ window.deleteTimeItem = deleteTimeItem;
 window.popUpCreateNote = popUpCreateNote;
 window.addNoteItem = addNoteItem;
 window.cancelAddNote = cancelAddNote;
+window.addCheckItem = addCheckItem;
+window.popUpCreateCheckListItem = popUpCreateCheckListItem;
 
 let noteList = document.getElementById("noteList");
 let overlay = document.getElementById("overlay");
 let notePopUp = document.getElementById("notePopUp");
+let checkListPopUp = document.getElementById("checkListPopUp")
+let checkList = document.getElementById("checkList");
 
 let noteTitleInput = document.getElementById("noteTitle");
 let noteContentInput = document.getElementById("noteContent");
+let checkListContent = document.getElementById("checkListDesc");
 
 function cancelAddNote(){
     overlay.classList.add("hide");
     notePopUp.classList.add("hide");
+    checkListPopUp.classList.add("hide");
 }
 
 function deleteNoteItem(event){
@@ -39,6 +45,12 @@ function deleteCheckItem(event){
 function popUpCreateNote(){
     overlay.classList.remove("hide");
     notePopUp.classList.remove("hide");
+}
+
+function popUpCreateCheckListItem(){
+    overlay.classList.remove("hide");
+    checkListPopUp.classList.remove("hide");
+
 }
 
 function addNoteItem(){
@@ -89,3 +101,49 @@ function addNoteItem(){
 
 }
 
+function addCheckListItem()
+{
+    const checkContent = checkListContent.value;
+    if(checkContent != "")
+    {
+        checkListContent.value = "";
+        const listNode = document.createElement("li");
+        listNode.classList.add("checkItem");
+
+        const pNode = document.createElement("p");
+        const checkTextNode = document.createTextNode(checkContent);
+        pNode.appendChild(checkTextNode);
+
+        const sectionNode = document.createElement("section");
+        sectionNode.classList.add("checkActions");
+
+        const checkSpan = document.createElement("span");
+        checkSpan.setAttribute("onclick","changeIcon(event)");
+        checkSpan.classList.add("material-symbols-outlined");
+        checkSpan.classList.add("checkBox");
+        const checkedTextNode = document.createTextNode("radio_button_unchecked");
+        checkSpan.appendChild(checkedTextNode);
+
+        const deleteSpan = document.createElement("span");
+        deleteSpan.setAttribute("onclick","deleteCheckItem(event)");
+        deleteSpan.classList.add("material-symbols-outlined");
+        deleteSpan.classList.add("deleteHolder");
+        deleteSpan.classList.add("checkDelete");
+        const deleteTextNode = document.createTextNode("delete");
+        deleteSpan.appendChild(deleteTextNode);
+
+        listNode.appendChild(pNode);
+        sectionNode.appendChild(checkSpan);
+        sectionNode.appendChild(deleteSpan);
+        listNode.appendChild(sectionNode);
+
+        checkList.appendChild(listNode);
+
+        overlay.classList.add("hide");
+        checkListPopUp.classList.add("hide");
+    }
+    else
+    {
+        alert("PUT SOME CONTENT IN THERE BIG DAWG >:(")
+    }
+}
