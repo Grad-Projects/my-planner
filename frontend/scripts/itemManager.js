@@ -302,6 +302,7 @@ function addTimeItem()
 
 function createCalendarEvent()
 {
+    
     let newEvent = 
     {
         eventTitle: eventTitle.value,
