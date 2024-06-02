@@ -389,7 +389,7 @@ const createUser = async (req, res) => {
         const userExists = await checkUserExists(userEmail);
 
         if (userExists) {
-            return res.status(400).json({ error: "User already exists" });
+            return res.status(200).json({ message: "User already exists" });
         }
 
         await pool.query(queries.createUser, [userEmail]);
