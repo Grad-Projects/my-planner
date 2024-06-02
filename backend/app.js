@@ -15,7 +15,7 @@ const apiLimiter = rateLimit({
   });
 
 const corsOptions = {
-  origin: "https://myplanner.projects.bbdgrad.com/",
+  origin: "https://myplanner.projects.bbdgrad.com",
   optionsSuccessStatus: 200
 };
 
