@@ -16,8 +16,15 @@ ul{
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
+    flex-wrap: wrap;
 
 }
+
+.header h1{
+    margin: 0.3em;
+}
+
+
 
 .logoutButton{
     background-color: black;
@@ -204,12 +211,13 @@ ul{
 
 .makeNotePopUp{
     background-color: #E4CCFF;
-    width: 30em;
-    max-width: 100em;
+    width: 50%;
+    max-width: 100%;
 
     position: fixed;
-    left:30em;
-    bottom: 10em;
+    bottom: 30%;
+    left: 30%;
+    overflow: auto;
 
     z-index: 100;
 
@@ -228,8 +236,8 @@ ul{
     height: 80%;
 
     position: fixed;
-    left:4em;
-    bottom: 5em;
+    bottom: 5%;
+    left: 5%;
 
     z-index: 100;
 

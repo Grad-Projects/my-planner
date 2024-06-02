@@ -51,7 +51,7 @@ let calendarDayIDs = [
 ];
 
 let months = [
-    "January","February","March","April","May","June","July","August","September","October","November","December"
+    "Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"
 ]
 
 document.getElementById("eventTime").addEventListener('input', function(event) {
@@ -174,7 +174,7 @@ function addNoteItem(){
     const titleTextNode = document.createTextNode(noteTitle);
     const contentTextNode = document.createTextNode(noteContent);
     var nowDate = dayjs();
-    const dateTextNode = document.createTextNode(nowDate.date() + "/" + nowDate.month() + "/" + nowDate.year());
+    const dateTextNode = document.createTextNode(nowDate.date() + "/" + (nowDate.month()+1) + "/" + nowDate.year());
 
     titleNode.appendChild(titleTextNode);
     contentNode.appendChild(contentTextNode);
@@ -302,12 +302,18 @@ function addTimeItem()
 
 function createCalendarEvent()
 {
+    let eventDateObj = dayjs(eventDate.value, "MM-DD-YYYY")
+    console.log(eventDateObj);
+    let date = eventDateObj.date();
+    let month = eventDateObj.month()+1;
+    let year = eventDateObj.year();
+    let dateString = date + "-" + month + "-" + year;
     
     let newEvent = 
     {
         eventTitle: eventTitle.value,
         eventDescription: eventDesc.value,
-        eventDate: eventDate.value,
+        eventDate: dateString,
         eventStartTime: eventTime.value,
         eventLength: eventLength.value
     };
