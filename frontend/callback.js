@@ -8,10 +8,10 @@ const redirectUri = 'http://localhost:5500/frontend/callback.html';
 
 if (code && state) {
   // Get saved code verifier and state
-  const savedCodeVerifier = sessionStorage.getItem('codeVerifier');
-  // const savedCodeVerifier = "renut754nT8fc14ugCU6bqideJVWf0rdnmkoReIc1iW9AGPaLtXS4aHNYfzy8hWD"
-  const savedState = sessionStorage.getItem('state');
-  // const savedState = "ByZYt1EVIyA01HeS";
+  // const savedCodeVerifier = sessionStorage.getItem('codeVerifier');
+  const savedCodeVerifier = "renut754nT8fc14ugCU6bqideJVWf0rdnmkoReIc1iW9AGPaLtXS4aHNYfzy8hWd"
+  // const savedState = sessionStorage.getItem('state');
+  const savedState = "ByZYt1EVIyA01Hes";
   console.log(savedState);
 
   if (state === savedState) {
@@ -33,9 +33,9 @@ if (code && state) {
     code: code,
     redirect_uri: redirectUri
   });
+  console.log(`Body: ${body}`)
 
   try {
-    debugger;
     const response = await fetch(tokenEndpoint, {
       method: 'POST',
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
