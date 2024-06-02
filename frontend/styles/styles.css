@@ -95,6 +95,26 @@ ul{
     border-radius: 0.5em;
     width: 10em;
     margin: 1em;
+    transition: 0.5s
+}
+
+.hoverCalendar:hover
+{
+    transition: 0.2s;
+}
+
+.hoverCalendar:hover{
+    background-color: black;
+    color: white;
+    transition: 0.2s;
+}
+
+.weekItem:hover{
+    cursor: pointer;
+    background-color: black;
+    color:white;
+    transform: scale(1.1);
+    transition: 0.5s;
 }
 
 .weekActions{
@@ -186,6 +206,26 @@ ul{
     justify-content: space-between;
 }
 
+.eventCardHolder{
+    display:flex;
+    overflow: auto;
+}
+
+.eventCard{
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    margin: 1em;
+}
+p{
+    padding: 0.5em;
+}
+
+.eventTimes{
+    display: flex;
+    flex-direction: row;
+}
+
 .deleteHolder{
     padding: 1em;
 }
@@ -203,6 +243,10 @@ ul{
     border-radius: 0.5em;
     margin-bottom:0.5em;
 
+}
+
+.eventsTitle{
+    font-size: 1.5em;
 }
 
 .inputTime{
