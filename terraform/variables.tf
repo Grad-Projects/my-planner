@@ -58,3 +58,13 @@ variable "client_secret" {
   description = "The client secret for the identity provider."
   sensitive   = true
 }
+
+variable "callback_urls" {
+  type        = list(string)
+  description = "The callback URLs for the identity provider."
+}
+
+variable "logout_urls" {
+  type        = list(string)
+  description = "The logout URLs for the identity provider."
+}

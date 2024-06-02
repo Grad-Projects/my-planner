@@ -1,34 +1,24 @@
 const express = require('express');
+const rateLimit = require('express-rate-limit');
+const endpoints = require("./api/routes");
+const helmet = require('helmet');
+const cors = require('cors');
 const jwt = require('jsonwebtoken');
 
 const app = express();
-const router = express.Router();
 const port = 8080;
 
-// Protected route with JWT verification
-app.get('/protected', (req, res) => {
-    const token = req.headers.authorization.split(' ')[1]; // Assuming JWT token is passed in the Authorization header
-  
-    jwt.verify(token, getKey, { algorithms: ['RS256'] }, (err, decoded) => {
-      if (err) {
-        console.error('JWT validation error:', err);
-        res.status(401).json({ message: 'Unauthorized' });
-      } else {
-        const email = decoded.email; // Access custom claim
-        res.json({ email });
-      }
-    });
-})
+const fifteenMinutes = 15 * 60 * 1000;
+const apiLimiter = rateLimit({
+    windowMs: fifteenMinutes, // 15 minutes
+    max: 100, 
+    message: 'Too many requests from this IP, please try again after 15 minutes'
+  });
 
-// Mount the router on the /auth path
-app.use('/auth', router);
+app.use(cors())
+app.use(express.json());
+app.use(helmet())
 
-// Example route using app.get
-app.get('/hello', (req, res) => {
-  res.send('Hello World');
-});
+app.listen(port, () => {console.log(`Server has started on port: ${port} ✔️`)});
 
-// Start the server
-app.listen(port, () => {
-  console.log(`Server is running on port ${port}`);
-});
+app.use("/api/v1", apiLimiter, endpoints);
