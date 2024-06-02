@@ -13,7 +13,7 @@ if (hostname.includes("localhost") || hostname.includes("127.0.0.1")) {
 }
 
 if (code && state) {
-  // Get saved code verifier and state
+  // Retrieve code verifier from DB
   let response = await fetch(`http://localhost:8080/api/v1/oauth-state?state=${state}`, {
     method: 'GET',
     headers: { 'Content-Type': 'application/json' }
