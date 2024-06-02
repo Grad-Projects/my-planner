@@ -1,7 +1,7 @@
 
 let weekViewList = document.getElementById("weekListView");
 
-let daysOfWeek = ["Monday", "Tuesday", "Wednesday","Thursday","Friday","Saturday","Sunday"];
+let daysOfWeek = ["Sunday","Monday", "Tuesday", "Wednesday","Thursday","Friday","Saturday"];
 var now = dayjs();
 makeWeekList();
 
@@ -9,13 +9,15 @@ makeWeekList();
 function makeWeekList()
 {
     const start = now.day();
+    console.log("Start: " + start);
     let counter = 0;
-        for (let i = start-1; i < daysOfWeek.length + start-1; i++) 
+        for (let i = start; i < daysOfWeek.length + start; i++) 
         {
             const outerListNode = document.createElement("li");
             const listNode = document.createElement("ul");
             const innerListNodeDay = document.createElement("li");
             const innerListNodeEvents = document.createElement("li");
+            console.log(i % daysOfWeek.length);
             const textnodeDay = document.createTextNode(daysOfWeek[i % daysOfWeek.length] + " " + (now.date() + counter));
             const textnodeEvents = document.createTextNode("No events");
             innerListNodeDay.appendChild(textnodeDay);
