@@ -7,21 +7,31 @@ window.cancelAddNote = cancelAddNote;
 window.addCheckItem = addCheckItem;
 window.popUpCreateCheckListItem = popUpCreateCheckListItem;
 window.changeIcon = changeIcon;
+window.addTimeItem = addTimeItem;
 
 let noteList = document.getElementById("noteList");
 let overlay = document.getElementById("overlay");
 let notePopUp = document.getElementById("notePopUp");
 let checkListPopUp = document.getElementById("checkListPopUp")
 let checkList = document.getElementById("checkList");
+let timeList = document.getElementById("timeList");
 
 let noteTitleInput = document.getElementById("noteTitle");
 let noteContentInput = document.getElementById("noteContent");
 let checkListContent = document.getElementById("checkListDesc");
+let timePopUp = document.getElementById("timePopUp");
+let timeTrackContent = document.getElementById("timeTrackDesc");
 
 function cancelAddNote(){
+    noteTitleInput.value = "";
+    noteContentInput.value = "";
+    checkListContent.value = "";
+    timeTrackContent.value = "";
+    
     overlay.classList.add("hide");
     notePopUp.classList.add("hide");
     checkListPopUp.classList.add("hide");
+    timePopUp.classList.add("hide");
 }
 
 function deleteNoteItem(event){
@@ -51,7 +61,11 @@ function popUpCreateNote(){
 function popUpCreateCheckListItem(){
     overlay.classList.remove("hide");
     checkListPopUp.classList.remove("hide");
+}
 
+function popUpCreateTimeItem(){
+    overlay.classList.remove("hide");
+    timePopUp.classList.remove("hide");
 }
 
 function addNoteItem(){
@@ -149,6 +163,63 @@ function addCheckListItem()
         alert("PUT SOME CONTENT IN THERE BIG DAWG >:(")
     }
 }
+
+function addTimeItem()
+{
+    const timeContent = timeTrackContent.value;
+    if(timeContent != "")
+    {
+        timeTrackContent.value = "";
+        const timeListNode = document.createElement("li");
+        timeListNode.classList.add("timeItem");
+        const timeDescNode = document.createElement("p");
+        const timeDescTextNode = document.createTextNode(timeContent);
+        timeDescNode.appendChild(timeDescTextNode);
+        const inputTimeNode = document.createElement("input");
+        inputTimeNode.classList.add("inputTime");
+        inputTimeNode.setAttribute("type","number");
+
+        const selectTimeUnit = document.createElement("select");
+        selectTimeUnit.setAttribute("name","time");
+
+        const minOption = document.createElement("option");
+        minOption.setAttribute("value","Min");
+        minOption.innerText = "Min";
+        const hrOption = document.createElement("option");
+        hrOption.setAttribute("value","Hr");
+        hrOption.innerText = "Hr";
+
+        selectTimeUnit.appendChild(minOption);
+        selectTimeUnit.appendChild(hrOption);
+
+        const deleteSpan = document.createElement("span");
+        deleteSpan.setAttribute("onclick","deleteCheckItem(event)");
+        deleteSpan.classList.add("material-symbols-outlined");
+        deleteSpan.classList.add("deleteHolder");
+        deleteSpan.classList.add("checkDelete");
+        const deleteTextNode = document.createTextNode("delete");
+        deleteSpan.appendChild(deleteTextNode);
+
+        timeListNode.appendChild(timeDescNode);
+        timeListNode.appendChild(inputTimeNode);
+        timeListNode.appendChild(selectTimeUnit);
+        timeListNode.appendChild(deleteSpan);
+
+        
+        timeList.appendChild(timeListNode);
+
+        overlay.classList.add("hide");
+        timePopUp.classList.add("hide");
+
+
+    }
+    else
+    {
+        alert("PUT SOME CONTENT IN THERE BIG DAWG >:(")
+    }
+}
+
+
 
 function changeIcon(event){
     const item = event.target;

@@ -23,7 +23,6 @@
                 <li class="addCard">
                     <p id="addNote" onclick="popUpCreateNote()" class="addItem">+</p>
                 </li>
-
             </ul>
         </section>
         <section class="card">
@@ -33,28 +32,15 @@
                     <p id="addCheckItem" onclick="popUpCreateCheckListItem()" class="addItem">+</p>
                 </section>
             </ul>
-
             
         </section>
         <section class="card">
             <h2>Time Tracker</h2>
-            <ul>
+            <ul id ="timeList">
                 <li class="addCard">
-                    <p id="addTimeItem" onclick="addTimeItem()" class="addItem">+</p>
-                </li>
-                <li class="timeItem">
-                    <p>Watering plants</p>
-                    <input class="inputTime" type="text">
-                    <select name="time">
-                        <option value="Min">Min</option>
-                        <option value="Hr">Hr</option>
-                      </select>
-                    <span onclick="deleteTimeItem(event)"  class="material-symbols-outlined deleteHolder checkDelete">
-                        delete
-                    </span>
+                    <p id="addTimeItem" onclick="popUpCreateTimeItem()" class="addItem">+</p>
                 </li>
             </ul>
-            
         </section>
     </section>
 
@@ -70,6 +56,12 @@
         <label for="checkListDesc">Task description:</label>
         <input type="text" id="checkListDesc">
         <h3 onclick="addCheckListItem()" class="doneButton">Done!</h3>
+        <h3 onclick="cancelAddNote()" class="doneButton">Cancel</h3>
+    </section>
+    <section id="timePopUp" class="makeNotePopUp hide">
+        <label for="timeTrackDesc">Task description:</label>
+        <input type="text" id="timeTrackDesc">
+        <h3 onclick="addTimeItem()" class="doneButton">Done!</h3>
         <h3 onclick="cancelAddNote()" class="doneButton">Cancel</h3>
     </section>
     <div id="overlay" class="hide"></div>
