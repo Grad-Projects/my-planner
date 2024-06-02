@@ -3,10 +3,38 @@ const queries = require("./queries");
 const { getUserEmail } = require("./cognito_utils.js");
 const { allowedTables, checkUserExists } = require("./utils.js");
 
+const getOauthStateAndCodeVerifier = async (req, res) => {
+    try {
+        const { state } = req.query;
+        pool.query(queries.getCodeVerifierByState, [state], (error, results) => {
+            if (error) {
+                console.error('Error executing query', error);
+                return res.status(500).json({ error: 'Internal Server Error' });
+            }
+            if (results.rows.length === 0) {
+                return res.status(404).json({ error: 'State not found' });
+            }
+            
+            // delete state after retrieving it
+            pool.query(queries.deleteOauthStateAndCodeVerifier, [state], (error, results) => {
+                if (error) {
+                    console.error('Error deleting oauth state and code verifier', error);
+                    return res.status(500).json({ error: 'Internal Server Error' });
+                }
+            });
+
+            res.status(200).json(results.rows[0]);
+        });
+    } catch (error) {
+        console.error('Error getting oauth state and code verifier', error);
+        return res.status(500).json({ error: 'Internal Server Error' });
+    }
+};
 
 const getUserNotes = async (req, res) => {
     try {
-        const userEmail = await getUserEmail();
+        const accessToken = req.accessToken;
+        const userEmail = await getUserEmail(accessToken);
         const userExists = await checkUserExists(userEmail);
 
         if (!userExists) {
@@ -31,7 +59,8 @@ const getUserNotes = async (req, res) => {
 
 const getUserTodoItems = async (req, res) => {
     try {
-        const userEmail = await getUserEmail();
+        const accessToken = req.accessToken;
+        const userEmail = await getUserEmail(accessToken);
         const userExists = await checkUserExists(userEmail);
 
         if (!userExists) {
@@ -56,7 +85,8 @@ const getUserTodoItems = async (req, res) => {
 
 const getUserTimeTrackerItems = async (req, res) => {
     try {
-        const userEmail = await getUserEmail();
+        const accessToken = req.accessToken;
+        const userEmail = await getUserEmail(accessToken);
         const userExists = await checkUserExists(userEmail);
 
         if (!userExists) {
@@ -81,7 +111,8 @@ const getUserTimeTrackerItems = async (req, res) => {
 
 const getUserAppointments = async (req, res) => {
     try {
-        const userEmail = await getUserEmail();
+        const accessToken = req.accessToken;
+        const userEmail = await getUserEmail(accessToken);
         const userExists = await checkUserExists(userEmail);
 
         if (!userExists) {
@@ -112,7 +143,8 @@ const updateIsDeleted = async (req, res) => {
     }
 
     try {
-        const userEmail = await getUserEmail();
+        const accessToken = req.accessToken;
+        const userEmail = await getUserEmail(accessToken);
         const userExists = await checkUserExists(userEmail);
 
         if (!userExists) {
@@ -139,7 +171,8 @@ const updateTodoItemCompleted = async (req, res) => {
     const { id } = req.params;
 
     try {
-        const userEmail = await getUserEmail();
+        const accessToken = req.accessToken;
+        const userEmail = await getUserEmail(accessToken);
         const userExists = await checkUserExists(userEmail);
 
         if (!userExists) {
@@ -167,7 +200,8 @@ const updateTimeUnit = async (req, res) => {
     const { time_unit } = req.body;
 
     try {
-        const userEmail = await getUserEmail();
+        const accessToken = req.accessToken;
+        const userEmail = await getUserEmail(accessToken);
         const userExists = await checkUserExists(userEmail);
 
         if (!userExists) {
@@ -200,7 +234,8 @@ const updateTimeTrackerItemLength = async (req, res) => {
     const { length } = req.body;
 
     try {
-        const userEmail = await getUserEmail();
+        const accessToken = req.accessToken;
+        const userEmail = await getUserEmail(accessToken);
         const userExists = await checkUserExists(userEmail);
 
         if (!userExists) {
@@ -232,7 +267,8 @@ const updateTimeTrackerItemLength = async (req, res) => {
 const createAppointment = async (req, res) => {
     try {
         const { title, description, start_time, length } = req.body;
-        const userEmail = await getUserEmail();
+        const accessToken = req.accessToken;
+        const userEmail = await getUserEmail(accessToken);
         const userExists = await checkUserExists(userEmail);
 
         if (!userExists) {
@@ -260,7 +296,8 @@ const createAppointment = async (req, res) => {
 const createNote = async (req, res) => {
     try {
         const { title, content } = req.body;
-        const userEmail = await getUserEmail();
+        const accessToken = req.accessToken;
+        const userEmail = await getUserEmail(accessToken);
         const userExists = await checkUserExists(userEmail);
 
         if (!userExists) {
@@ -288,7 +325,8 @@ const createNote = async (req, res) => {
 const createTodoItem = async (req, res) => {
     try {
         const { item } = req.body;
-        const userEmail = await getUserEmail();
+        const accessToken = req.accessToken;
+        const userEmail = await getUserEmail(accessToken);
         const userExists = await checkUserExists(userEmail);
 
         if (!userExists) {
@@ -316,7 +354,8 @@ const createTodoItem = async (req, res) => {
 const createTimeTrackerItem = async (req, res) => {
     try {
         const { description, length, time_unit } = req.body;
-        const userEmail = await getUserEmail();
+        const accessToken = req.accessToken;
+        const userEmail = await getUserEmail(accessToken);
         const userExists = await checkUserExists(userEmail);
 
         if (!userExists) {
@@ -344,23 +383,36 @@ const createTimeTrackerItem = async (req, res) => {
 
 const createUser = async (req, res) => {
     try {
-        const userEmail = await getUserEmail();
+        const accessToken = req.accessToken;
+        const userEmail = await getUserEmail(accessToken);
 
         const userExists = await checkUserExists(userEmail);
 
         if (userExists) {
-            return res.status(400).json({ error: "User already exists" });
+            return res.status(200).json({ message: "User already exists", email: userEmail});
         }
 
         await pool.query(queries.createUser, [userEmail]);
-        res.status(201).json({ message: 'User created successfully' });
+        res.status(201).json({ message: 'User created successfully', email: userEmail});
     } catch (error) {
         console.error('Error creating user', error);
         return res.status(500).json({ error: 'Internal Server Error' });
     }
 };
 
+const createOauthStateAndCodeVerifier = async (req, res) => {
+    try {
+        const { state, code_verifier } = req.body;
+        pool.query(queries.createOauthStateAndCodeVerifier, [state, code_verifier]);
+        res.status(201).json({ message: 'State and code verifier created successfully' });
+    } catch (error) {
+        console.error('Error creating oauth state and code verifier', error);
+        return res.status(500).json({ error: 'Internal Server Error' });
+    }
+};
+
 module.exports = {
+    getOauthStateAndCodeVerifier,
     getUserNotes,
     getUserTodoItems,
     getUserTimeTrackerItems,
@@ -374,4 +426,5 @@ module.exports = {
     createTodoItem,
     createTimeTrackerItem,
     createUser,
+    createOauthStateAndCodeVerifier,
 };

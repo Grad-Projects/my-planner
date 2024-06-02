@@ -6,6 +6,7 @@ router.get("/notes", controller.getUserNotes);
 router.get("/todo-items", controller.getUserTodoItems);
 router.get("/time-tracker-items", controller.getUserTimeTrackerItems);
 router.get("/appointments", controller.getUserAppointments);
+router.get("/oauth-state", controller.getOauthStateAndCodeVerifier);
 
 router.patch("/remove/:table/:id", controller.updateIsDeleted);
 router.patch("/update/todo-item-completion/:id", controller.updateTodoItemCompleted);
@@ -17,5 +18,6 @@ router.post("/create/notes", controller.createNote);
 router.post("/create/time-tracker-items", controller.createTimeTrackerItem);
 router.post("/create/todo-items", controller.createTodoItem);
 router.post("/create/user", controller.createUser);
+router.post("/create/oauth-state", controller.createOauthStateAndCodeVerifier);
 
 module.exports = router;
