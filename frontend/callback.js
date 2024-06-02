@@ -16,7 +16,8 @@ if (code && state) {
   if (response.ok) {
     const data = await response.json();
     const savedCodeVerifier = data.code_verifier;
-    exchangeAuthorizationCodeForTokens(code, savedCodeVerifier);
+    await exchangeAuthorizationCodeForTokens(code, savedCodeVerifier);
+    await createUser();
     window.location.href = "/frontend/index.html"
   }
   else {
@@ -51,5 +52,15 @@ if (code && state) {
     localStorage.setItem('refreshToken', tokens.refresh_token);
   } catch (error) {
     console.error('Token exchange failed:', error);
+  }
+}
+
+async function createUser() {
+  const response = await fetch('http://localhost:8080/api/v1/create/user', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${localStorage.getItem('accessToken')}` }
+  });
+  if (!response.ok) {
+    console.error('Failed to create user');
   }
 }
