@@ -8,6 +8,10 @@ on:
 
   workflow_dispatch:
 
+permissions:
+  id-token: write
+  contents: read
+
 jobs:
   run-migrations:
     name: Run migrations scripts
@@ -17,20 +21,23 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v2
+        uses: aws-actions/configure-aws-credentials@v3
         with:
           role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
           role-session-name: github-my-planner-db-migrations
           aws-region: eu-west-1
+      
+      - name: Update
+        run: sudo apt update
+
+      - name: Install jq
+        run: sudo apt install -y jq
 
       - name: Retrieve DB password from AWS Secrets Manager
         id: get_secret
         run: |
-            echo "DB_PASSWORD=$(aws secretsmanager get-secret-value --secret-id 'arn:aws:secretsmanager:eu-west-1:774089569115:secret:rds!db-5fe13fed-0a7c-4279-968b-469b40420ba9-BxCIXL' --query SecretString --output text | jq -r .password)" >> $GITHUB_ENV
-
-      - name: Update
-        run: sudo apt update
-
+            echo "DB_PASSWORD=$(aws secretsmanager get-secret-value --secret-id 'arn:aws:secretsmanager:eu-west-1:774089569115:secret:rds!db-5fe13fed-0a7c-4279-968b-469b40420ba9-BxCIXL' --query SecretString --output text | jq -r .password)" >> "$GITHUB_ENV"
+      
       - name: install snapd
         run: sudo apt install snapd
 
@@ -38,4 +45,4 @@ jobs:
         run: sudo snap install flyway
 
       - name: Run flyway
-        run: flyway migrate -url=${{ secrets.DB_URL }} -user=${{ secrets.DB_USER }} -password=${{ secrets.DB_PASSWORD }}
+        run: flyway migrate -url=${{ secrets.DB_URL }} -user=${{ secrets.DB_USER }} -password=$DB_PASSWORD
