@@ -1,0 +1,249 @@
+@import url('https://fonts.googleapis.com/css2?family=Arvo:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+body{
+    background-color: rgb(253, 250, 251);
+    font-family: Arvo;
+}
+h1{
+    font-weight: lighter;
+}
+
+ul{
+    list-style-type: none;
+}
+
+.header{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+
+}
+
+.logoutButton{
+    background-color: black;
+    color:white;
+    font-size: 1em;
+    margin: 2em;
+    padding: 0.5em;
+    border-radius: 0.5em;
+    transition: 0.2s;
+}
+
+.logoutButton:hover{
+    cursor: pointer;
+    transform: scale(1.1);
+    transition: 0.2s;
+
+}
+
+.checkItem{
+    display: flex;
+    flex-direction: row;
+    align-items: baseline;
+    justify-content: space-between;
+    background-color: white;
+    border-radius: 0.5em;
+    margin-left: -0.9em;
+    width: 95%;
+    height: 3.5em;
+    margin-bottom: 0.5em;
+}
+
+.checkDesc{
+    padding: 0.3em;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.checkBox:hover{
+    cursor: pointer;
+}
+
+.checkActions{
+    align-self: flex-end;
+    text-align: center;
+    vertical-align: middle;
+    width: 25%;
+}
+
+
+.weekList{
+    list-style-type: none;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+
+    background-color: #ADE6E2;
+    border-radius: 0.5em;
+    width: 90em;
+    margin:auto;
+    margin-bottom: 1em;
+}
+
+
+.weekItem{
+    background-color: white;
+    border-radius: 0.5em;
+    width: 10em;
+    margin: 1em;
+}
+
+.addCard{
+    display: flex;
+    background-color: rgb(255, 255, 255);
+    border-radius: 0.5em;
+    width: 95%;
+    margin: 0.5em;
+    margin-left: -1em;
+
+    justify-content: space-around;
+}
+.addItem{
+    background-color: #E4CCFF;
+    width: 1.2em;
+    line-height: 1.2em;
+    text-align: center;
+    vertical-align: middle;
+    border-radius: 100%;
+    font-size: 1.2em;
+    transition: 0.3s;
+
+}
+
+.addItem:hover{
+    cursor: pointer;
+    transform: scale(1.5);
+    transition: 0.3s;
+}
+
+
+.deleteHolder{
+    transition:0.2s;
+}
+
+.deleteHolder:hover{
+    cursor: pointer;
+    transform: scale(1.1);
+    transition: 0.2s;
+}
+
+
+
+.plannerCards{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.card{
+    width: 30em;
+    background-color: #ADE6E2;
+    height: 30em;
+    overflow: auto;
+
+}
+
+.innerCard{
+    display: flex;
+    flex-direction: row;
+    align-items: baseline;
+    background-color: rgb(255, 255, 255);
+    border-radius: 0.5em;
+    width: 95%;
+    margin: 0.5em;
+    margin-left: -1em;
+
+    justify-content: space-between;
+}
+
+.deleteHolder{
+    padding: 1em;
+}
+
+.timeItem{
+    background-color: white;
+    padding: 0.3em;
+    width: 95%;
+    display: flex;
+    flex-direction: row;
+    margin-left: -1em;
+    justify-content: space-around;
+    align-items: baseline;
+    height: 3.5em;
+    border-radius: 0.5em;
+    margin-bottom:0.5em;
+
+}
+
+.inputTime{
+    width: 20%;
+}
+
+.makeNotePopUp{
+    background-color: #E4CCFF;
+    width: 30em;
+    height: 20em;
+
+    position: fixed;
+    left:30em;
+    bottom: 10em;
+
+    z-index: 100;
+
+    display: flex;
+    flex-direction: column;
+
+    padding: 0.5em;
+
+    border-radius: 0.5em;
+}
+
+.doneButton{
+    background-color: black;
+    color:white;
+    font-size: 1em;
+    margin: 2em;
+    padding: 0.5em;
+    border-radius: 0.5em;
+    transition: 0.2s;
+    width: 5em;
+    text-align: center;
+}
+
+.doneButton:hover{
+    cursor: pointer;
+    transform: scale(1.1);
+    transition: 0.2s;
+}
+
+h2{
+    font-weight: lighter;
+    padding: 0.5em;
+}
+h3{
+    font-weight: lighter;
+    padding: 0.5em;
+}
+
+h4{
+    font-weight: lighter;
+    padding: 0.5em;
+}
+
+#overlay {
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    background-color: gray;
+
+    top: 0em;
+    left: 0em;
+    opacity: .5;
+  }
+
+  .hide{
+    display:none;
+  }
