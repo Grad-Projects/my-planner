@@ -1,10 +1,11 @@
-const pool = require("../database_connection");
+const getPool = require("../database_connection");
 const queries = require("./queries");
 const { getUserEmail } = require("./cognito_utils.js");
 const { allowedTables, checkUserExists } = require("./utils.js");
 
 const getOauthStateAndCodeVerifier = async (req, res) => {
     try {
+        const pool = await getPool();
         const { state } = req.query;
         pool.query(queries.getCodeVerifierByState, [state], (error, results) => {
             if (error) {
@@ -34,6 +35,7 @@ const getOauthStateAndCodeVerifier = async (req, res) => {
 const getUserNotes = async (req, res) => {
     try {
         const accessToken = req.accessToken;
+        const pool = await getPool();
         const userEmail = await getUserEmail(accessToken);
         const userExists = await checkUserExists(userEmail);
 
@@ -60,6 +62,7 @@ const getUserNotes = async (req, res) => {
 const getUserTodoItems = async (req, res) => {
     try {
         const accessToken = req.accessToken;
+        const pool = await getPool();
         const userEmail = await getUserEmail(accessToken);
         const userExists = await checkUserExists(userEmail);
 
@@ -86,6 +89,7 @@ const getUserTodoItems = async (req, res) => {
 const getUserTimeTrackerItems = async (req, res) => {
     try {
         const accessToken = req.accessToken;
+        const pool = await getPool();
         const userEmail = await getUserEmail(accessToken);
         const userExists = await checkUserExists(userEmail);
 
@@ -112,6 +116,7 @@ const getUserTimeTrackerItems = async (req, res) => {
 const getUserAppointments = async (req, res) => {
     try {
         const accessToken = req.accessToken;
+        const pool = await getPool();
         const userEmail = await getUserEmail(accessToken);
         const userExists = await checkUserExists(userEmail);
 
@@ -144,6 +149,7 @@ const updateIsDeleted = async (req, res) => {
 
     try {
         const accessToken = req.accessToken;
+        const pool = await getPool();
         const userEmail = await getUserEmail(accessToken);
         const userExists = await checkUserExists(userEmail);
 
@@ -172,6 +178,7 @@ const updateTodoItemCompleted = async (req, res) => {
 
     try {
         const accessToken = req.accessToken;
+        const pool = await getPool();
         const userEmail = await getUserEmail(accessToken);
         const userExists = await checkUserExists(userEmail);
 
@@ -201,6 +208,7 @@ const updateTimeUnit = async (req, res) => {
 
     try {
         const accessToken = req.accessToken;
+        const pool = await getPool();
         const userEmail = await getUserEmail(accessToken);
         const userExists = await checkUserExists(userEmail);
 
@@ -235,6 +243,7 @@ const updateTimeTrackerItemLength = async (req, res) => {
 
     try {
         const accessToken = req.accessToken;
+        const pool = await getPool();
         const userEmail = await getUserEmail(accessToken);
         const userExists = await checkUserExists(userEmail);
 
@@ -268,6 +277,7 @@ const createAppointment = async (req, res) => {
     try {
         const { title, description, start_time, length } = req.body;
         const accessToken = req.accessToken;
+        const pool = await getPool();
         const userEmail = await getUserEmail(accessToken);
         const userExists = await checkUserExists(userEmail);
 
@@ -297,6 +307,7 @@ const createNote = async (req, res) => {
     try {
         const { title, content } = req.body;
         const accessToken = req.accessToken;
+        const pool = await getPool();
         const userEmail = await getUserEmail(accessToken);
         const userExists = await checkUserExists(userEmail);
 
@@ -326,6 +337,7 @@ const createTodoItem = async (req, res) => {
     try {
         const { item } = req.body;
         const accessToken = req.accessToken;
+        const pool = await getPool();
         const userEmail = await getUserEmail(accessToken);
         const userExists = await checkUserExists(userEmail);
 
@@ -355,6 +367,7 @@ const createTimeTrackerItem = async (req, res) => {
     try {
         const { description, length, time_unit } = req.body;
         const accessToken = req.accessToken;
+        const pool = await getPool();
         const userEmail = await getUserEmail(accessToken);
         const userExists = await checkUserExists(userEmail);
 
@@ -384,8 +397,8 @@ const createTimeTrackerItem = async (req, res) => {
 const createUser = async (req, res) => {
     try {
         const accessToken = req.accessToken;
+        const pool = await getPool();
         const userEmail = await getUserEmail(accessToken);
-
         const userExists = await checkUserExists(userEmail);
 
         if (userExists) {
@@ -402,6 +415,8 @@ const createUser = async (req, res) => {
 
 const createOauthStateAndCodeVerifier = async (req, res) => {
     try {
+        const pool = await getPool();
+
         const { state, code_verifier } = req.body;
         pool.query(queries.createOauthStateAndCodeVerifier, [state, code_verifier]);
         res.status(201).json({ message: 'State and code verifier created successfully' });
