@@ -15,7 +15,7 @@ let email;
 
 if (code && state) {
   // Retrieve code verifier from DB
-  let response = await fetch(`http://localhost:8080/api/v1/oauth-state?state=${state}`, {
+  let response = await fetch(`${backendUrl}/api/v1/oauth-state?state=${state}`, {
     method: 'GET',
     headers: { 'Content-Type': 'application/json' }
   });
@@ -63,7 +63,7 @@ if (code && state) {
 }
 
 async function createUser() {
-  const response = await fetch('http://localhost:8080/api/v1/create/user', {
+  const response = await fetch(`${backendUrl}/api/v1/create/user`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${localStorage.getItem('accessToken')}` }
   });
