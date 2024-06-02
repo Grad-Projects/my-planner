@@ -45,7 +45,7 @@ document.getElementById('loginBtn').addEventListener('click', async () => {
   console.log(state);
 
   // Store in DB
-  let response = await fetch('http://localhost:8080/api/v1/create/oauth-state', {
+  let response = await fetch(`${backendUrl}/api/v1/create/oauth-state`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ 
