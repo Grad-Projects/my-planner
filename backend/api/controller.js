@@ -389,11 +389,11 @@ const createUser = async (req, res) => {
         const userExists = await checkUserExists(userEmail);
 
         if (userExists) {
-            return res.status(200).json({ message: "User already exists" });
+            return res.status(200).json({ message: "User already exists", email: userEmail});
         }
 
         await pool.query(queries.createUser, [userEmail]);
-        res.status(201).json({ message: 'User created successfully' });
+        res.status(201).json({ message: 'User created successfully', email: userEmail});
     } catch (error) {
         console.error('Error creating user', error);
         return res.status(500).json({ error: 'Internal Server Error' });
