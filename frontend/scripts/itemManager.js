@@ -9,6 +9,9 @@ window.popUpCreateCheckListItem = popUpCreateCheckListItem;
 window.changeIcon = changeIcon;
 window.addTimeItem = addTimeItem;
 window.createCalendarEvent = createCalendarEvent;
+window.closeCalendar = closeCalendar;
+window.showCalendar = showCalendar;
+window.switchMonth = switchMonth;
 
 let noteList = document.getElementById("noteList");
 let overlay = document.getElementById("overlay");
@@ -27,6 +30,22 @@ let eventTitle = document.getElementById("eventTitle");
 let eventDesc = document.getElementById("eventDesc");
 let eventDate = document.getElementById("eventDate");
 let eventTime = document.getElementById("eventTime");
+let calendar = document.getElementById("calendar");
+let monthYear = document.getElementById("monthTitle");
+
+let calendarDayIDs = [
+    "cal1", "cal2", "cal3", "cal4", "cal5", "cal6", "cal7",
+    "cal8", "cal9", "cal10", "cal11", "cal12", "cal13",
+    "cal14", "cal15", "cal16", "cal17", "cal18", "cal19",
+    "cal20", "cal21", "cal22", "cal23", "cal24", "cal25",
+    "cal26", "cal27", "cal28", "cal29", "cal30", "cal31",
+    "cal32", "cal33", "cal34", "cal35", "cal36", "cal37",
+    "cal38", "cal39", "cal40", "cal41", "cal42"
+];
+
+let months = [
+    "January","February","March","April","May","June","July","August","September","October","November","December"
+]
 
 document.getElementById("eventTime").addEventListener('input', function(event) {
     const value = event.target.value;
@@ -38,6 +57,7 @@ document.getElementById("eventTime").addEventListener('input', function(event) {
     }
 });
 
+var currentDate;
 function cancelAddNote()
 {
     noteTitleInput.value = "";
@@ -255,6 +275,34 @@ function createCalendarEvent()
     eventPopUp.classList.add("hide");
 }
 
+function closeCalendar()
+{
+    calendar.classList.add("hide");
+    overlay.classList.add("hide");
+}
+
+function showCalendar()
+{
+    calendar.classList.remove("hide");
+    overlay.classList.remove("hide");
+    openCalendarInit();
+}
+
+function switchMonth(incr)
+{
+    if(currentDate.month() == 11 && incr > 0){
+        initializeCalendar(0,currentDate.year()+1);
+    }
+    else if(currentDate.month()==0 && incr < 0){
+        initializeCalendar(11,currentDate.year()-1);
+    }
+    else{
+        initializeCalendar((currentDate.month()+ incr),(currentDate.year()));
+    }
+
+     
+}
+
 function changeIcon(event){
     const item = event.target;
     const itemParent = item.parentElement;
@@ -266,4 +314,34 @@ function changeIcon(event){
     }else{
         item.innerText = "radio_button_unchecked";
     }
+}
+
+function openCalendarInit()
+{
+    let now = dayjs();
+    initializeCalendar(now.month(),now.year());
+}
+
+function initializeCalendar(month, year)
+{
+calendarDayIDs.forEach(element => {
+    let dayElement = document.getElementById(element);
+    dayElement.innerText = "";
+    
+});
+
+    let date = dayjs().month(month);
+    date = date.date(1);
+    date = date.year(year);
+    currentDate = date;
+    let weekDay = dayjs(date).day();
+    let numDays = dayjs(date).daysInMonth();
+    console.log(date);
+    for (let index = 1; index <= numDays; index++) {
+        let dateBox = document.getElementById("cal" + (weekDay + (index)));
+        dateBox.innerText = index;
+        
+    }
+    monthTitle.innerText = months[month] + " " + year;
+
 }

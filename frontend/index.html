@@ -15,7 +15,7 @@
     
     <ul id="weekListView" class="weekList">
     <section class="weekActions">
-        <span class="material-symbols-outlined calendar">
+        <span onclick="showCalendar()" class="material-symbols-outlined calendar">
             calendar_month
             </span>
         <p id="addEvent" onclick="popUpCreateEvent()" class="addItem">+</p>
@@ -81,6 +81,70 @@
         <h3 onclick="createCalendarEvent()" class="doneButton">Done!</h3>
         <h3 onclick="cancelAddNote()" class="doneButton">Cancel</h3>
     </section>
+    <section id="calendar" class="calendarPopUp hide">
+        <section class="calendarNav">
+            <h3 onclick="switchMonth(-1)" class="doneButton">Prev</h3>
+            <h1 id="monthTitle" class="monthHeading">Month 2024</h1>
+            <h3 onclick="switchMonth(1)" class="doneButton">Next</h3>
+        </section>
+        
+        <header class="day-of-week">
+            <p>Su</p>
+            <p>Mo</p>
+            <p>Tu</p>
+            <p>We</p>
+            <p>Th</p>
+            <p>Fr</p>
+            <p>Sa</p>
+        </header>
+          <section class="date-grid">
+            <p id="cal1"></p>
+            <p id="cal2"></p>
+            <p id="cal3"></p>
+            <p id="cal4"></p>
+            <p id="cal5"></p>
+            <p id="cal6"></p>
+            <p id="cal7"></p>
+            <p id="cal8"></p>
+            <p id="cal9"></p>
+            <p id="cal10"></p>
+            <p id="cal11"></p>
+            <p id="cal12"></p>
+            <p id="cal13"></p>
+            <p id="cal14"></p>
+            <p id="cal15"></p>
+            <p id="cal16"></p>
+            <p id="cal17"></p>
+            <p id="cal18"></p>
+            <p id="cal19"></p>
+            <p id="cal20"></p>
+            <p id="cal21"></p>
+            <p id="cal22"></p>
+            <p id="cal23"></p>
+            <p id="cal24"></p>
+            <p id="cal25"></p>
+            <p id="cal26"></p>
+            <p id="cal27"></p>
+            <p id="cal28"></p>
+            <p id="cal29"></p>
+            <p id="cal30"></p>
+            <p id="cal31"></p>
+            <p id="cal32"></p>
+            <p id="cal33"></p>
+            <p id="cal34"></p>
+            <p id="cal35"></p>
+            <p id="cal36"></p>
+            <p id="cal37"></p>
+            <p id="cal38"></p>
+            <p id="cal39"></p>
+            <p id="cal40"></p>
+            <p id="cal41"></p>
+            <p id="cal42"></p>
+          </section>
+        </ul>
+        <h3 onclick="closeCalendar()" class="doneButton">Close</h3>
+    </section>
+
     <div id="overlay" class="hide"></div>
 
 </head>
@@ -89,6 +153,7 @@
 </body>
 <script src="https://cdn.jsdelivr.net/npm/dayjs@1/dayjs.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/dayjs@1/dayjs/plugin/weekday.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/dayjs@1/dayjs/plugin/calendar.js"></script>
 <script src="scripts/weeklyListRender.js"></script>
 <script src="scripts/checkBox.js"></script>
 <script src="scripts/itemManager.js"></script>
