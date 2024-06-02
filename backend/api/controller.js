@@ -33,7 +33,8 @@ const getOauthStateAndCodeVerifier = async (req, res) => {
 
 const getUserNotes = async (req, res) => {
     try {
-        const userEmail = await getUserEmail();
+        const accessToken = req.accessToken;
+        const userEmail = await getUserEmail(accessToken);
         const userExists = await checkUserExists(userEmail);
 
         if (!userExists) {
@@ -58,7 +59,8 @@ const getUserNotes = async (req, res) => {
 
 const getUserTodoItems = async (req, res) => {
     try {
-        const userEmail = await getUserEmail();
+        const accessToken = req.accessToken;
+        const userEmail = await getUserEmail(accessToken);
         const userExists = await checkUserExists(userEmail);
 
         if (!userExists) {
@@ -83,7 +85,8 @@ const getUserTodoItems = async (req, res) => {
 
 const getUserTimeTrackerItems = async (req, res) => {
     try {
-        const userEmail = await getUserEmail();
+        const accessToken = req.accessToken;
+        const userEmail = await getUserEmail(accessToken);
         const userExists = await checkUserExists(userEmail);
 
         if (!userExists) {
@@ -108,7 +111,8 @@ const getUserTimeTrackerItems = async (req, res) => {
 
 const getUserAppointments = async (req, res) => {
     try {
-        const userEmail = await getUserEmail();
+        const accessToken = req.accessToken;
+        const userEmail = await getUserEmail(accessToken);
         const userExists = await checkUserExists(userEmail);
 
         if (!userExists) {
@@ -139,7 +143,8 @@ const updateIsDeleted = async (req, res) => {
     }
 
     try {
-        const userEmail = await getUserEmail();
+        const accessToken = req.accessToken;
+        const userEmail = await getUserEmail(accessToken);
         const userExists = await checkUserExists(userEmail);
 
         if (!userExists) {
@@ -166,7 +171,8 @@ const updateTodoItemCompleted = async (req, res) => {
     const { id } = req.params;
 
     try {
-        const userEmail = await getUserEmail();
+        const accessToken = req.accessToken;
+        const userEmail = await getUserEmail(accessToken);
         const userExists = await checkUserExists(userEmail);
 
         if (!userExists) {
@@ -194,7 +200,8 @@ const updateTimeUnit = async (req, res) => {
     const { time_unit } = req.body;
 
     try {
-        const userEmail = await getUserEmail();
+        const accessToken = req.accessToken;
+        const userEmail = await getUserEmail(accessToken);
         const userExists = await checkUserExists(userEmail);
 
         if (!userExists) {
@@ -227,7 +234,8 @@ const updateTimeTrackerItemLength = async (req, res) => {
     const { length } = req.body;
 
     try {
-        const userEmail = await getUserEmail();
+        const accessToken = req.accessToken;
+        const userEmail = await getUserEmail(accessToken);
         const userExists = await checkUserExists(userEmail);
 
         if (!userExists) {
@@ -259,7 +267,8 @@ const updateTimeTrackerItemLength = async (req, res) => {
 const createAppointment = async (req, res) => {
     try {
         const { title, description, start_time, length } = req.body;
-        const userEmail = await getUserEmail();
+        const accessToken = req.accessToken;
+        const userEmail = await getUserEmail(accessToken);
         const userExists = await checkUserExists(userEmail);
 
         if (!userExists) {
@@ -287,7 +296,8 @@ const createAppointment = async (req, res) => {
 const createNote = async (req, res) => {
     try {
         const { title, content } = req.body;
-        const userEmail = await getUserEmail();
+        const accessToken = req.accessToken;
+        const userEmail = await getUserEmail(accessToken);
         const userExists = await checkUserExists(userEmail);
 
         if (!userExists) {
@@ -315,7 +325,8 @@ const createNote = async (req, res) => {
 const createTodoItem = async (req, res) => {
     try {
         const { item } = req.body;
-        const userEmail = await getUserEmail();
+        const accessToken = req.accessToken;
+        const userEmail = await getUserEmail(accessToken);
         const userExists = await checkUserExists(userEmail);
 
         if (!userExists) {
@@ -343,7 +354,8 @@ const createTodoItem = async (req, res) => {
 const createTimeTrackerItem = async (req, res) => {
     try {
         const { description, length, time_unit } = req.body;
-        const userEmail = await getUserEmail();
+        const accessToken = req.accessToken;
+        const userEmail = await getUserEmail(accessToken);
         const userExists = await checkUserExists(userEmail);
 
         if (!userExists) {
@@ -371,7 +383,8 @@ const createTimeTrackerItem = async (req, res) => {
 
 const createUser = async (req, res) => {
     try {
-        const userEmail = await getUserEmail();
+        const accessToken = req.accessToken;
+        const userEmail = await getUserEmail(accessToken);
 
         const userExists = await checkUserExists(userEmail);
 

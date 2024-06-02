@@ -3,7 +3,6 @@ const rateLimit = require('express-rate-limit');
 const endpoints = require("./api/routes");
 const helmet = require('helmet');
 const cors = require('cors');
-const jwt = require('jsonwebtoken');
 
 const app = express();
 const port = 8080;
@@ -18,6 +17,16 @@ const apiLimiter = rateLimit({
 app.use(cors())
 app.use(express.json());
 app.use(helmet())
+
+// Middleware to extract access token from Authorization header
+app.use((req, res, next) => {
+  const authHeader = req.headers['authorization'];
+  if (authHeader && authHeader.startsWith('Bearer ')) {
+    const accessToken = authHeader.substring(7); // Remove 'Bearer ' from the beginning
+    req.accessToken = accessToken; // Attach accessToken to request object for later use
+  }
+  next();
+});
 
 app.listen(port, () => {console.log(`Server has started on port: ${port} ✔️`)});
 
