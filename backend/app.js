@@ -4,7 +4,7 @@ const endpoints = require("./api/routes");
 const helmet = require('helmet');
 const cors = require('cors');
 const app = express();
-const port = 3000;
+const port = 8080;
 
 const fifteenMinutes = 15 * 60 * 1000;
 const apiLimiter = rateLimit({
