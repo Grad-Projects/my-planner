@@ -1,10 +1,16 @@
+const hostname = window.location.hostname;
 const queryString = window.location.search;
 const urlParams = new URLSearchParams(queryString);
 const code = urlParams.get('code');
 const state = urlParams.get('state');
 const cognitoDomain = 'my-planner.auth.eu-west-1.amazoncognito.com';
 const clientId = '4k2e6jc066p8jsb6b86e90mm7j';
-const redirectUri = 'http://localhost:5500/frontend/callback.html';
+let backendUrl = 'https://myplannerapi.projects.bbdgrad.com';
+let redirectUri = 'https://myplanner.projects.bbdgrad.com/callback.html';
+if (hostname.includes("localhost") || hostname.includes("127.0.0.1")) {
+  backendUrl = 'http://localhost:8080';
+  redirectUri = 'http://localhost:5500/frontend/callback.html';
+}
 
 if (code && state) {
   // Get saved code verifier and state
