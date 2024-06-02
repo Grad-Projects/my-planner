@@ -27,7 +27,7 @@ function cancelAddNote(){
     noteContentInput.value = "";
     checkListContent.value = "";
     timeTrackContent.value = "";
-    
+
     overlay.classList.add("hide");
     notePopUp.classList.add("hide");
     checkListPopUp.classList.add("hide");
@@ -192,26 +192,22 @@ function addTimeItem()
         selectTimeUnit.appendChild(minOption);
         selectTimeUnit.appendChild(hrOption);
 
-        const deleteSpan = document.createElement("span");
-        deleteSpan.setAttribute("onclick","deleteCheckItem(event)");
-        deleteSpan.classList.add("material-symbols-outlined");
-        deleteSpan.classList.add("deleteHolder");
-        deleteSpan.classList.add("checkDelete");
-        const deleteTextNode = document.createTextNode("delete");
-        deleteSpan.appendChild(deleteTextNode);
+        const spanNode = document.createElement("span");
+        spanNode.setAttribute("onclick","deleteNoteItem(event)");
+        spanNode.classList.add("material-symbols-outlined");
+        spanNode.classList.add("deleteHolder");
+        spanNode.innerText = "delete";
 
         timeListNode.appendChild(timeDescNode);
         timeListNode.appendChild(inputTimeNode);
         timeListNode.appendChild(selectTimeUnit);
-        timeListNode.appendChild(deleteSpan);
+        timeListNode.appendChild(spanNode);
 
         
         timeList.appendChild(timeListNode);
 
         overlay.classList.add("hide");
         timePopUp.classList.add("hide");
-
-
     }
     else
     {
