@@ -14,7 +14,12 @@ const apiLimiter = rateLimit({
     message: 'Too many requests from this IP, please try again after 15 minutes'
   });
 
-app.use(cors())
+const corsOptions = {
+  origin: "https://myplanner.projects.bbdgrad.com/",
+  optionsSuccessStatus: 200
+};
+
+app.use(cors(corsOptions))
 app.use(express.json());
 app.use(helmet())
 
