@@ -58,7 +58,7 @@ function addNoteItem(){
     const titleNode = document.createElement("h3");
     const contentNode = document.createElement("p");
     const dateNode = document.createElement("h4");
-
+    
     const titleTextNode = document.createTextNode(noteTitle);
     const contentTextNode = document.createTextNode(noteContent);
     var nowDate = dayjs();
