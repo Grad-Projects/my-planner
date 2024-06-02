@@ -89,6 +89,25 @@ ul{
     margin: 1em;
 }
 
+.weekActions{
+    display:flex;
+    flex-direction: row;
+    align-items: center;
+    column-gap: 1em;
+}
+
+.calendar{
+    text-align: center;
+    vertical-align: middle;
+    transition: 0.5s;
+}
+
+.calendar:hover{
+    cursor: pointer;
+    transform: scale(1.2);
+    transition: 0.5s;
+}
+
 .addCard{
     display: flex;
     background-color: rgb(255, 255, 255);
@@ -185,7 +204,6 @@ ul{
 .makeNotePopUp{
     background-color: #E4CCFF;
     width: 30em;
-    height: 20em;
 
     position: fixed;
     left:30em;
