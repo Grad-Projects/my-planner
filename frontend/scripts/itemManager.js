@@ -38,6 +38,7 @@ const titleEventsPage = document.getElementById("titleEventsPage");
 let counter = 0;
 let tempInt = 0;
 let weekViewList = document.getElementById("weekListView");
+let eventListCard = document.getElementById("eventListCard");
 
 let daysOfWeek = ["Sunday","Monday", "Tuesday", "Wednesday","Thursday","Friday","Saturday"];
 var now = dayjs();
@@ -92,6 +93,36 @@ let testEvents = [
 
     }
 ];
+
+let events = [
+   { 
+    title: "Team Meeting",
+    description: "Discuss project updates and upcoming tasks.",
+    start_time: "2024-06-15T10:00:00Z",
+    length: 6
+    },
+    { 
+    title: "Team Meeting 2",
+    description: "Discuss project updates and upcoming tasks.",
+    start_time: "2024-07-15T10:00:00Z",
+    length: 6
+    },
+    { 
+    title: "Team Meeting 3",
+    description: "Discuss project updates and upcoming tasks.",
+    start_time: "2024-08-15T10:00:00Z",
+    length: 6
+    },
+    {title: "Today event",
+    description: "show up pls",
+    start_time: new Date(),
+    length: 2
+    }
+]
+
+//Set a checked object
+//updating time tracker time
+//"deleting"
 
 makeWeekList();
 
@@ -162,8 +193,17 @@ function popUpShowEvents(date,month,year)
     console.log("DATE: " + date + " MONTH: " + months[month-1] + " YEAR: " + year);
 
     //need to get date from object clicked on
+    let todaysEvents = [];
 
     titleEventsPage.innerText = "Events for: " + date + " " +  months[month-1] +  " " + year;
+    events.forEach(element => {
+        const jsdate = new Date(element.start_time);
+        if((jsdate.getUTCDate() == date) && (jsdate.getUTCMonth()+1 == month) && (jsdate.getUTCFullYear() == year))
+            {
+                todaysEvents.push(element);
+            }
+    });
+    displayEvents(todaysEvents);
 }
 
 function closeEvents()
@@ -475,5 +515,70 @@ function makeWeekList()
         }
 }
 
+function displayEvents(eventsList)
+{
+    
+    //empty the display
+    while((eventListCard.getElementsByTagName("li")).length > 0) {
+	    eventListCard.removeChild(eventListCard.getElementsByTagName("li")[0]);
+    }
+    eventsList.forEach(element => {
+        const date = new Date(element.start_time);
 
+        const listNode = document.createElement("li");
+        listNode.classList.add("eventCard");
+
+        const titleNode = document.createElement("h3");
+        titleNode.classList.add("eventCardItem");
+        const titleText = document.createTextNode(element.title);
+        titleNode.appendChild(titleText);
+
+        const articleNode = document.createElement("article");
+        articleNode.classList.add("eventCardItem");
+        const pNode = document.createElement("p");
+        const descNode = document.createTextNode(element.description);
+        pNode.appendChild(descNode);
+        articleNode.appendChild(pNode);
+
+        const eventSectionNode = document.createElement("section");
+        eventSectionNode.classList.add("eventTimes");
+        eventSectionNode.classList.add("eventCardItem");
+
+        const dateNode = document.createElement("h3");
+        const dateTextNode = document.createTextNode(date.getUTCDate() + "/" + months[date.getUTCMonth()] + "/" + date.getUTCFullYear());
+        dateNode.appendChild(dateTextNode);
+
+        const timeNode = document.createElement("h3");
+        const timeTextNode = document.createTextNode(date.getUTCHours() + ":00");
+        timeNode.appendChild(timeTextNode);
+
+        const lengthNode = document.createElement("h3");
+        const lengthTextNode = document.createTextNode(element.length + " hours");
+        lengthNode.appendChild(lengthTextNode);
+
+        eventSectionNode.appendChild(dateNode);
+        eventSectionNode.appendChild(timeNode);
+        eventSectionNode.appendChild(lengthNode);
+
+        listNode.appendChild(titleNode);
+        listNode.appendChild(articleNode);
+        listNode.appendChild(eventSectionNode);
+
+        eventListCard.appendChild(listNode);
+    });
+}
+
+// "title": "Team Meeting",
+//   "description": "Discuss project updates and upcoming tasks.",
+//   "start_time": "2024-06-15T10:00:00Z",
+//   "length": 6
+
+
+
+//DISPLAY NOTES
+//GIVE ME A JSON OBJECT
+//NOTE TITLE
+//NOTE DESCRIPTION
+
+//GIVE ME A LIST OF ALL ITEMS FOR LOGGED IN USER 
 
