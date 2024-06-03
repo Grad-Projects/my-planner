@@ -42,7 +42,6 @@ async function generateCodeVerifierAndChallenge() {
 document.getElementById('loginBtn').addEventListener('click', async () => {
   const { codeVerifier, codeChallenge } = await generateCodeVerifierAndChallenge();
   const state = generateRandomString(16);
-  console.log(state);
 
   // Store in DB
   let response = await fetch(`${backendUrl}/api/v1/create/oauth-state`, {
@@ -57,7 +56,6 @@ document.getElementById('loginBtn').addEventListener('click', async () => {
   if (response.ok) {
     // Redirect to cognito authentication
     const authUrl = `https://${cognitoDomain}/oauth2/authorize?response_type=code&client_id=${clientId}&redirect_uri=${redirectUri}&scope=openid+email+profile+aws.cognito.signin.user.admin&code_challenge_method=S256&code_challenge=${codeChallenge}&state=${state}`;
-    console.log(authUrl);
     window.location.href = authUrl;
   }
   else {
