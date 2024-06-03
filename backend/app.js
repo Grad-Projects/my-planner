@@ -15,13 +15,13 @@ const apiLimiter = rateLimit({
   });
 
 const corsOptions = {
-  origin: "https://myplanner.projects.bbdgrad.com/",
+  origin: ["https://myplanner.projects.bbdgrad.com", "http://localhost:5500", "http://127.0.0.1:5500"],
   optionsSuccessStatus: 200
 };
 
-app.use(cors(corsOptions))
+app.use(cors(corsOptions));
 app.use(express.json());
-app.use(helmet())
+app.use(helmet());
 
 // Middleware to extract access token from Authorization header
 app.use((req, res, next) => {
