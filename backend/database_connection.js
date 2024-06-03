@@ -29,9 +29,9 @@ async function createPool() {
         user: user,
         host: host,
         database: dbName,
-        password: environment == 'prod' ? await getSecret('rds!db-5fe13fed-0a7c-4279-968b-469b40420ba9') : password,
+        password: environment == 'prod' ? (await getSecret('rds!db-5fe13fed-0a7c-4279-968b-469b40420ba9')).password : password,
         port: 5432,
-        ssl: {
+        ssl: environment != 'prod' ? false : {
             rejectUnauthorized: false,
         }
     });
