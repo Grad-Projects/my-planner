@@ -1,10 +1,12 @@
-const pool = require("../database_connection");
+const getPool = require("../database_connection");
 const queries = require("./queries");
 
 const allowedTables = ["Notes", "TodoItems", "TimeTrackerItems", "Appointments"];
 
 
 const checkUserExists = async (userEmail) => {
+    const pool = await getPool();
+    
     return new Promise((resolve, reject) => {
         pool.query(queries.getUser, [userEmail], (error, results) => {
             if (error) {
