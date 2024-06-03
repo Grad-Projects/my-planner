@@ -128,3 +128,10 @@ dist
 .yarn/build-state.yml
 .yarn/install-state.gz
 .pnp.*
+
+# docker
+.dockerignore
+docker-compose.yaml
+Dockerfile
+server.cert
+server.key

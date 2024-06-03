@@ -3,6 +3,9 @@ const rateLimit = require('express-rate-limit');
 const endpoints = require("./api/routes");
 const helmet = require('helmet');
 const cors = require('cors');
+const getPool = require("../database_connection");
+const fs = require('fs');
+const https = require('https');
 
 const app = express();
 const port = 8080;
@@ -15,7 +18,7 @@ const apiLimiter = rateLimit({
   });
 
 const corsOptions = {
-  origin: ["https://myplanner.projects.bbdgrad.com", "http://localhost:5500", "http://127.0.0.1:5500"],
+  origin: ["https://myplanner.projects.bbdgrad.com", "http://localhost:5500", "http://127.0.0.1:5500", "https://localhost:5500", "https://127.0.0.1:5500"],
   optionsSuccessStatus: 200
 };
 
@@ -33,6 +36,34 @@ app.use((req, res, next) => {
   next();
 });
 
-app.listen(port, () => {console.log(`Server has started on port: ${port} ✔️`)});
+// Health check endpoint
+app.get('/health', async (req, res) => {
+  const pool = await getPool();
+
+  try {
+    // Attempt to connect to the database
+    await pool.query('SELECT 1');
+    res.status(200).json({ status: 'Database is up' });
+  } catch (error) {
+    console.error('Error connecting to the database:', error);
+    res.status(500).json({ error: 'Database connection error' });
+  } finally {
+    // Close the database connection
+    await pool.end();
+  }
+});
+
+const serverOptions = {
+  key: fs.readFileSync('server.key'),
+  cert: fs.readFileSync('server.cert')
+};
+
+if (process.env.ENVIRONMENT !== 'prod') {
+  https.createServer(serverOptions, app).listen(port, () => {
+    console.log(`Server has started on port: ${port} ✔️`);
+  });
+} else {
+  app.listen(port, () => {console.log(`Server has started on port: ${port} ✔️`)});
+}
 
 app.use("/api/v1", apiLimiter, endpoints);
