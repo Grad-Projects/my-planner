@@ -9,6 +9,11 @@ resource "aws_iam_role" "eb_instance_role" {
   assume_role_policy = data.aws_iam_policy_document.ec2_assume_role.json
 }
 
+resource "aws_iam_role_policy_attachment" "eb_secrets_policy_attachment" {
+  policy_arn = "arn:aws:iam::aws:policy/SecretsManagerReadWrite"
+  role       = aws_iam_role.eb_instance_role.name
+}
+
 resource "aws_iam_role_policy_attachment" "eb_rds_policy_attachment" {
   policy_arn = "arn:aws:iam::aws:policy/AmazonRDSFullAccess"
   role       = aws_iam_role.eb_instance_role.name
