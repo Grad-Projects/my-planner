@@ -1,8 +1,13 @@
 @import url('https://fonts.googleapis.com/css2?family=Arvo:ital,wght@0,400;0,700;1,400;1,700&display=swap');
-body{
-    background-color: rgb(253, 250, 251);
+
+* {
     font-family: Arvo;
 }
+
+body{
+    background-color: rgb(253, 250, 251);
+}
+
 h1{
     font-weight: lighter;
 }
@@ -24,8 +29,6 @@ ul{
     margin: 0.3em;
 }
 
-
-
 .logoutButton{
     background-color: black;
     color:white;
@@ -41,6 +44,60 @@ ul{
     transform: scale(1.1);
     transition: 0.2s;
 
+}
+
+.blue {
+    background-color: #ADE6E2;
+}
+
+#loginSection {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2em;
+    height: 100vh;
+}
+
+#loginTitle {
+    font-size: 2.5em;
+    color: white;
+    margin: 0;
+    text-transform: uppercase;
+}
+
+#loginBtn {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    font-size: .8em;
+    padding: .6em 1em;
+    border-radius: 2em;
+    transition: 0.2s;
+    cursor: pointer;
+    text-transform: uppercase;
+    background-color: white;
+    border-color: #E4CCFF;
+}
+
+#loginBtn:hover {
+    background-color: lightgray;
+    transition: 0.2s;
+}
+
+.logo {
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+#plannerLogo {
+    min-width: 10em;
+    border: .2em solid #E4CCFF;
+}
+
+#googleLogo {
+    max-width: 2em;
+    margin: 0;
 }
 
 .checkItem{
