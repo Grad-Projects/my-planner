@@ -18,14 +18,18 @@ async function getSecret(secretName) {
     });
 }
 
-async function createPool() {
-    const secret = await getSecret('rds!db-5fe13fed-0a7c-4279-968b-469b40420ba9'); 
+const environment = process.env.ENVIRONMENT || 'dev';
+const user = process.env.DATABASE_USERNAME;
+const password =  process.env.DATABASE_PASSWORD;
+const host =  process.env.DATABASE_HOST;
+const dbName =  process.env.DATABASE_NAME;
 
+async function createPool() {
     const pool = new Pool({
-        user: "myplanneradmin",
-        host: "my-planner-db.chylgcp0m93v.eu-west-1.rds.amazonaws.com",
-        database: "PlannerDB",
-        password: secret.password,
+        user: user,
+        host: host,
+        database: dbName,
+        password: environment == 'prod' ? await getSecret('rds!db-5fe13fed-0a7c-4279-968b-469b40420ba9') : password,
         port: 5432,
         ssl: {
             rejectUnauthorized: false,
@@ -36,4 +40,3 @@ async function createPool() {
 }
 
 module.exports = createPool;
-//TODO: figure out how to use env variables without getting errors?
