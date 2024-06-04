@@ -2,10 +2,10 @@ name: Deploy Docker Backend
 
 on:
   push:
-    # branches:
-    #   - main
-    # paths:
-    #   - 'backend/**'
+    branches:
+      - main
+    paths:
+      - 'backend/**'
   workflow_dispatch:
 
 permissions:
