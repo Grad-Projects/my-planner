@@ -2,10 +2,10 @@ name: Deploy Docker Database
 
 on:
   push:
-    branches:
-      - main
-    paths:
-      - 'backend/Testing/Flyway_Combined_DBsetup.sql'
+    # branches:
+    #   - main
+    # paths:
+    #   - 'backend/Testing/Flyway_Combined_DBsetup.sql'
   workflow_dispatch:
 
 permissions:
