@@ -40,9 +40,9 @@ jobs:
         working-directory: backend
 
       - name: Tag docker image
-        run: docker tag be:latest public.ecr.aws/k0y9y3l8/my-planner-be:latest
+        run: docker tag be:latest public.ecr.aws/k0y9y3l8/my-planner-backend:latest
         working-directory: backend
 
       - name: Push docker image
-        run: docker push public.ecr.aws/k0y9y3l8/my-planner-be:latest
+        run: docker push public.ecr.aws/k0y9y3l8/my-planner-backend:latest
         working-directory: backend      
