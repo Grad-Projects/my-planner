@@ -3,7 +3,7 @@ const rateLimit = require('express-rate-limit');
 const endpoints = require("./api/routes");
 const helmet = require('helmet');
 const cors = require('cors');
-const getPool = require("../database_connection");
+const getPool = require("./database_connection.js");
 const fs = require('fs');
 const https = require('https');
 
