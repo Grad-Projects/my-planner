@@ -13,6 +13,15 @@ window.closeCalendar = closeCalendar;
 window.showCalendar = showCalendar;
 window.switchMonth = switchMonth;
 
+const hostname = window.location.hostname;
+const clientId = '4k2e6jc066p8jsb6b86e90mm7j';
+let backendUrl = 'https://myplannerapi.projects.bbdgrad.com';
+let redirectUri = 'https://myplanner.projects.bbdgrad.com/callback.html';
+if (hostname.includes("localhost") || hostname.includes("127.0.0.1")) {
+  backendUrl = 'http://localhost:8080';
+}
+
+
 let noteList = document.getElementById("noteList");
 let overlay = document.getElementById("overlay");
 let notePopUp = document.getElementById("notePopUp");
@@ -212,7 +221,7 @@ function closeEvents()
     eventListPopUp.classList.add("hide");
 }
 
-function addNoteItem(){
+function addNoteItem(noteObj){
     const noteTitle = noteTitleInput.value;
     const noteContent = noteContentInput.value;
 
@@ -260,7 +269,7 @@ function addNoteItem(){
 
 }
 
-function addCheckListItem()
+function addCheckListItem(checkObj)
 {
     const checkContent = checkListContent.value;
     if(checkContent != "")
@@ -308,7 +317,7 @@ function addCheckListItem()
     }
 }
 
-function addTimeItem()
+function addTimeItem(timeObj) //createsAnHTMLElementForTimeItem
 {
     const timeContent = timeTrackContent.value;
     if(timeContent != "")
@@ -568,10 +577,105 @@ function displayEvents(eventsList)
     });
 }
 
-// "title": "Team Meeting",
-//   "description": "Discuss project updates and upcoming tasks.",
-//   "start_time": "2024-06-15T10:00:00Z",
-//   "length": 6
+function newNoteItem()
+{
+    //will make a new note item and call postNewNoteToDB()
+}
+
+function newCheckListItem()
+{
+    //will make a new note item and call postNewCheckListItemToDB()
+}
+
+function newTimeTrackItem()
+{
+    //will make a new time track item and call postNewTimeTrackItemToDB()
+}
+
+function newEventItem()
+{
+    //will make a new event item and call postNewEventToDB()
+}
+
+function postNewNoteToDB(noteObject)
+{
+    //posts the note object to the db
+}
+
+function postNewCheckListItemToDB(checkListObject)
+{
+    //posts the check list item to db
+}
+
+function postNewTimeTrackItemToDB(timeTrackObject)
+{
+    //posts the time track object to db
+}
+
+function postNewEventToDB(eventObject)
+{
+    //posts the event object to db
+}
+
+function markNoteDeleted(noteObject)
+{
+    //marks a note as deleted in db
+}
+
+function markCheckItemDeleted(checkItemObject)
+{
+    //marks a check item as deleted in db
+}
+
+function markTimeTrackDeleted(timeTrackObject)
+{
+    //marks a time track item as deleted in db
+}
+
+function markEventDeleted(eventObject)
+{
+    //marks an event as deleted in db
+}
+
+function updateCheckListItem(checkListObject)
+{
+    //makes update to checklist item in db
+}
+
+function updateTimeTrackItem(timeTrackObject)
+{
+    //makes update to time track item in db
+}
+
+function getNotesFromDB()
+{
+    let notes = {};
+
+
+    return notes;
+}
+
+function getCheckItemsFromDB()
+{
+    let checkList = {};
+
+    return checkList;
+}
+
+function getTimeTrackFromDB()
+{
+    let timeTracks = {};
+
+    return timeTracks;
+
+}
+
+function getEventsFromDB()
+{
+    let events = {};
+    
+    return events;
+}
 
 
 
