@@ -1,0 +1,19 @@
+####DATABASE####
+# Use the official postgres image from Docker Hub
+FROM postgres:latest
+
+# Arguments
+ARG LOCAL_DATABASE_USERNAME
+ARG LOCAL_DATABASE_PASSWORD
+ARG LOCAL_DATABASE_NAME
+
+# Set environment variables
+ENV POSTGRES_USER=$LOCAL_DATABASE_USERNAME
+ENV POSTGRES_PASSWORD=$LOCAL_DATABASE_PASSWORD
+ENV POSTGRES_DB=$LOCAL_DATABASE_NAME
+
+# Attach init volume
+VOLUME /docker-entrypoint-initdb.d
+
+# Expose the port the app runs on
+EXPOSE 5432

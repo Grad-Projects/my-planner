@@ -1,0 +1,48 @@
+name: Deploy Docker Backend
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'backend/**'
+  workflow_dispatch:
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
+          role-session-name: github-my-planner-build
+          aws-region: eu-west-1
+
+      - name: Login to ECR
+        run: aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin public.ecr.aws
+
+      - name: Create SSL cert files
+        run: | 
+          echo -e '${{ secrets.LOCAL_CERT }}' > server.cert
+          echo -e '${{ secrets.LOCAL_KEY }}' > server.key
+        working-directory: backend
+
+      - name: Build docker image
+        run: docker build -f Dockerfile.be --build-arg LOCAL_DATABASE_USERNAME=${{ secrets.LOCAL_DATABASE_USERNAME }} --build-arg LOCAL_DATABASE_PASSWORD=${{ secrets.LOCAL_DATABASE_PASSWORD }} --build-arg LOCAL_DATABASE_NAME=${{ secrets.LOCAL_DATABASE_NAME }} -t be .
+        working-directory: backend
+
+      - name: Tag docker image
+        run: docker tag be:latest public.ecr.aws/k0y9y3l8/my-planner-backend:latest
+        working-directory: backend
+
+      - name: Push docker image
+        run: docker push public.ecr.aws/k0y9y3l8/my-planner-backend:latest
+        working-directory: backend      
