@@ -132,6 +132,5 @@ dist
 # docker
 .dockerignore
 docker-compose.yaml
-Dockerfile
 server.cert
 server.key
