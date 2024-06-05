@@ -18,7 +18,7 @@ window.switchMonth = switchMonth;
 const hostname = window.location.hostname;
 let backendUrl = 'https://myplannerapi.projects.bbdgrad.com';
 if (hostname.includes("localhost") || hostname.includes("127.0.0.1")) {
-  backendUrl = 'http://localhost:8080';
+  backendUrl = 'https://localhost:8080';
 }
 
 const baseUrl = `${backendUrl}/api/v1`;
@@ -507,81 +507,6 @@ function makeWeekList()
             counter++;
         }
 }
-
-
-// function newNoteItem(noteTitle, noteContent)
-// {
-//     //will make a new note item and call postNewNoteToDB()
-//     let newNote = {
-//         title : noteTitle,
-//         content : noteContent
-//     };
-
-//     postNewNoteToDB(newNote);
-// }
-
-// function newCheckListItem(todoContent)
-// {
-//     //will make a new note item and call postNewCheckListItemToDB()
-//     newcheckListItem = {
-//         item : todoContent
-//     }
-
-//     postNewCheckListItemToDB(newcheckListItem);
-// }
-
-// function newTimeTrackItem(timeTrackDescription)
-// {
-//     let newtimeTrackItem = {
-//         description : timeTrackDescription
-//     }
-//     //will make a new time track item and call postNewTimeTrackItemToDB()
-//     postNewTimeTrackItemToDB(newtimeTrackItem);
-// }
-
-
-// function newEventItem(eventTitle, eventDescription, eventStartTime, eventLength)
-// {
-//     let newEvent = {
-//         title : eventTitle,
-//         description : eventDescription,
-//         start_time : eventStartTime,
-//         length : eventLength
-//     }
-//     //will make a new event item and call postNewEventToDB()
-// }
-
-// function getNotesFromDB()
-// {
-//     let notes = {};
-
-
-//     //
-//     //return notes;
-//     return notesTest;
-// }
-
-// function getCheckItemsFromDB()
-// {
-//     let checkList = {};
-
-//     return checkList;
-// }
-
-// function getTimeTrackFromDB()
-// {
-//     let timeTracks = {};
-
-//     return timeTracks;
-
-// }
-
-// function getEventsFromDB()
-// {
-//     let events = {};
-    
-//     return events;
-//}
 
 function displayNotes(notesList)
 {
