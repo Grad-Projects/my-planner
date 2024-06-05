@@ -27,9 +27,9 @@
         <section class="card">
             <h2>Notes</h2>
             <ul id="noteList">
-                <li class="addCard">
+                <section class="addCard">
                     <p id="addNote" onclick="popUpCreateNote()" class="addItem">+</p>
-                </li>
+                </section>
             </ul>
         </section>
         <section class="card">
@@ -44,9 +44,9 @@
         <section class="card">
             <h2>Time Tracker</h2>
             <ul id ="timeList">
-                <li class="addCard">
+                <section class="addCard">
                     <p id="addTimeItem" onclick="popUpCreateTimeItem()" class="addItem">+</p>
-                </li>
+                </section>
             </ul>
         </section>
     </section>
@@ -90,6 +90,7 @@
             <h3 onclick="switchMonth(-1)" class="doneButton">Prev</h3>
             <h1 id="monthTitle" class="monthHeading">Month 2024</h1>
             <h3 onclick="switchMonth(1)" class="doneButton">Next</h3>
+            <h3 onclick="closeCalendar()" class="doneButton">Close</h3>
         </section>
         
         <header class="day-of-week">
@@ -146,65 +147,10 @@
             <p id="cal42"></p>
           </section>
         </ul>
-        <h3 onclick="closeCalendar()" class="doneButton">Close</h3>
     </section>
     <section id="eventListPopUp" class="calendarPopUp hide">
         <h3 class="eventsTitle" id="titleEventsPage">Events for 4 June</h3>
-        <ul class="eventCardHolder">
-            <li class="eventCard">
-                <h3 class="eventCardItem">Event Title</h3>
-                <article class="eventCardItem"> <p>Event Description</p></article>
-                <section class="eventTimes eventCardItem">
-                <h3>Event Date</h3>
-                <h3>Event time</h3>
-                <h3>Event length</h3>
-                </section>
-            </li>
-            <li class="eventCard">
-                <h3 class="eventCardItem">Event Title</h3>
-                <article class="eventCardItem"> <p>Event Description</p></article>
-                <section class="eventTimes eventCardItem">
-                <h3>Event Date</h3>
-                <h3>Event time</h3>
-                <h3>Event length</h3>
-                </section>
-            </li>
-            <li class="eventCard">
-                <h3 class="eventCardItem">Event Title</h3>
-                <article class="eventCardItem"> <p>Event Description</p></article>
-                <section class="eventTimes eventCardItem">
-                <h3>Event Date</h3>
-                <h3>Event time</h3>
-                <h3>Event length</h3>
-                </section>
-            </li>
-            <li class="eventCard">
-                <h3 class="eventCardItem">Event Title</h3>
-                <article class="eventCardItem"> <p>Event Description</p></article>
-                <section class="eventTimes eventCardItem">
-                <h3>Event Date</h3>
-                <h3>Event time</h3>
-                <h3>Event length</h3>
-                </section>
-            </li>
-            <li class="eventCard">
-                <h3 class="eventCardItem">Event Title</h3>
-                <article class="eventCardItem"> <p>Event Description</p></article>
-                <section class="eventTimes eventCardItem">
-                <h3>Event Date</h3>
-                <h3>Event time</h3>
-                <h3>Event length</h3>
-                </section>
-            </li>
-            <li class="eventCard">
-                <h3 class="eventCardItem">Event Title</h3>
-                <article class="eventCardItem"> <p>Event Description</p></article>
-                <section class="eventTimes eventCardItem">
-                <h3>Event Date</h3>
-                <h3>Event time</h3>
-                <h3>Event length</h3>
-                </section>
-            </li>
+        <ul class="eventCardHolder" id="eventListCard">
         </ul>
         <h3 onclick="closeEvents()" class="doneButton">Close</h3>
     </section>

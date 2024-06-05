@@ -101,15 +101,13 @@ window.closeCalendar = closeCalendar;
 window.showCalendar = showCalendar;
 window.switchMonth = switchMonth;
 
-
 const hostname = window.location.hostname;
 const clientId = '4k2e6jc066p8jsb6b86e90mm7j';
 let backendUrl = 'https://myplannerapi.projects.bbdgrad.com';
 let redirectUri = 'https://myplanner.projects.bbdgrad.com/callback.html';
 if (hostname.includes("localhost") || hostname.includes("127.0.0.1")) {
-  backendUrl = 'https://localhost:8080';
+  backendUrl = 'http://localhost:8080';
 }
-const apiHelper = new ApiHelper(backendUrl+'/api/v1');
 
 
 let noteList = document.getElementById("noteList");
@@ -137,6 +135,7 @@ const titleEventsPage = document.getElementById("titleEventsPage");
 let counter = 0;
 let tempInt = 0;
 let weekViewList = document.getElementById("weekListView");
+let eventListCard = document.getElementById("eventListCard");
 
 let daysOfWeek = ["Sunday","Monday", "Tuesday", "Wednesday","Thursday","Friday","Saturday"];
 var now = dayjs();
@@ -165,6 +164,10 @@ document.getElementById("eventTime").addEventListener('input', function(event) {
     }
 });
 
+
+
+
+
 let testEvents = [
     {
         eventTitle: "event1",
@@ -191,6 +194,106 @@ let testEvents = [
 
     }
 ];
+
+let events = [
+   { 
+    title: "Team Meeting",
+    description: "Discuss project updates and upcoming tasks.",
+    start_time: "2024-06-15T10:00:00Z",
+    length: 6
+    },
+    { 
+    title: "Team Meeting 2",
+    description: "Discuss project updates and upcoming tasks.",
+    start_time: "2024-07-15T10:00:00Z",
+    length: 6
+    },
+    { 
+    title: "Team Meeting 3",
+    description: "Discuss project updates and upcoming tasks.",
+    start_time: "2024-08-15T10:00:00Z",
+    length: 6
+    },
+    {title: "Today event",
+    description: "show up pls",
+    start_time: new Date(),
+    length: 2
+    }
+]
+
+let notesTest = [
+    {
+        title: "Project Notes 1",
+        content: "Discussed progress on current tasks.",
+        is_deleted : 0
+    },
+    {
+        title: "Bug bug bug",
+        content: "Discussed progress on current tasks",
+        is_deleted : 0
+    },
+    {
+        title: "doggie",
+        content: "Discussed progress on current tasks",
+        is_deleted : 0
+    },
+    {
+        title: "husky",
+        content: "i love my dog",
+        is_deleted : 0
+    }
+]
+
+let checkTest = [
+    {
+        item: "Finish report",
+        is_deleted : 0
+    },
+    {
+        item: "Water te plans",
+        is_deleted : 0
+    },
+    {
+        item: "Pet le dog",
+        is_deleted : 0
+    }
+]
+
+let timeTest = [
+    {
+        description: "Work on documentation",
+        length: 120,
+        time_unit: 1,
+        is_deleted : 0
+    },
+    {
+        description: "bestTest",
+        length: 11,
+        time_unit: 3,
+        is_deleted : 0
+    },
+    {
+        description: "petting doggo",
+        length: 100,
+        time_unit: 2,
+        is_deleted : 0
+    }
+
+]
+
+function displayPageItems()
+{
+    displayNotes(notesTest);
+    displayCheckItems(checkTest);
+    displayTimeTrackItems(timeTest);
+    console.log("wtf");
+}
+
+displayPageItems();
+
+//Set a checked object
+//updating time tracker time
+//"deleting"
 
 makeWeekList();
 
@@ -261,8 +364,17 @@ function popUpShowEvents(date,month,year)
     console.log("DATE: " + date + " MONTH: " + months[month-1] + " YEAR: " + year);
 
     //need to get date from object clicked on
+    let todaysEvents = [];
 
     titleEventsPage.innerText = "Events for: " + date + " " +  months[month-1] +  " " + year;
+    events.forEach(element => {
+        const jsdate = new Date(element.start_time);
+        if((jsdate.getUTCDate() == date) && (jsdate.getUTCMonth()+1 == month) && (jsdate.getUTCFullYear() == year))
+            {
+                todaysEvents.push(element);
+            }
+    });
+    displayEvents(todaysEvents);
 }
 
 function closeEvents()
@@ -279,38 +391,10 @@ function addNoteItem(){
     {
     noteTitleInput.value = "";
     noteContentInput.value = "";
+    newNoteItem(noteTitle, noteContent);
     overlay.classList.add("hide");
     notePopUp.classList.add("hide");
-
-    const listNode = document.createElement("li");
-    listNode.classList.add("innerCard");
-    const sectionNode = document.createElement("section")
-    const titleNode = document.createElement("h3");
-    const contentNode = document.createElement("p");
-    const dateNode = document.createElement("h4");
-    
-    const titleTextNode = document.createTextNode(noteTitle);
-    const contentTextNode = document.createTextNode(noteContent);
-    var nowDate = dayjs();
-    const dateTextNode = document.createTextNode(nowDate.date() + "/" + (nowDate.month()+1) + "/" + nowDate.year());
-
-    titleNode.appendChild(titleTextNode);
-    contentNode.appendChild(contentTextNode);
-    dateNode.appendChild(dateTextNode);
-
-    sectionNode.appendChild(titleNode);
-    sectionNode.appendChild(contentNode);
-    sectionNode.appendChild(dateNode);
-
-    listNode.appendChild(sectionNode);
-
-    const spanNode = document.createElement("span");
-    spanNode.setAttribute("onclick","deleteNoteItem(event)");
-    spanNode.classList.add("material-symbols-outlined");
-    spanNode.classList.add("deleteHolder");
-    spanNode.innerText = "delete";
-    listNode.appendChild(spanNode);
-    noteList.appendChild(listNode);
+    displayNotes(getNotesFromDB());
     }
     else
     {
@@ -325,41 +409,11 @@ function addCheckListItem()
     if(checkContent != "")
     {
         checkListContent.value = "";
-        const listNode = document.createElement("li");
-        listNode.classList.add("checkItem");
-        //PERHAPS: Here when we create the item in the db we make the ID of the li element the id in the db
-
-        const pNode = document.createElement("p");
-        const checkTextNode = document.createTextNode(checkContent);
-        pNode.appendChild(checkTextNode);
-
-        const sectionNode = document.createElement("section");
-        sectionNode.classList.add("checkActions");
-
-        const checkSpan = document.createElement("span");
-        checkSpan.setAttribute("onclick","changeIcon(event)");
-        checkSpan.classList.add("material-symbols-outlined");
-        checkSpan.classList.add("checkBox");
-        const checkedTextNode = document.createTextNode("radio_button_unchecked");
-        checkSpan.appendChild(checkedTextNode);
-
-        const deleteSpan = document.createElement("span");
-        deleteSpan.setAttribute("onclick","deleteCheckItem(event)");
-        deleteSpan.classList.add("material-symbols-outlined");
-        deleteSpan.classList.add("deleteHolder");
-        deleteSpan.classList.add("checkDelete");
-        const deleteTextNode = document.createTextNode("delete");
-        deleteSpan.appendChild(deleteTextNode);
-
-        listNode.appendChild(pNode);
-        sectionNode.appendChild(checkSpan);
-        sectionNode.appendChild(deleteSpan);
-        listNode.appendChild(sectionNode);
-
-        checkList.appendChild(listNode);
-
+        newCheckListItem(checkContent);
         overlay.classList.add("hide");
         checkListPopUp.classList.add("hide");
+        displayCheckItems(getCheckItemsFromDB());
+
     }
     else
     {
@@ -373,44 +427,10 @@ function addTimeItem()
     if(timeContent != "")
     {
         timeTrackContent.value = "";
-        const timeListNode = document.createElement("li");
-        timeListNode.classList.add("timeItem");
-        const timeDescNode = document.createElement("p");
-        const timeDescTextNode = document.createTextNode(timeContent);
-        timeDescNode.appendChild(timeDescTextNode);
-        const inputTimeNode = document.createElement("input");
-        inputTimeNode.classList.add("inputTime");
-        inputTimeNode.setAttribute("type","number");
-
-        const selectTimeUnit = document.createElement("select");
-        selectTimeUnit.setAttribute("name","time");
-
-        const minOption = document.createElement("option");
-        minOption.setAttribute("value","Min");
-        minOption.innerText = "Min";
-        const hrOption = document.createElement("option");
-        hrOption.setAttribute("value","Hr");
-        hrOption.innerText = "Hr";
-
-        selectTimeUnit.appendChild(minOption);
-        selectTimeUnit.appendChild(hrOption);
-
-        const spanNode = document.createElement("span");
-        spanNode.setAttribute("onclick","deleteNoteItem(event)");
-        spanNode.classList.add("material-symbols-outlined");
-        spanNode.classList.add("deleteHolder");
-        spanNode.innerText = "delete";
-
-        timeListNode.appendChild(timeDescNode);
-        timeListNode.appendChild(inputTimeNode);
-        timeListNode.appendChild(selectTimeUnit);
-        timeListNode.appendChild(spanNode);
-
-        
-        timeList.appendChild(timeListNode);
-
+        newTimeTrackItem(timeContent);
         overlay.classList.add("hide");
         timePopUp.classList.add("hide");
+        displayTimeTrackItems(getTimeTrackFromDB());
     }
     else
     {
@@ -574,6 +594,357 @@ function makeWeekList()
         }
 }
 
+function displayEvents(eventsList)
+{
+    
+    //empty the display
+    while((eventListCard.getElementsByTagName("li")).length > 0) {
+	    eventListCard.removeChild(eventListCard.getElementsByTagName("li")[0]);
+    }
+    eventsList.forEach(element => {
+        const date = new Date(element.start_time);
+
+        const listNode = document.createElement("li");
+        listNode.classList.add("eventCard");
+
+        const titleNode = document.createElement("h3");
+        titleNode.classList.add("eventCardItem");
+        const titleText = document.createTextNode(element.title);
+        titleNode.appendChild(titleText);
+
+        const articleNode = document.createElement("article");
+        articleNode.classList.add("eventCardItem");
+        const pNode = document.createElement("p");
+        const descNode = document.createTextNode(element.description);
+        pNode.appendChild(descNode);
+        articleNode.appendChild(pNode);
+
+        const eventSectionNode = document.createElement("section");
+        eventSectionNode.classList.add("eventTimes");
+        eventSectionNode.classList.add("eventCardItem");
+
+        const dateNode = document.createElement("h3");
+        const dateTextNode = document.createTextNode(date.getUTCDate() + "/" + months[date.getUTCMonth()] + "/" + date.getUTCFullYear());
+        dateNode.appendChild(dateTextNode);
+
+        const timeNode = document.createElement("h3");
+        const timeTextNode = document.createTextNode(date.getUTCHours() + ":00");
+        timeNode.appendChild(timeTextNode);
+
+        const lengthNode = document.createElement("h3");
+        const lengthTextNode = document.createTextNode(element.length + " hours");
+        lengthNode.appendChild(lengthTextNode);
+
+        eventSectionNode.appendChild(dateNode);
+        eventSectionNode.appendChild(timeNode);
+        eventSectionNode.appendChild(lengthNode);
+
+        listNode.appendChild(titleNode);
+        listNode.appendChild(articleNode);
+        listNode.appendChild(eventSectionNode);
+
+        eventListCard.appendChild(listNode);
+    });
+}
+
+function newNoteItem(noteTitle, noteContent)
+{
+    //will make a new note item and call postNewNoteToDB()
+    let newNote = {
+        title : noteTitle,
+        content : noteContent
+    };
+
+    postNewNoteToDB(newNote);
+}
+
+function newCheckListItem(todoContent)
+{
+    //will make a new note item and call postNewCheckListItemToDB()
+    newcheckListItem = {
+        item : todoContent
+    }
+
+    postNewCheckListItemToDB(newcheckListItem);
+}
+
+function newTimeTrackItem(timeTrackDescription)
+{
+    let newtimeTrackItem = {
+        description : timeTrackDescription
+    }
+    //will make a new time track item and call postNewTimeTrackItemToDB()
+    postNewTimeTrackItemToDB(newtimeTrackItem);
+}
+
+
+function newEventItem(eventTitle, eventDescription, eventStartTime, eventLength)
+{
+    let newEvent = {
+        title : eventTitle,
+        description : eventDescription,
+        start_time : eventStartTime,
+        length : eventLength
+    }
+    //will make a new event item and call postNewEventToDB()
+    postNewEventToDB(newEvent);
+}
+
+function postNewNoteToDB(noteObject)
+{
+    //posts the note object to the db
+}
+
+function postNewCheckListItemToDB(checkListObject)
+{
+    //posts the check list item to db
+
+}
+
+function postNewTimeTrackItemToDB(timeTrackObject)
+{
+    //posts the time track object to db
+}
+
+function postNewEventToDB(eventObject)
+{
+    //posts the event object to db
+}
+
+function markNoteDeleted(noteObject)
+{
+    //marks a note as deleted in db
+}
+
+function markCheckItemDeleted(checkItemObject)
+{
+    //marks a check item as deleted in db
+}
+
+function markTimeTrackDeleted(timeTrackObject)
+{
+    //marks a time track item as deleted in db
+}
+
+function markEventDeleted(eventObject)
+{
+    //marks an event as deleted in db
+}
+
+function updateCheckListItem(checkListObject)
+{
+    //makes update to checklist item in db
+}
+
+function updateTimeTrackItem(timeTrackObject)
+{
+    //makes update to time track item in db
+}
+
+function getNotesFromDB()
+{
+    let notes = {};
+
+
+    //
+    //return notes;
+    return notesTest;
+}
+
+function getCheckItemsFromDB()
+{
+    let checkList = {};
+
+    return checkList;
+}
+
+function getTimeTrackFromDB()
+{
+    let timeTracks = {};
+
+    return timeTracks;
+
+}
+
+function getEventsFromDB()
+{
+    let events = {};
+    
+    return events;
+}
+
+function displayNotes(notesList)
+{
+    while((noteList.getElementsByTagName("li")).length > 0) 
+    {
+	    noteList.removeChild(noteList.getElementsByTagName("li")[0]);
+    }
+    console.log("hiii babes");
+    notesList.forEach(item => 
+    {
+        if(item.is_deleted == 0)
+        {
+        const noteTitle = item.title;
+        const noteContent = item.content;
+
+        const listNode = document.createElement("li");
+        listNode.classList.add("innerCard");
+        const sectionNode = document.createElement("section")
+        const titleNode = document.createElement("h3");
+        const contentNode = document.createElement("p");
+        //const dateNode = document.createElement("h4");
+    
+        const titleTextNode = document.createTextNode(noteTitle);
+        const contentTextNode = document.createTextNode(noteContent);
+        //var nowDate = dayjs();
+        //const dateTextNode = document.createTextNode(nowDate.date() + "/" + (nowDate.month()+1) + "/" + nowDate.year());
+
+        titleNode.appendChild(titleTextNode);
+        contentNode.appendChild(contentTextNode);
+        //dateNode.appendChild(dateTextNode);
+
+        sectionNode.appendChild(titleNode);
+        sectionNode.appendChild(contentNode);
+        //sectionNode.appendChild(dateNode);
+
+        listNode.appendChild(sectionNode);
+
+        const spanNode = document.createElement("span");
+        spanNode.setAttribute("onclick","deleteNoteItem(event)");
+        spanNode.classList.add("material-symbols-outlined");
+        spanNode.classList.add("deleteHolder");
+        spanNode.innerText = "delete";
+        listNode.appendChild(spanNode);
+        noteList.appendChild(listNode);
+        console.log("helloooo????");
+
+
+        }
+    });
+}
+
+function displayCheckItems(checkItemsList)
+{
+    while((checkList.getElementsByTagName("li")).length > 0) 
+    {
+        checkList.removeChild(checkList.getElementsByTagName("li")[0]);
+    }
+    checkItemsList.forEach(item => 
+    {
+        if(item.is_deleted == 0)
+            {
+                const checkContent = item.item;
+                const listNode = document.createElement("li");
+                listNode.classList.add("checkItem");
+                //PERHAPS: Here when we create the item in the db we make the ID of the li element the id in the db
+        
+                const pNode = document.createElement("p");
+                const checkTextNode = document.createTextNode(checkContent);
+                pNode.appendChild(checkTextNode);
+        
+                const sectionNode = document.createElement("section");
+                sectionNode.classList.add("checkActions");
+        
+                const checkSpan = document.createElement("span");
+                checkSpan.setAttribute("onclick","changeIcon(event)");
+                checkSpan.classList.add("material-symbols-outlined");
+                checkSpan.classList.add("checkBox");
+                const checkedTextNode = document.createTextNode("radio_button_unchecked");
+                checkSpan.appendChild(checkedTextNode);
+        
+                const deleteSpan = document.createElement("span");
+                deleteSpan.setAttribute("onclick","deleteCheckItem(event)");
+                deleteSpan.classList.add("material-symbols-outlined");
+                deleteSpan.classList.add("deleteHolder");
+                deleteSpan.classList.add("checkDelete");
+                const deleteTextNode = document.createTextNode("delete");
+                deleteSpan.appendChild(deleteTextNode);
+        
+                listNode.appendChild(pNode);
+                sectionNode.appendChild(checkSpan);
+                sectionNode.appendChild(deleteSpan);
+                listNode.appendChild(sectionNode);
+        
+                checkList.appendChild(listNode);
+            }
+    });
+}
+
+function displayTimeTrackItems(timeTrackItemsList)
+{
+    while((timeList.getElementsByTagName("li")).length > 0) 
+    {
+        timeList.removeChild(timeList.getElementsByTagName("li")[0]);
+    }
+
+    timeTrackItemsList.forEach(item => {
+        if(item.is_deleted == 0)
+            {
+                const timeContent = item.description;
+                const timeLength = item.length;
+                const timeUnit = item.time_unit;
+                const timeListNode = document.createElement("li");
+                timeListNode.classList.add("timeItem");
+                const timeDescNode = document.createElement("p");
+                const timeDescTextNode = document.createTextNode(timeContent);
+                timeDescNode.appendChild(timeDescTextNode);
+                const inputTimeNode = document.createElement("input");
+                inputTimeNode.classList.add("inputTime");
+                inputTimeNode.setAttribute("type","number");
+                inputTimeNode.value = timeLength;
+        
+                const selectTimeUnit = document.createElement("select");
+                selectTimeUnit.setAttribute("name","time");
+        
+                const minOption = document.createElement("option");
+                minOption.setAttribute("value","Min");
+                minOption.innerText = "Min";
+                const hrOption = document.createElement("option");
+                hrOption.setAttribute("value","Hr");
+                hrOption.innerText = "Hr";
+                const secOption = document.createElement("option");
+                secOption.setAttribute("value","Sec");
+                secOption.innerText = "Sec";
+
+                selectTimeUnit.appendChild(minOption);
+                selectTimeUnit.appendChild(hrOption);
+                selectTimeUnit.appendChild(secOption);
+
+                switch(timeUnit) {
+                    case 1:
+                      // code block
+                      selectTimeUnit.value = "Hr";
+                      break;
+                    case 2:
+                      selectTimeUnit.value = "Min";
+                      break;
+                    case 3:
+                        selectTimeUnit.value = "Sec";
+                        break;
+                    default:
+                        selectTimeUnit.value = "Hr";
+                      // code block
+                  }
+
+                const spanNode = document.createElement("span");
+                spanNode.setAttribute("onclick","deleteNoteItem(event)");
+                spanNode.classList.add("material-symbols-outlined");
+                spanNode.classList.add("deleteHolder");
+                spanNode.innerText = "delete";
+        
+                timeListNode.appendChild(timeDescNode);
+                timeListNode.appendChild(inputTimeNode);
+                timeListNode.appendChild(selectTimeUnit);
+                timeListNode.appendChild(spanNode);
+        
+                
+                timeList.appendChild(timeListNode);
+        
+                overlay.classList.add("hide");
+                timePopUp.classList.add("hide");
+            }
+    });
+}
 function displayEvents(eventsList)
 {
     

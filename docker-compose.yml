@@ -1,0 +1,32 @@
+version: '3'
+services:
+  db:
+    image: public.ecr.aws/k0y9y3l8/my-planner-db:latest
+    volumes:
+      - ./backend/Testing:/docker-entrypoint-initdb.d
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 2s
+      retries: 10
+
+  be:
+    image: public.ecr.aws/k0y9y3l8/my-planner-backend:latest
+    ports:
+      - "8080:8080"
+    environment:
+      - DATABASE_HOST=db
+    depends_on:
+      db:
+        condition: service_healthy
+
+  fe:
+    image: public.ecr.aws/k0y9y3l8/my-planner-frontend:latest
+    ports:
+      - "5500:5500"
+    depends_on:
+      - be
+  
+volumes:
+  pgdata:
