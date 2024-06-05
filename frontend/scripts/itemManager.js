@@ -15,6 +15,8 @@ window.createCalendarEvent = createCalendarEvent;
 window.closeCalendar = closeCalendar;
 window.showCalendar = showCalendar;
 window.switchMonth = switchMonth;
+window.popUpShowEvents = popUpShowEvents;
+window.closeEvents = closeEvents;
 
 const baseUrl = `${backendUrl}/api/v1`;
 
@@ -148,11 +150,15 @@ function popUpCreateEvent(){
     eventPopUp.classList.remove("hide");
 }
 
-function popUpShowEvents(date,month,year)
+async function popUpShowEvents(date,month,year)
 {
     overlay.classList.remove("hide");
     eventListPopUp.classList.remove("hide");
+    const events = await getEventsFromDB();
     console.log("DATE: " + date + " MONTH: " + months[month-1] + " YEAR: " + year);
+    const thisDate = new Date();
+
+    thisDate.setFullYear(year, month-1, date);
 
     //need to get date from object clicked on
     let todaysEvents = [];
@@ -160,12 +166,15 @@ function popUpShowEvents(date,month,year)
     titleEventsPage.innerText = "Events for: " + date + " " +  months[month-1] +  " " + year;
     events.forEach(element => {
         const jsdate = new Date(element.start_time);
-        if((jsdate.getUTCDate() == date) && (jsdate.getUTCMonth()+1 == month) && (jsdate.getUTCFullYear() == year))
+        console.log("JSDATE: " + jsdate);
+        console.log("THISDATE: " + thisDate);
+        if((jsdate.getFullYear() == thisDate.getFullYear()) && (jsdate.getMonth() == thisDate.getMonth()) && (thisDate.getDate() == jsdate.getDate()))
             {
+                console.log("WTF???");
                 todaysEvents.push(element);
             }
     });
-    displayEvents(getEventsFromDB());
+    displayEvents(todaysEvents);
 }
 
 function closeEvents()
@@ -333,13 +342,14 @@ function initializeCalendar(month, year)
 var textNodeEvents;
 
 
-function makeWeekList()
+async function makeWeekList()
 {
 
     while((weekViewList.getElementsByTagName("li")).length > 0) {
 	    weekViewList.removeChild(weekViewList.getElementsByTagName("li")[0]);
     }
     counter = 0;
+    const events = await getEventsFromDB();
     const start = now.day();
         for (let i = start; i < daysOfWeek.length + start; i++) 
         {
@@ -353,8 +363,12 @@ function makeWeekList()
             //check for events here
             //populate with number of events
             let eventCounter = 0;
-            testEvents.forEach(element => {
-                if((+ (now.date()+counter) + "-" + (now.month()+1) + "-" + (now.year())) == element.eventDate){
+            events.forEach(element => {
+            const checkDate = new Date();
+            checkDate.setFullYear(now.year(),now.month(),now.date()+counter);
+            const elemDate = new Date(element.start_time);
+              console.log("start date: " + element.start_date);
+                if((elemDate.getFullYear() == checkDate.getFullYear()) && (elemDate.getMonth() == checkDate.getMonth()) && (elemDate.getDate() == checkDate.getDate())){
                     eventCounter++;
                 }
             });
@@ -557,9 +571,11 @@ function displayTimeTrackItems(timeTrackItemsList)
 function displayEvents(eventsList)
 {
   
+    console.log("here we are ye");
     //empty the display
     while((eventListCard.getElementsByTagName("li")).length > 0) {
 	    eventListCard.removeChild(eventListCard.getElementsByTagName("li")[0]);
+        console.log("REMOVED BITCH");
     }
     eventsList.forEach(element => {
         const date = new Date(element.start_time);
