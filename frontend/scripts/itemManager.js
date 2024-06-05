@@ -73,132 +73,11 @@ document.getElementById("eventTime").addEventListener('input', function(event) {
 });
 
 
-
-
-
-let testEvents = [
-    {
-        eventTitle: "event1",
-        eventDescription: "this is an event!",
-        eventDate: "4-6-2024",
-        eventStartTime: "13:00",
-        eventLength: 2,
-
-    },
-    {
-        eventTitle: "Water Plants Day",
-        eventDescription: "Gotta water the plants on this day",
-        eventDate: "4-6-2024",
-        eventStartTime: "09:00",
-        eventLength: 2,
-
-    },
-    {
-        eventTitle: "Bug Day",
-        eventDescription: "day all about bugs",
-        eventDate: "8-6-2024",
-        eventStartTime: "15:00",
-        eventLength: 2,
-
-    }
-];
-
-let events = [
-   { 
-    title: "Team Meeting",
-    description: "Discuss project updates and upcoming tasks.",
-    start_time: "2024-06-15T10:00:00Z",
-    length: 6
-    },
-    { 
-    title: "Team Meeting 2",
-    description: "Discuss project updates and upcoming tasks.",
-    start_time: "2024-07-15T10:00:00Z",
-    length: 6
-    },
-    { 
-    title: "Team Meeting 3",
-    description: "Discuss project updates and upcoming tasks.",
-    start_time: "2024-08-15T10:00:00Z",
-    length: 6
-    },
-    {title: "Today event",
-    description: "show up pls",
-    start_time: new Date(),
-    length: 2
-    }
-]
-
-let notesTest = [
-    {
-        title: "Project Notes 1",
-        content: "Discussed progress on current tasks.",
-        is_deleted : 0
-    },
-    {
-        title: "Bug bug bug",
-        content: "Discussed progress on current tasks",
-        is_deleted : 0
-    },
-    {
-        title: "doggie",
-        content: "Discussed progress on current tasks",
-        is_deleted : 0
-    },
-    {
-        title: "husky",
-        content: "i love my dog",
-        is_deleted : 0
-    }
-]
-
-let checkTest = [
-    {
-        item: "Finish report",
-        is_deleted : 0
-    },
-    {
-        item: "Water te plans",
-        is_deleted : 0
-    },
-    {
-        item: "Pet le dog",
-        is_deleted : 0
-    }
-]
-
-let timeTest = [
-    {
-        description: "Work on documentation",
-        length: 120,
-        time_unit: 1,
-        is_deleted : 0
-    },
-    {
-        description: "bestTest",
-        length: 11,
-        time_unit: 3,
-        is_deleted : 0
-    },
-    {
-        description: "petting doggo",
-        length: 100,
-        time_unit: 2,
-        is_deleted : 0
-    }
-
-]
-
-function displayPageItems()
+async function displayPageItems()
 {
-    displayNotes(notesTest);
-    displayCheckItems(checkTest);
-    displayTimeTrackItems(timeTest);
-    console.log("wtf");
-    getNotesFromDB();
-    getCheckItemsFromDB();
-    getTimeTrackFromDB();
-    getEventsFromDB();
+    displayNotes( await getNotesFromDB());
+    displayCheckItems(await getCheckItemsFromDB());
+    displayTimeTrackItems(await getTimeTrackFromDB());
 }
 
 displayPageItems();
@@ -286,7 +165,7 @@ function popUpShowEvents(date,month,year)
                 todaysEvents.push(element);
             }
     });
-    displayEvents(todaysEvents);
+    displayEvents(getEventsFromDB());
 }
 
 function closeEvents()
@@ -505,10 +384,13 @@ function makeWeekList()
 
 function displayNotes(notesList)
 {
+    console.log(notesList);
     while((noteList.getElementsByTagName("li")).length > 0) 
     {
 	    noteList.removeChild(noteList.getElementsByTagName("li")[0]);
     }
+    console.log("HERE NOW");
+    console.log(notesList);
     notesList.forEach(item => 
     {
         if(item.is_deleted == 0)
@@ -671,9 +553,10 @@ function displayTimeTrackItems(timeTrackItemsList)
             }
     });
 }
+
 function displayEvents(eventsList)
 {
-    
+  
     //empty the display
     while((eventListCard.getElementsByTagName("li")).length > 0) {
 	    eventListCard.removeChild(eventListCard.getElementsByTagName("li")[0]);
@@ -947,7 +830,7 @@ async function postNewEventToDB(eventObject) {
 async function getNotesFromDB() {
   const apiHelper = new ApiHelper(baseUrl);
     console.log(apiHelper);
-    let notes = {};
+    let notes = [];
   
     try {
       const response = await apiHelper.get('/notes');
