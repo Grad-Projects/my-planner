@@ -317,12 +317,15 @@ p{
 }
 
 .makeNotePopUp{
+    display: flex;
+    flex-direction: column;
+    gap: .5em;
     background-color: #E4CCFF;
     width: 50%;
     max-width: 100%;
 
     position: fixed;
-    bottom: 30%;
+    bottom: 10%;
     left: 30%;
     overflow: auto;
 
