@@ -468,10 +468,7 @@ function makeWeekList()
         for (let i = start; i < daysOfWeek.length + start; i++) 
         {
             const outerListNode = document.createElement("li");
-            console.log("Now date: " + now.date()); 
-            console.log("counter: " + counter);
             tempInt = now.date() + counter;
-            console.log(tempInt);
             outerListNode.setAttribute("onclick","popUpShowEvents("+(tempInt)+","+ (now.month()+1) +"," + now.year() + ")");
             const listNode = document.createElement("ul");
             const innerListNodeDay = document.createElement("li");
@@ -590,7 +587,6 @@ function displayNotes(notesList)
     {
 	    noteList.removeChild(noteList.getElementsByTagName("li")[0]);
     }
-    console.log("hiii babes");
     notesList.forEach(item => 
     {
         if(item.is_deleted == 0)
@@ -627,9 +623,6 @@ function displayNotes(notesList)
         spanNode.innerText = "delete";
         listNode.appendChild(spanNode);
         noteList.appendChild(listNode);
-        console.log("helloooo????");
-
-
         }
     });
 }
