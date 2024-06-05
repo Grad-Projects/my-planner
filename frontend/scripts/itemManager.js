@@ -16,14 +16,12 @@ window.showCalendar = showCalendar;
 window.switchMonth = switchMonth;
 
 const hostname = window.location.hostname;
-const clientId = '4k2e6jc066p8jsb6b86e90mm7j';
 let backendUrl = 'https://myplannerapi.projects.bbdgrad.com';
-let redirectUri = 'https://myplanner.projects.bbdgrad.com/callback.html';
 if (hostname.includes("localhost") || hostname.includes("127.0.0.1")) {
   backendUrl = 'http://localhost:8080';
 }
 
-const baseUrl = "https://localhost:8080/api/v1";
+const baseUrl = `${backendUrl}/api/v1`;
 
 let noteList = document.getElementById("noteList");
 let overlay = document.getElementById("overlay");
