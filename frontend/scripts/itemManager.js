@@ -1,90 +1,4 @@
-
-class ApiHelper {
-    constructor(baseURL) {
-        this.baseURL = baseURL;
-    }
-
-    async post(endpoint, data) {
-        const url = `${this.baseURL}${endpoint}`;
-        const options = {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(data)
-        };
-
-        try {
-            const response = await fetch(url, options);
-            if (!response.ok) {
-                throw new Error(`Network response was not ok: ${response.statusText}`);
-            }
-            return await response.json();
-        } catch (error) {
-            console.error('There was a problem with the fetch operation:', error);
-            throw error;
-        }
-    }
-
-    async get(endpoint) {
-        const url = `${this.baseURL}${endpoint}`;
-
-        try {
-            const response = await fetch(url);
-            if (!response.ok) {
-                throw new Error(`Network response was not ok: ${response.statusText}`);
-            }
-            return await response.json();
-        } catch (error) {
-            console.error('There was a problem with the fetch operation:', error);
-            throw error;
-        }
-    }
-
-    async patch(endpoint, data) {
-        const url = `${this.baseURL}${endpoint}`;
-        const options = {
-            method: 'PATCH',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(data)
-        };
-
-        try {
-            const response = await fetch(url, options);
-            if (!response.ok) {
-                throw new Error(`Network response was not ok: ${response.statusText}`);
-            }
-            return await response.json();
-        } catch (error) {
-            console.error('There was a problem with the fetch operation:', error);
-            throw error;
-        }
-    }
-
-    async toggle(endpoint) {
-        const url = `${this.baseURL}${endpoint}`;
-        const options = {
-            method: 'PATCH',
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        };
-    
-        try {
-            const response = await fetch(url, options);
-            if (!response.ok) {
-                throw new Error(`Network response was not ok: ${response.statusText}`);
-            }
-            return await response.json();
-        } catch (error) {
-            console.error('There was a problem with the fetch operation:', error);
-            throw error;
-        }
-    }
-}
-
+import {ApiHelper } from "./apiHelper.js";
 
 window.deleteNoteItem = deleteNoteItem;
 window.deleteCheckItem = deleteCheckItem;
@@ -287,6 +201,7 @@ function displayPageItems()
     displayCheckItems(checkTest);
     displayTimeTrackItems(timeTest);
     console.log("wtf");
+    getNotesFromDB();
 }
 
 displayPageItems();
@@ -594,184 +509,80 @@ function makeWeekList()
         }
 }
 
-function displayEvents(eventsList)
-{
+
+// function newNoteItem(noteTitle, noteContent)
+// {
+//     //will make a new note item and call postNewNoteToDB()
+//     let newNote = {
+//         title : noteTitle,
+//         content : noteContent
+//     };
+
+//     postNewNoteToDB(newNote);
+// }
+
+// function newCheckListItem(todoContent)
+// {
+//     //will make a new note item and call postNewCheckListItemToDB()
+//     newcheckListItem = {
+//         item : todoContent
+//     }
+
+//     postNewCheckListItemToDB(newcheckListItem);
+// }
+
+// function newTimeTrackItem(timeTrackDescription)
+// {
+//     let newtimeTrackItem = {
+//         description : timeTrackDescription
+//     }
+//     //will make a new time track item and call postNewTimeTrackItemToDB()
+//     postNewTimeTrackItemToDB(newtimeTrackItem);
+// }
+
+
+// function newEventItem(eventTitle, eventDescription, eventStartTime, eventLength)
+// {
+//     let newEvent = {
+//         title : eventTitle,
+//         description : eventDescription,
+//         start_time : eventStartTime,
+//         length : eventLength
+//     }
+//     //will make a new event item and call postNewEventToDB()
+// }
+
+// function getNotesFromDB()
+// {
+//     let notes = {};
+
+
+//     //
+//     //return notes;
+//     return notesTest;
+// }
+
+// function getCheckItemsFromDB()
+// {
+//     let checkList = {};
+
+//     return checkList;
+// }
+
+// function getTimeTrackFromDB()
+// {
+//     let timeTracks = {};
+
+//     return timeTracks;
+
+// }
+
+// function getEventsFromDB()
+// {
+//     let events = {};
     
-    //empty the display
-    while((eventListCard.getElementsByTagName("li")).length > 0) {
-	    eventListCard.removeChild(eventListCard.getElementsByTagName("li")[0]);
-    }
-    eventsList.forEach(element => {
-        const date = new Date(element.start_time);
-
-        const listNode = document.createElement("li");
-        listNode.classList.add("eventCard");
-
-        const titleNode = document.createElement("h3");
-        titleNode.classList.add("eventCardItem");
-        const titleText = document.createTextNode(element.title);
-        titleNode.appendChild(titleText);
-
-        const articleNode = document.createElement("article");
-        articleNode.classList.add("eventCardItem");
-        const pNode = document.createElement("p");
-        const descNode = document.createTextNode(element.description);
-        pNode.appendChild(descNode);
-        articleNode.appendChild(pNode);
-
-        const eventSectionNode = document.createElement("section");
-        eventSectionNode.classList.add("eventTimes");
-        eventSectionNode.classList.add("eventCardItem");
-
-        const dateNode = document.createElement("h3");
-        const dateTextNode = document.createTextNode(date.getUTCDate() + "/" + months[date.getUTCMonth()] + "/" + date.getUTCFullYear());
-        dateNode.appendChild(dateTextNode);
-
-        const timeNode = document.createElement("h3");
-        const timeTextNode = document.createTextNode(date.getUTCHours() + ":00");
-        timeNode.appendChild(timeTextNode);
-
-        const lengthNode = document.createElement("h3");
-        const lengthTextNode = document.createTextNode(element.length + " hours");
-        lengthNode.appendChild(lengthTextNode);
-
-        eventSectionNode.appendChild(dateNode);
-        eventSectionNode.appendChild(timeNode);
-        eventSectionNode.appendChild(lengthNode);
-
-        listNode.appendChild(titleNode);
-        listNode.appendChild(articleNode);
-        listNode.appendChild(eventSectionNode);
-
-        eventListCard.appendChild(listNode);
-    });
-}
-
-function newNoteItem(noteTitle, noteContent)
-{
-    //will make a new note item and call postNewNoteToDB()
-    let newNote = {
-        title : noteTitle,
-        content : noteContent
-    };
-
-    postNewNoteToDB(newNote);
-}
-
-function newCheckListItem(todoContent)
-{
-    //will make a new note item and call postNewCheckListItemToDB()
-    newcheckListItem = {
-        item : todoContent
-    }
-
-    postNewCheckListItemToDB(newcheckListItem);
-}
-
-function newTimeTrackItem(timeTrackDescription)
-{
-    let newtimeTrackItem = {
-        description : timeTrackDescription
-    }
-    //will make a new time track item and call postNewTimeTrackItemToDB()
-    postNewTimeTrackItemToDB(newtimeTrackItem);
-}
-
-
-function newEventItem(eventTitle, eventDescription, eventStartTime, eventLength)
-{
-    let newEvent = {
-        title : eventTitle,
-        description : eventDescription,
-        start_time : eventStartTime,
-        length : eventLength
-    }
-    //will make a new event item and call postNewEventToDB()
-    postNewEventToDB(newEvent);
-}
-
-function postNewNoteToDB(noteObject)
-{
-    //posts the note object to the db
-}
-
-function postNewCheckListItemToDB(checkListObject)
-{
-    //posts the check list item to db
-
-}
-
-function postNewTimeTrackItemToDB(timeTrackObject)
-{
-    //posts the time track object to db
-}
-
-function postNewEventToDB(eventObject)
-{
-    //posts the event object to db
-}
-
-function markNoteDeleted(noteObject)
-{
-    //marks a note as deleted in db
-}
-
-function markCheckItemDeleted(checkItemObject)
-{
-    //marks a check item as deleted in db
-}
-
-function markTimeTrackDeleted(timeTrackObject)
-{
-    //marks a time track item as deleted in db
-}
-
-function markEventDeleted(eventObject)
-{
-    //marks an event as deleted in db
-}
-
-function updateCheckListItem(checkListObject)
-{
-    //makes update to checklist item in db
-}
-
-function updateTimeTrackItem(timeTrackObject)
-{
-    //makes update to time track item in db
-}
-
-function getNotesFromDB()
-{
-    let notes = {};
-
-
-    //
-    //return notes;
-    return notesTest;
-}
-
-function getCheckItemsFromDB()
-{
-    let checkList = {};
-
-    return checkList;
-}
-
-function getTimeTrackFromDB()
-{
-    let timeTracks = {};
-
-    return timeTracks;
-
-}
-
-function getEventsFromDB()
-{
-    let events = {};
-    
-    return events;
-}
+//     return events;
+//}
 
 function displayNotes(notesList)
 {
@@ -1219,12 +1030,14 @@ async function postNewEventToDB(eventObject) {
 // Returns:
 // - notes: Object containing all retrieved notes data
 async function getNotesFromDB() {
+    const noteApiHelper = new ApiHelper("https://localhost:8080/api/v1");
+    console.log(noteApiHelper);
     let notes = {};
   
     try {
-      const response = await apiHelper.get('/notes');
+      const response = await noteApiHelper.get('/notes');
       console.log('Notes retrieved successfully:', response);
-  
+        
       if (response) {
         notes = response;
       }
