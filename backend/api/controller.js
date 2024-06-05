@@ -376,7 +376,7 @@ const createTimeTrackerItem = async (req, res) => {
         }
         
 
-        if (!description || !length || length <= 0 || ![1, 2].includes(time_unit)) {
+        if (!description || length === null || length < 0 || ![1, 2].includes(time_unit)) {
             return res.status(400).json({ error: "Invalid input data" });
         }
 

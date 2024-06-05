@@ -195,13 +195,12 @@ async function addNoteItem(){
 
     if(noteTitle != "" && noteContent != "")
     {
-    noteTitleInput.value = "";
-    noteContentInput.value = "";
-    newNoteItem(noteTitle, noteContent);
-    overlay.classList.add("hide");
-    notePopUp.classList.add("hide");
-    postNewNoteToDB(newNoteItem);
-    displayPageItems();
+        noteTitleInput.value = "";
+        noteContentInput.value = "";
+        overlay.classList.add("hide");
+        notePopUp.classList.add("hide");
+        await newNoteItem(noteTitle, noteContent);
+        displayPageItems();
     }
     else
     {
@@ -232,8 +231,7 @@ async function addTimeItem()
 {
     if(timeTrackContent.value != "")
     { 
-        let timeTrackItem = newTimeTrackItem(timeTrackContent.value,0,1);
-        postNewTimeTrackItemToDB(timeTrackItem);
+        await newTimeTrackItem(timeTrackContent.value,0,1);
         overlay.classList.add("hide");
         timePopUp.classList.add("hide");
         timeTrackContent.value = "";
