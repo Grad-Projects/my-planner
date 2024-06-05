@@ -1,11 +1,19 @@
 import { isTokenValid, logout } from "./authManager.js";
 
-console.log(localStorage.getItem('accessToken'));
+const accessToken = localStorage.getItem('accessToken');
 
-if (!isTokenValid()) {
-    console.log(localStorage.getItem('accessToken'));
-    logout();
+if (!accessToken) {
+    document.getElementById('login').classList.remove('hide');
 }
+else if (!isTokenValid(accessToken)) {
+    logout();
+} else {
+    document.getElementById('emailAddress').textContent = localStorage.getItem('email');
+    document.querySelector('.logoutButton').addEventListener('click', logout);
+    document.getElementById('login').classList.add('hide');
 
-document.getElementById('emailAddress').textContent = localStorage.getItem('email');
-document.querySelector('.logoutButton').addEventListener('click', logout);
+    // Unhide the main content
+    document.querySelector('.header').classList.remove('hide');
+    document.getElementById('weekListView').classList.remove('hide');
+    document.querySelector('.plannerCards').classList.remove('hide');
+}

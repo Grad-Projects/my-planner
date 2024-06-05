@@ -1,18 +1,4 @@
-import { isTokenValid } from "./authManager.js";
-
-if (isTokenValid()) {
-  window.location.href = '/index.html';
-}
-
-const hostname = window.location.hostname;
-const clientId = '4k2e6jc066p8jsb6b86e90mm7j';
-const cognitoDomain = 'my-planner.auth.eu-west-1.amazoncognito.com';
-let backendUrl = 'https://myplannerapi.projects.bbdgrad.com';
-let redirectUri = 'https://myplanner.projects.bbdgrad.com/callback.html';
-if (hostname.includes("localhost") || hostname.includes("127.0.0.1")) {
-  backendUrl = 'https://localhost:8080';
-  redirectUri = 'https://localhost:5500/callback.html';
-}
+import { clientId, cognitoDomain, backendUrl, redirectUri } from './apiConfig.js';
 
 // Helper function to generate a random string of specified length
 function generateRandomString(length) {
@@ -56,6 +42,7 @@ document.getElementById('loginBtn').addEventListener('click', async () => {
   if (response.ok) {
     // Redirect to cognito authentication
     const authUrl = `https://${cognitoDomain}/oauth2/authorize?response_type=code&client_id=${clientId}&redirect_uri=${redirectUri}&scope=openid+email+profile+aws.cognito.signin.user.admin&code_challenge_method=S256&code_challenge=${codeChallenge}&state=${state}`;
+    document.getElementById('login').classList.add('hide');
     window.location.href = authUrl;
   }
   else {
