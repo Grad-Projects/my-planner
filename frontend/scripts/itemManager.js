@@ -1,4 +1,5 @@
 import {ApiHelper } from "./apiHelper.js";
+import {backendUrl} from "./apiConfig.js";
 
 window.deleteNoteItem = deleteNoteItem;
 window.deleteCheckItem = deleteCheckItem;
@@ -14,12 +15,6 @@ window.createCalendarEvent = createCalendarEvent;
 window.closeCalendar = closeCalendar;
 window.showCalendar = showCalendar;
 window.switchMonth = switchMonth;
-
-const hostname = window.location.hostname;
-let backendUrl = 'https://myplannerapi.projects.bbdgrad.com';
-if (hostname.includes("localhost") || hostname.includes("127.0.0.1")) {
-  backendUrl = 'https://localhost:8080';
-}
 
 const baseUrl = `${backendUrl}/api/v1`;
 
