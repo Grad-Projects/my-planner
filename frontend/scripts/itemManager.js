@@ -17,6 +17,9 @@ window.showCalendar = showCalendar;
 window.switchMonth = switchMonth;
 window.popUpShowEvents = popUpShowEvents;
 window.closeEvents = closeEvents;
+window.popUpCreateEvent = popUpCreateEvent;
+window.addCheckListItem = addCheckListItem;
+window.popUpCreateTimeItem = popUpCreateTimeItem;
 
 const baseUrl = `${backendUrl}/api/v1`;
 
@@ -109,6 +112,7 @@ function deleteNoteItem(event)
 {
     const item = event.target;
     const parent1 = item.parentElement;
+    markItemDeleted(parent1.id);
     parent1.remove();
 }
 
@@ -116,6 +120,7 @@ function deleteTimeItem(event)
 {
     const item = event.target;
     const parent1 = item.parentElement;
+    markItemDeleted(parent1.id);
     parent1.remove();
 }
 
@@ -124,6 +129,7 @@ function deleteCheckItem(event)
     const item = event.target;
     const parent1 = item.parentElement;
     const parent2 = parent1.parentElement;
+    markItemDeleted(parent2.id);
     parent2.remove();
 }
 
@@ -183,7 +189,7 @@ function closeEvents()
     eventListPopUp.classList.add("hide");
 }
 
-function addNoteItem(){
+async function addNoteItem(){
     const noteTitle = noteTitleInput.value;
     const noteContent = noteContentInput.value;
 
@@ -194,7 +200,8 @@ function addNoteItem(){
     newNoteItem(noteTitle, noteContent);
     overlay.classList.add("hide");
     notePopUp.classList.add("hide");
-    displayNotes(getNotesFromDB());
+    postNewNoteToDB(newNoteItem);
+    displayPageItems();
     }
     else
     {
@@ -203,16 +210,16 @@ function addNoteItem(){
 
 }
 
-function addCheckListItem()
+async function addCheckListItem()
 {
     const checkContent = checkListContent.value;
     if(checkContent != "")
     {
+        await newCheckListItem(checkListContent.value);
         checkListContent.value = "";
-        newCheckListItem(checkContent);
         overlay.classList.add("hide");
         checkListPopUp.classList.add("hide");
-        displayCheckItems(getCheckItemsFromDB());
+        displayCheckItems(await getCheckItemsFromDB());
 
     }
     else
@@ -221,16 +228,15 @@ function addCheckListItem()
     }
 }
 
-function addTimeItem()
+async function addTimeItem()
 {
-    const timeContent = timeTrackContent.value;
-    if(timeContent != "")
-    {
-        timeTrackContent.value = "";
-        newTimeTrackItem(timeContent);
+    if(timeTrackContent.value != "")
+    { 
+        newTimeTrackItem(timeTrackContent.value,0,1);
         overlay.classList.add("hide");
         timePopUp.classList.add("hide");
-        displayTimeTrackItems(getTimeTrackFromDB());
+        timeTrackContent.value = "";
+        displayTimeTrackItems(await getTimeTrackFromDB());
     }
     else
     {
@@ -240,21 +246,12 @@ function addTimeItem()
 
 function createCalendarEvent()
 {
-    let eventDateObj = dayjs(eventDate.value, "MM-DD-YYYY")
-    let date = eventDateObj.date();
-    let month = eventDateObj.month()+1;
-    let year = eventDateObj.year();
-    let dateString = date + "-" + month + "-" + year;
-    
-    let newEvent = 
-    {
-        eventTitle: eventTitle.value,
-        eventDescription: eventDesc.value,
-        eventDate: dateString,
-        eventStartTime: eventTime.value,
-        eventLength: eventLength.value
-    };
-    testEvents.push(newEvent);
+    let date = new Date(eventDate.value);
+    date = date.toUTCString();
+
+    console.log("TIME: " + eventTime.value);
+    const newEvent = newEventItem(eventTitle.value,eventDesc.value, date, eventTime.value, eventLength.value);
+    postNewEventToDB(newEvent);
     eventTitle.value = "";
     eventDesc.value = "";
     eventDate.value = "";
@@ -367,7 +364,6 @@ async function makeWeekList()
             const checkDate = new Date();
             checkDate.setFullYear(now.year(),now.month(),now.date()+counter);
             const elemDate = new Date(element.start_time);
-              console.log("start date: " + element.start_date);
                 if((elemDate.getFullYear() == checkDate.getFullYear()) && (elemDate.getMonth() == checkDate.getMonth()) && (elemDate.getDate() == checkDate.getDate())){
                     eventCounter++;
                 }
@@ -396,7 +392,7 @@ async function makeWeekList()
         }
 }
 
-function displayNotes(notesList)
+async function displayNotes(notesList)
 {
     console.log(notesList);
     while((noteList.getElementsByTagName("li")).length > 0) 
@@ -413,6 +409,7 @@ function displayNotes(notesList)
         const noteContent = item.content;
 
         const listNode = document.createElement("li");
+        listNode.id = "not" + item.id;
         listNode.classList.add("innerCard");
         const sectionNode = document.createElement("section")
         const titleNode = document.createElement("h3");
@@ -458,6 +455,7 @@ function displayCheckItems(checkItemsList)
                 const checkContent = item.item;
                 const listNode = document.createElement("li");
                 listNode.classList.add("checkItem");
+                listNode.id = "chk" + item.id;
                 //PERHAPS: Here when we create the item in the db we make the ID of the li element the id in the db
         
                 const pNode = document.createElement("p");
@@ -506,6 +504,7 @@ function displayTimeTrackItems(timeTrackItemsList)
                 const timeLength = item.length;
                 const timeUnit = item.time_unit;
                 const timeListNode = document.createElement("li");
+                timeListNode.id = "tim" + item.id;
                 timeListNode.classList.add("timeItem");
                 const timeDescNode = document.createElement("p");
                 const timeDescTextNode = document.createTextNode(timeContent);
@@ -582,6 +581,7 @@ function displayEvents(eventsList)
 
         const listNode = document.createElement("li");
         listNode.classList.add("eventCard");
+        listNode.id = "evt" + element.id;
 
         const titleNode = document.createElement("h3");
         titleNode.classList.add("eventCardItem");
@@ -701,6 +701,7 @@ async function newNoteItem(noteTitle, noteContent) {
   // Parameters:
   // - noteObject: Object containing note data (see newNoteItem function)
   async function postNewNoteToDB(noteObject) {
+    const apiHelper = new ApiHelper(baseUrl);
     try {
       const response = await apiHelper.post('/create/notes', noteObject);
       console.log('Note successfully added:', response);
@@ -713,6 +714,7 @@ async function newNoteItem(noteTitle, noteContent) {
   // Parameters:
   // - checkListObject: Object containing checklist item data (see newCheckListItem function)
   async function postNewCheckListItemToDB(checkListObject) {
+    const apiHelper = new ApiHelper(baseUrl);
     try {
       const response = await apiHelper.post('/create/todo-items', checkListObject);
       console.log('CheckListItem successfully added:', response);
@@ -725,6 +727,7 @@ async function newNoteItem(noteTitle, noteContent) {
   // Parameters:
   // - timeTrackObject: Object containing time track item data (see newTimeTrackItem function)
   async function postNewTimeTrackItemToDB(timeTrackObject) {
+    const apiHelper = new ApiHelper(baseUrl);
     try {
       const response = await apiHelper.post('/create/time-tracker-items', timeTrackObject);
       console.log('TimeTrackItem successfully added:', response);
@@ -737,6 +740,7 @@ async function newNoteItem(noteTitle, noteContent) {
 // Parameters:
 // - eventObject: Object containing event item data (see newEventItem function)
 async function postNewEventToDB(eventObject) {
+    const apiHelper = new ApiHelper(baseUrl);
     try {
       const response = await apiHelper.post('/create/appointments', eventObject);
       console.log('Event successfully added:', response);
@@ -749,6 +753,7 @@ async function postNewEventToDB(eventObject) {
   // Parameters:
   // - noteObjectID: Unique identifier of the note to delete (string)
   async function markNoteDeleted(noteObjectID) {
+    const apiHelper = new ApiHelper(baseUrl);
     try {
       const response = await apiHelper.toggle('/remove/Notes/' + noteObjectID);
       console.log('Note successfully removed:', response);
@@ -761,6 +766,7 @@ async function postNewEventToDB(eventObject) {
   // Parameters:
   // - checkItemObjectID: Unique identifier of the checklist item to delete (string)
   async function markCheckItemDeleted(checkItemObjectID) {
+    const apiHelper = new ApiHelper(baseUrl);
     try {
       const response = await apiHelper.toggle('/remove/TodoItems/' + checkItemObjectID);
       console.log('Checklist item successfully removed:', response);
@@ -773,6 +779,7 @@ async function postNewEventToDB(eventObject) {
   // Parameters:
   // - timeTrackObjectID: Unique identifier of the time track item to delete (string)
   async function markTimeTrackDeleted(timeTrackObjectID) {
+    const apiHelper = new ApiHelper(baseUrl);
     try {
       const response = await apiHelper.toggle('/remove/TimeTrackerItems/' + timeTrackObjectID);
       console.log('Time Tracker item successfully removed:', response);
@@ -785,6 +792,7 @@ async function postNewEventToDB(eventObject) {
   // Parameters:
   // - eventObjectID: Unique identifier of the event item to delete (string)
   async function markEventDeleted(eventObjectID) {
+    const apiHelper = new ApiHelper(baseUrl);
     try {
       const response = await apiHelper.toggle('/remove/Appointments/' + eventObjectID);
       console.log('Event successfully removed:', response);
@@ -920,4 +928,28 @@ async function getNotesFromDB() {
       console.error('Error performing CRUD operation:', error);
     }
     return events;
+  }
+
+  function markItemDeleted(item)
+  {
+    console.log(item);
+    let typeSubStr = item.substring(0,3);
+    let idVal = item.substring(3);
+    console.log(typeSubStr);
+    switch (typeSubStr) {
+        case "not":
+            markNoteDeleted(idVal);
+            break;
+        case "chk":
+            markCheckItemDeleted(idVal);
+            break;
+        case "tim":
+            markTimeTrackDeleted(idVal);
+            break;
+        case "evt":
+            markEventDeleted(idVal);
+            break;
+        default:
+            break;
+    }
   }
