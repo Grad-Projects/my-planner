@@ -76,6 +76,10 @@ document.getElementById("eventTime").addEventListener('input', function(event) {
     }
 });
 
+
+
+
+
 let testEvents = [
     {
         eventTitle: "event1",
@@ -128,6 +132,76 @@ let events = [
     length: 2
     }
 ]
+
+let notesTest = [
+    {
+        title: "Project Notes 1",
+        content: "Discussed progress on current tasks.",
+        is_deleted : 0
+    },
+    {
+        title: "Bug bug bug",
+        content: "Discussed progress on current tasks",
+        is_deleted : 0
+    },
+    {
+        title: "doggie",
+        content: "Discussed progress on current tasks",
+        is_deleted : 0
+    },
+    {
+        title: "husky",
+        content: "i love my dog",
+        is_deleted : 0
+    }
+]
+
+let checkTest = [
+    {
+        item: "Finish report",
+        is_deleted : 0
+    },
+    {
+        item: "Water te plans",
+        is_deleted : 0
+    },
+    {
+        item: "Pet le dog",
+        is_deleted : 0
+    }
+]
+
+let timeTest = [
+    {
+        description: "Work on documentation",
+        length: 120,
+        time_unit: 1,
+        is_deleted : 0
+    },
+    {
+        description: "bestTest",
+        length: 11,
+        time_unit: 3,
+        is_deleted : 0
+    },
+    {
+        description: "petting doggo",
+        length: 100,
+        time_unit: 2,
+        is_deleted : 0
+    }
+
+]
+
+function displayPageItems()
+{
+    displayNotes(notesTest);
+    displayCheckItems(checkTest);
+    displayTimeTrackItems(timeTest);
+    console.log("wtf");
+}
+
+displayPageItems();
 
 //Set a checked object
 //updating time tracker time
@@ -584,7 +658,9 @@ function getNotesFromDB()
     let notes = {};
 
 
-    return notes;
+    //
+    //return notes;
+    return notesTest;
 }
 
 function getCheckItemsFromDB()
@@ -615,6 +691,7 @@ function displayNotes(notesList)
     {
 	    noteList.removeChild(noteList.getElementsByTagName("li")[0]);
     }
+    console.log("hiii babes");
     notesList.forEach(item => 
     {
         if(item.is_deleted == 0)
@@ -651,6 +728,9 @@ function displayNotes(notesList)
         spanNode.innerText = "delete";
         listNode.appendChild(spanNode);
         noteList.appendChild(listNode);
+        console.log("helloooo????");
+
+
         }
     });
 }

@@ -63,7 +63,8 @@ ul{
     font-size: 2.5em;
     color: white;
     margin: 0;
-    text-transform: uppercase;
+    /* text-transform: uppercase; */
+    font-family: Arvo;
 }
 
 #loginBtn {
@@ -75,7 +76,6 @@ ul{
     border-radius: 2em;
     transition: 0.2s;
     cursor: pointer;
-    text-transform: uppercase;
     background-color: white;
     border-color: #E4CCFF;
 }
@@ -92,6 +92,8 @@ ul{
 
 #plannerLogo {
     min-width: 10em;
+    max-width: 15em;
+    border-radius: 50%;
     border: .2em solid #E4CCFF;
 }
 
@@ -296,7 +298,6 @@ p{
     margin-left: -1em;
     justify-content: space-around;
     align-items: baseline;
-    height: 3.5em;
     border-radius: 0.5em;
     margin-bottom:0.5em;
 
