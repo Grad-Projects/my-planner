@@ -4,11 +4,12 @@ export class ApiHelper {
     }
 
     async post(endpoint, data) {
-        const url = `${this.baseURL}${endpoint}`;
+        const url = `${this.baseURL}/${endpoint}`;
         const options = {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
             },
             body: JSON.stringify(data)
         };
@@ -27,9 +28,15 @@ export class ApiHelper {
 
     async get(endpoint) {
         const url = `${this.baseURL}${endpoint}`;
+        const options = {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
+            }
+        }
 
         try {
-            const response = await fetch(url);
+            const response = await fetch(url, options);
             if (!response.ok) {
                 throw new Error(`Network response was not ok: ${response.statusText}`);
             }
@@ -45,7 +52,8 @@ export class ApiHelper {
         const options = {
             method: 'PATCH',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
             },
             body: JSON.stringify(data)
         };
@@ -67,7 +75,8 @@ export class ApiHelper {
         const options = {
             method: 'PATCH',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
             }
         };
     
