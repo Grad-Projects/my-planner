@@ -232,7 +232,8 @@ async function addTimeItem()
 {
     if(timeTrackContent.value != "")
     { 
-        newTimeTrackItem(timeTrackContent.value,0,1);
+        let timeTrackItem = newTimeTrackItem(timeTrackContent.value,0,1);
+        postNewTimeTrackItemToDB(timeTrackItem);
         overlay.classList.add("hide");
         timePopUp.classList.add("hide");
         timeTrackContent.value = "";
