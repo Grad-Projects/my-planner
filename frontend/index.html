@@ -1,21 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
-    <link rel="stylesheet" href="styles/styles.css">
+    <link rel="stylesheet" href="styles/styles.css" />
     <title>My Planner</title>
 </head>
 <body>
-    <section class="header">
+    <section id="login" class="blue">
+        <img id="plannerLogo" class="logo" src="images/plannerlogo.png" />
+        <h1 id="loginTitle">Welcome To My Planner</h1>
+        <button id="loginBtn"><img class="logo" id="googleLogo" src="images/google.png">Continue with Google</button>
+    </section>
+
+    <section class="header hide">
         <h1>My Planner</h1>
         <h1 id="emailAddress"></h1>
         <h1 class="logoutButton">Logout</h1>
     </section>
     
-    <ul id="weekListView" class="weekList">
+    <ul id="weekListView" class="weekList hide">
     <section class="weekActions">
         <span onclick="showCalendar()" class="material-symbols-outlined calendar">
             calendar_month
@@ -23,7 +29,7 @@
         <p id="addEvent" onclick="popUpCreateEvent()" class="addItem">+</p>
     </section>
     </ul>
-    <section class="plannerCards">
+    <section class="plannerCards hide">
         <section class="card">
             <h2>Notes</h2>
             <ul id="noteList">
@@ -155,13 +161,12 @@
         <h3 onclick="closeEvents()" class="doneButton">Close</h3>
     </section>
     <div id="overlay" class="hide"></div>
-</body>
-<script src="https://cdn.jsdelivr.net/npm/dayjs@1/dayjs.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/dayjs@1/dayjs/plugin/weekday.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/dayjs@1/dayjs/plugin/calendar.js"></script>
-<script src="scripts/weeklyListRender.js"></script>
-<script src="scripts/checkBox.js"></script>
-<script src="scripts/itemManager.js"></script>
-<script type="module" src="scripts/index.js"></script>
 
+    <script src="https://cdn.jsdelivr.net/npm/dayjs@1/dayjs.min.js"></script>
+    <script src="scripts/weeklyListRender.js"></script>
+    <script src="scripts/checkBox.js"></script>
+    <script src="scripts/itemManager.js"></script>
+    <script type="module" src="scripts/index.js"></script>
+    <script type="module" src="scripts/login.js"></script>
+</body>
 </html>
