@@ -10,26 +10,23 @@ const getOauthStateAndCodeVerifier = async (req, res) => {
         const { state } = req.query;
         pool.query(queries.getCodeVerifierByState, [state], (error, results) => {
             if (error) {
-                console.error('Error executing query', error);
-                return res.status(500).json({ error: 'Internal Server Error' });
+                return handleErrorResponse(res, error, 'Error getting oauth state');
             }
             if (results.rows.length === 0) {
-                return res.status(404).json({ error: 'State not found' });
+                return handleErrorResponse(res, new Error('State not found'), 'Error getting oauth state');
             }
             
             // delete state after retrieving it
             pool.query(queries.deleteOauthStateAndCodeVerifier, [state], (error, results) => {
                 if (error) {
-                    console.error('Error deleting oauth state and code verifier', error);
-                    return res.status(500).json({ error: 'Internal Server Error' });
+                    return handleErrorResponse(res, error, 'Error getting oauth state');
                 }
             });
 
             res.status(200).json(results.rows[0]);
         });
     } catch (error) {
-        console.error('Error getting oauth state and code verifier', error);
-        return res.status(500).json({ error: 'Internal Server Error' });
+        return handleErrorResponse(res, error, 'Error getting oauth state and code verifier');
     }
 };
 
@@ -41,16 +38,15 @@ const getUserNotes = async (req, res) => {
         const userExists = await checkUserExists(userEmail);
 
         if (!userExists) {
-            return res.status(404).json({ error: 'User not found' });
+            return handleErrorResponse(res, new Error('User not found'), 'Error getting user notes');
         }
 
         pool.query(queries.getUserNotes, [userEmail], (error, results) => {
             if (error) {
-                console.error('Error executing query', error);
-                return res.status(500).json({ error: 'Internal Server Error' });
+                return handleErrorResponse(res, error, 'Error getting user notes');
             }
             if (results.rows.length === 0) {
-                return res.status(404).json({ error: 'No notes found for the specified user' });
+                return handleErrorResponse(res, new Error('No notes found for the specified user'), 'Error getting user notes');
             }
             res.status(200).json(results.rows);
         });
@@ -67,16 +63,15 @@ const getUserTodoItems = async (req, res) => {
         const userExists = await checkUserExists(userEmail);
 
         if (!userExists) {
-            return res.status(404).json({ error: 'User not found' });
+            return handleErrorResponse(res, new Error('User not found'), 'Error getting user todo items');
         }
 
         pool.query(queries.getUserTodoItems, [userEmail], (error, results) => {
             if (error) {
-                console.error('Error executing query', error);
-                return res.status(500).json({ error: 'Internal Server Error' });
+                return handleErrorResponse(res, error, 'Error getting user todo item');
             }
             if (results.rows.length === 0) {
-                return res.status(404).json({ error: 'No todo items found for the specified user' });
+                return handleErrorResponse(res, new Error('No todo items found for the specified user'), 'Error getting  user todo items');
             }
             res.status(200).json(results.rows);
         });
@@ -93,16 +88,15 @@ const getUserTimeTrackerItems = async (req, res) => {
         const userExists = await checkUserExists(userEmail);
 
         if (!userExists) {
-            return res.status(404).json({ error: 'User not found' });
+            return handleErrorResponse(res, new Error('User not found'), 'Error getting user time tracker item');
         }
         
         pool.query(queries.getUserTimeTrackerItems, [userEmail], (error, results) => {
             if (error) {
-                console.error('Error executing query', error);
-                return res.status(500).json({ error: 'Internal Server Error' });
+                return handleErrorResponse(res, error, 'Error getting user time tracker item');
             }
             if (results.rows.length === 0) {
-                return res.status(404).json({ error: 'No time tracker items found for the specified user' });
+                return handleErrorResponse(res, new Error('No time tracker items found for the specified user'), 'Error getting user time tracker item');
             }
             res.status(200).json(results.rows);
         });
@@ -119,16 +113,15 @@ const getUserAppointments = async (req, res) => {
         const userExists = await checkUserExists(userEmail);
 
         if (!userExists) {
-            return res.status(404).json({ error: 'User not found' });
+            return handleErrorResponse(res, new Error('User not found'), 'Error getting user appointments');
         }
         
         pool.query(queries.getUserAppointments, [userEmail], (error, results) => {
             if (error) {
-                console.error('Error executing query', error);
-                return res.status(500).json({ error: 'Internal Server Error' });
+                return handleErrorResponse(res, error, 'Error getting user appointments');
             }
             if (results.rows.length === 0) {
-                return res.status(404).json({ error: 'No appointments found for the specified user' });
+                return handleErrorResponse(res, new Error('No appointments found for the specified user'), 'Error getting user appointments');
             }
             res.status(200).json(results.rows);
         });
@@ -141,7 +134,7 @@ const updateIsDeleted = async (req, res) => {
     const { id, table } = req.params;
 
     if (!allowedTables.includes(table)) {
-        return res.status(400).json({ error: "Invalid table name" });
+        return handleErrorResponse(res, new Error("Invalid table name"), 'Error deleting item');
     }
 
     try {
@@ -151,16 +144,15 @@ const updateIsDeleted = async (req, res) => {
         const userExists = await checkUserExists(userEmail);
 
         if (!userExists) {
-            return res.status(404).json({ error: 'User not found' });
+            return handleErrorResponse(res, new Error("User not found"), 'Error deleting item');
         }
         
         pool.query(queries.updateIsDeleted(table), [id, userEmail], (error, results) => {
             if (error) {
-                console.error('Error executing query', error);
-                return res.status(500).json({ error: 'Internal Server Error' });
+                return handleErrorResponse(res, error, 'Error deleting item');
             }
             if (results.rows.length === 0) {
-                return res.status(404).json({ error: `No ${table} item found for the specified user email or already marked as deleted` });
+                return handleErrorResponse(res, new Error(`No ${table} item found for the specified user email or already marked as deleted`), 'Error creating appointment');
             }
             res.status(200).json(results.rows[0]);
         });
@@ -179,16 +171,15 @@ const updateTodoItemCompleted = async (req, res) => {
         const userExists = await checkUserExists(userEmail);
 
         if (!userExists) {
-            return res.status(404).json({ error: 'User not found' });
+            return handleErrorResponse(res, new Error("User not found"), 'Error updating Todo Item');
         }
         
         pool.query(queries.updateTodoItemCompleted, [id, userEmail], (error, results) => {
             if (error) {
-                console.error('Error executing query', error);
-                return res.status(500).json({ error: 'Internal Server Error' });
+                return handleErrorResponse(res, error, 'Error updating Todo Item');
             }
             if (results.rows.length === 0) {
-                return res.status(404).json({ error: 'Todo item not found for the specified user' });
+                return handleErrorResponse(res, new Error("Todo item not found for the specified user"), 'Error Updating todo item');
             }
             res.status(200).json(results.rows[0]);
         });
@@ -208,20 +199,19 @@ const updateTimeUnit = async (req, res) => {
         const userExists = await checkUserExists(userEmail);
 
         if (!userExists) {
-            return res.status(404).json({ error: 'User not found' });
+            return handleErrorResponse(res, new Error("User not found"), 'Error updating time unit');
         }
         
-        if (![1, 2, 3].includes(time_unit)) {
-            return res.status(400).json({ error: 'Invalid time unit value. Must be 1 or 2.' });
+        if (![1, 2].includes(time_unit)) {
+            return handleErrorResponse(res, new Error('Invalid time unit value. Must be 1 or 2.'), 'Error updating time unit');
         }
         
         pool.query(queries.updateTimeUnit, [time_unit, itemId, userEmail], (error, results) => {
             if (error) {
-                console.error('Error executing query', error);
-                return res.status(500).json({ error: 'Internal Server Error' });
+                return handleErrorResponse(res, error, 'Error updating time unit');
             }
             if (results.rows.length === 0) {
-                return res.status(404).json({ error: 'Time tracker item not found or you do not have permission to update it.' });
+                return handleErrorResponse(res, new Error("Time tracker item not found or you do not have permission to update it."), 'Error Updating time Unit');
             }
             res.status(200).json(results.rows[0]);
         });
@@ -229,7 +219,6 @@ const updateTimeUnit = async (req, res) => {
         return handleErrorResponse(res, error, 'Error getting user email');
     }
 };
-
 
 const updateTimeTrackerItemLength = async (req, res) => {
     const itemId = req.params.id;
@@ -242,21 +231,19 @@ const updateTimeTrackerItemLength = async (req, res) => {
         const userExists = await checkUserExists(userEmail);
 
         if (!userExists) {
-            return res.status(404).json({ error: 'User not found' });
+            return handleErrorResponse(res, new Error("User not found"), 'Error updating Time Tracker Item Length');
         }
-        
 
         if (!Number.isInteger(length) || length <= 0) {
-            return res.status(400).json({ error: 'Length must be a positive integer' });
+            return handleErrorResponse(res, new Error('Length must be a positive integer'), 'Error updating Time Tracker Item Length');
         }
 
         pool.query(queries.updateTimeTrackerItemLength, [length, itemId, userEmail], (error, results) => {
             if (error) {
-                console.error('Error executing query', error);
-                return res.status(500).json({ error: 'Internal Server Error' });
+                return handleErrorResponse(res, error, 'Error updating Time Tracker Item Length');;
             }
             if (results.rows.length === 0) {
-                return res.status(404).json({ error: 'Time tracker item not found or you do not have permission to update it.' });
+                return handleErrorResponse(res, new Error('Time tracker item not found or you do not have permission to update it.'), 'Error updating Time Tracker Item Length');
             }
             res.status(200).json(results.rows[0]);
         });
@@ -331,12 +318,11 @@ const createTodoItem = async (req, res) => {
         const userExists = await checkUserExists(userEmail);
 
         if (!userExists) {
-            return res.status(404).json({ error: 'User not found' });
+            return handleErrorResponse(res, new Error("User not found"), 'Error creating todo item');
         }
-        
 
         if (!item) {
-            return res.status(400).json({ error: "Invalid input data" });
+            return handleErrorResponse(res, new Error("Invalid input data"), 'Error creating todo item');
         }
 
         pool.query(queries.createTodoItem, [userEmail, item], (error, results) => {
@@ -359,9 +345,8 @@ const createTimeTrackerItem = async (req, res) => {
         const userExists = await checkUserExists(userEmail);
 
         if (!userExists) {
-            return res.status(404).json({ error: 'User not found' });
+            return handleErrorResponse(res, new Error("User not found"), 'Error creating time tracker item');
         }
-        
 
         if (!description || !length || length <= 0 || ![1, 2].includes(time_unit)) {
             return handleErrorResponse(res, new Error("Invalid input data"), 'Error creating time tracker item');
@@ -369,8 +354,7 @@ const createTimeTrackerItem = async (req, res) => {
 
         pool.query(queries.createTimeTrackerItem, [userEmail, description, length, time_unit], (error, results) => {
             if (error) {
-                console.error('Error creating time tracker item', error);
-                return res.status(500).json({ error: 'Internal Server Error' });
+                return handleErrorResponse(res, error, 'Error creating time tracker item');
             }
             res.status(201).json(results.rows[0]);
         });
@@ -378,7 +362,6 @@ const createTimeTrackerItem = async (req, res) => {
         return handleErrorResponse(res, error, 'Error creating time tracker item');
     }
 };
-
 
 const createUser = async (req, res) => {
     try {
