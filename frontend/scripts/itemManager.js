@@ -221,7 +221,7 @@ function closeEvents()
     eventListPopUp.classList.add("hide");
 }
 
-function addNoteItem(noteObj){
+function addNoteItem(){
     const noteTitle = noteTitleInput.value;
     const noteContent = noteContentInput.value;
 
@@ -229,9 +229,10 @@ function addNoteItem(noteObj){
     {
     noteTitleInput.value = "";
     noteContentInput.value = "";
+    newNoteItem(noteTitle, noteContent);
     overlay.classList.add("hide");
     notePopUp.classList.add("hide");
-
+    displayNotes(getNotesFromDB());
     }
     else
     {
@@ -240,14 +241,17 @@ function addNoteItem(noteObj){
 
 }
 
-function addCheckListItem(checkObj)
+function addCheckListItem()
 {
     const checkContent = checkListContent.value;
     if(checkContent != "")
     {
-
+        checkListContent.value = "";
+        newCheckListItem(checkContent);
         overlay.classList.add("hide");
         checkListPopUp.classList.add("hide");
+        displayCheckItems(getCheckItemsFromDB());
+
     }
     else
     {
@@ -255,13 +259,16 @@ function addCheckListItem(checkObj)
     }
 }
 
-function addTimeItem() //createsAnHTMLElementForTimeItem
+function addTimeItem()
 {
     const timeContent = timeTrackContent.value;
     if(timeContent != "")
     {
+        timeTrackContent.value = "";
+        newTimeTrackItem(timeContent);
         overlay.classList.add("hide");
         timePopUp.classList.add("hide");
+        displayTimeTrackItems(getTimeTrackFromDB());
     }
     else
     {
@@ -620,20 +627,20 @@ function displayNotes(notesList)
         const sectionNode = document.createElement("section")
         const titleNode = document.createElement("h3");
         const contentNode = document.createElement("p");
-        const dateNode = document.createElement("h4");
+        //const dateNode = document.createElement("h4");
     
         const titleTextNode = document.createTextNode(noteTitle);
         const contentTextNode = document.createTextNode(noteContent);
-        var nowDate = dayjs();
-        const dateTextNode = document.createTextNode(nowDate.date() + "/" + (nowDate.month()+1) + "/" + nowDate.year());
+        //var nowDate = dayjs();
+        //const dateTextNode = document.createTextNode(nowDate.date() + "/" + (nowDate.month()+1) + "/" + nowDate.year());
 
         titleNode.appendChild(titleTextNode);
         contentNode.appendChild(contentTextNode);
-        dateNode.appendChild(dateTextNode);
+        //dateNode.appendChild(dateTextNode);
 
         sectionNode.appendChild(titleNode);
         sectionNode.appendChild(contentNode);
-        sectionNode.appendChild(dateNode);
+        //sectionNode.appendChild(dateNode);
 
         listNode.appendChild(sectionNode);
 
