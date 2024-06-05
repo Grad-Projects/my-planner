@@ -19,5 +19,6 @@ router.post("/create/time-tracker-items", controller.createTimeTrackerItem);
 router.post("/create/todo-items", controller.createTodoItem);
 router.post("/create/user", controller.createUser);
 router.post("/create/oauth-state", controller.createOauthStateAndCodeVerifier);
+router.post('/validate-token', controller.validateToken);
 
 module.exports = router;

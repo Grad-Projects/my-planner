@@ -1,16 +1,9 @@
-const hostname = window.location.hostname;
+import { clientId, cognitoDomain, backendUrl, redirectUri } from './apiConfig.js';
+
 const queryString = window.location.search;
 const urlParams = new URLSearchParams(queryString);
 const code = urlParams.get('code');
 const state = urlParams.get('state');
-const cognitoDomain = 'my-planner.auth.eu-west-1.amazoncognito.com';
-const clientId = '4k2e6jc066p8jsb6b86e90mm7j';
-let backendUrl = 'https://myplannerapi.projects.bbdgrad.com';
-let redirectUri = 'https://myplanner.projects.bbdgrad.com/callback.html';
-if (hostname.includes("localhost") || hostname.includes("127.0.0.1")) {
-  backendUrl = 'https://localhost:8080';
-  redirectUri = 'https://localhost:5500/callback.html';
-}
 let email;
 
 if (code && state) {
@@ -43,7 +36,6 @@ if (code && state) {
     code: code,
     redirect_uri: redirectUri
   });
-  console.log(`Body: ${body}`)
 
   try {
     const response = await fetch(tokenEndpoint, {
@@ -51,7 +43,6 @@ if (code && state) {
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
       body: body
     });
-    console.log(response);
 
     const tokens = await response.json();
     localStorage.setItem('accessToken', tokens.access_token);

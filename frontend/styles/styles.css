@@ -6,6 +6,7 @@
 
 body{
     background-color: rgb(253, 250, 251);
+    margin: 0;
 }
 
 h1{
@@ -22,7 +23,6 @@ ul{
     align-items: center;
     justify-content: space-between;
     flex-wrap: wrap;
-
 }
 
 .header h1{
@@ -50,20 +50,21 @@ ul{
     background-color: #ADE6E2;
 }
 
-#loginSection {
+#login {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     gap: 2em;
     height: 100vh;
+    margin: 0;
+    text-align: center;
 }
 
 #loginTitle {
     font-size: 2.5em;
     color: white;
     margin: 0;
-    /* text-transform: uppercase; */
     font-family: Arvo;
 }
 
@@ -130,6 +131,8 @@ ul{
     text-align: center;
     vertical-align: middle;
     width: 25%;
+    display: flex;
+    align-items: center;
 }
 
 
@@ -247,8 +250,10 @@ ul{
 .card{
     width: 30em;
     background-color: #ADE6E2;
-    height: 30em;
+    height: 32em;
     overflow: auto;
+    margin-bottom: 1em;
+    border-radius: 0.5em;
 
 }
 
@@ -448,5 +453,5 @@ h4{
   }
 
   .hide{
-    display:none;
+    display:none !important;
   }
