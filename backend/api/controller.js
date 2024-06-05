@@ -426,6 +426,23 @@ const createOauthStateAndCodeVerifier = async (req, res) => {
     }
 };
 
+const validateToken = async (req, res) => {
+    try{
+        const accessToken = req.accessToken;
+        const userEmail = await getUserEmail(accessToken);
+        const userExists = await checkUserExists(userEmail);
+
+        if (userExists) {
+            return res.status(200).json({ message: "Token is valid" });
+        } else {
+            return res.status(404).json({ message: "Token is not valid" });
+        }
+    } catch (error) {
+        console.error('Error validating token', error);
+        return res.status(500).json({ error: 'Internal Server Error' });
+    }
+};
+
 module.exports = {
     getOauthStateAndCodeVerifier,
     getUserNotes,
@@ -442,4 +459,5 @@ module.exports = {
     createTimeTrackerItem,
     createUser,
     createOauthStateAndCodeVerifier,
+    validateToken
 };

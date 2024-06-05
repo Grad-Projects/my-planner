@@ -6,6 +6,10 @@ const cognitoISP = new AWS.CognitoIdentityServiceProvider();
 
 async function getUserEmail(accessToken) 
 { 
+    if (!accessToken) {
+        throw new Error('Access token not provided');
+    }
+    
     const params = {
         AccessToken: accessToken
     };
