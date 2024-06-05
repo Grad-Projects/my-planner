@@ -23,6 +23,7 @@ if (hostname.includes("localhost") || hostname.includes("127.0.0.1")) {
   backendUrl = 'http://localhost:8080';
 }
 
+const baseUrl = "https://localhost:8080/api/v1";
 
 let noteList = document.getElementById("noteList");
 let overlay = document.getElementById("overlay");
@@ -202,6 +203,9 @@ function displayPageItems()
     displayTimeTrackItems(timeTest);
     console.log("wtf");
     getNotesFromDB();
+    getCheckItemsFromDB();
+    getTimeTrackFromDB();
+    getEventsFromDB();
 }
 
 displayPageItems();
@@ -1023,12 +1027,12 @@ async function postNewEventToDB(eventObject) {
 // Returns:
 // - notes: Object containing all retrieved notes data
 async function getNotesFromDB() {
-    const noteApiHelper = new ApiHelper("https://localhost:8080/api/v1");
-    console.log(noteApiHelper);
+  const apiHelper = new ApiHelper(baseUrl);
+    console.log(apiHelper);
     let notes = {};
   
     try {
-      const response = await noteApiHelper.get('/notes');
+      const response = await apiHelper.get('/notes');
       console.log('Notes retrieved successfully:', response);
         
       if (response) {
@@ -1046,7 +1050,7 @@ async function getNotesFromDB() {
   // - checkList: Object containing all retrieved checklist item data
   async function getCheckItemsFromDB() {
     let checkList = {};
-  
+    const apiHelper = new ApiHelper(baseUrl);
     try {
       const response = await apiHelper.get('/todo-items');
       console.log('Checklist items retrieved successfully:', response);
@@ -1066,6 +1070,7 @@ async function getNotesFromDB() {
   // - timeTracks: Object containing all retrieved time tracker item data
   async function getTimeTrackFromDB() {
     let timeTracks = {};
+    const apiHelper = new ApiHelper(baseUrl);
   
     try {
       const response = await apiHelper.get('/time-tracker-items');
@@ -1086,9 +1091,8 @@ async function getNotesFromDB() {
   // - events: Object containing all retrieved event data
   async function getEventsFromDB() {
     let events = {};
-  
-
     try {
+      const apiHelper = new ApiHelper(baseUrl);
       const response = await apiHelper.get('/appointments');
       console.log('Events retrieved successfully:', response);
   
@@ -1098,7 +1102,5 @@ async function getNotesFromDB() {
     } catch (error) {
       console.error('Error performing CRUD operation:', error);
     }
-  
-
     return events;
   }
