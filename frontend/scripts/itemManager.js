@@ -1,3 +1,91 @@
+
+class ApiHelper {
+    constructor(baseURL) {
+        this.baseURL = baseURL;
+    }
+
+    async post(endpoint, data) {
+        const url = `${this.baseURL}${endpoint}`;
+        const options = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        };
+
+        try {
+            const response = await fetch(url, options);
+            if (!response.ok) {
+                throw new Error(`Network response was not ok: ${response.statusText}`);
+            }
+            return await response.json();
+        } catch (error) {
+            console.error('There was a problem with the fetch operation:', error);
+            throw error;
+        }
+    }
+
+    async get(endpoint) {
+        const url = `${this.baseURL}${endpoint}`;
+
+        try {
+            const response = await fetch(url);
+            if (!response.ok) {
+                throw new Error(`Network response was not ok: ${response.statusText}`);
+            }
+            return await response.json();
+        } catch (error) {
+            console.error('There was a problem with the fetch operation:', error);
+            throw error;
+        }
+    }
+
+    async patch(endpoint, data) {
+        const url = `${this.baseURL}${endpoint}`;
+        const options = {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        };
+
+        try {
+            const response = await fetch(url, options);
+            if (!response.ok) {
+                throw new Error(`Network response was not ok: ${response.statusText}`);
+            }
+            return await response.json();
+        } catch (error) {
+            console.error('There was a problem with the fetch operation:', error);
+            throw error;
+        }
+    }
+
+    async toggle(endpoint) {
+        const url = `${this.baseURL}${endpoint}`;
+        const options = {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        };
+    
+        try {
+            const response = await fetch(url, options);
+            if (!response.ok) {
+                throw new Error(`Network response was not ok: ${response.statusText}`);
+            }
+            return await response.json();
+        } catch (error) {
+            console.error('There was a problem with the fetch operation:', error);
+            throw error;
+        }
+    }
+}
+
+
 window.deleteNoteItem = deleteNoteItem;
 window.deleteCheckItem = deleteCheckItem;
 window.deleteTimeItem = deleteTimeItem;
@@ -12,6 +100,17 @@ window.createCalendarEvent = createCalendarEvent;
 window.closeCalendar = closeCalendar;
 window.showCalendar = showCalendar;
 window.switchMonth = switchMonth;
+
+
+const hostname = window.location.hostname;
+const clientId = '4k2e6jc066p8jsb6b86e90mm7j';
+let backendUrl = 'https://myplannerapi.projects.bbdgrad.com';
+let redirectUri = 'https://myplanner.projects.bbdgrad.com/callback.html';
+if (hostname.includes("localhost") || hostname.includes("127.0.0.1")) {
+  backendUrl = 'https://localhost:8080';
+}
+const apiHelper = new ApiHelper(backendUrl+'/api/v1');
+
 
 let noteList = document.getElementById("noteList");
 let overlay = document.getElementById("overlay");
@@ -475,5 +574,354 @@ function makeWeekList()
         }
 }
 
+function displayEvents(eventsList)
+{
+    
+    //empty the display
+    while((eventListCard.getElementsByTagName("li")).length > 0) {
+	    eventListCard.removeChild(eventListCard.getElementsByTagName("li")[0]);
+    }
+    eventsList.forEach(element => {
+        const date = new Date(element.start_time);
 
+        const listNode = document.createElement("li");
+        listNode.classList.add("eventCard");
 
+        const titleNode = document.createElement("h3");
+        titleNode.classList.add("eventCardItem");
+        const titleText = document.createTextNode(element.title);
+        titleNode.appendChild(titleText);
+
+        const articleNode = document.createElement("article");
+        articleNode.classList.add("eventCardItem");
+        const pNode = document.createElement("p");
+        const descNode = document.createTextNode(element.description);
+        pNode.appendChild(descNode);
+        articleNode.appendChild(pNode);
+
+        const eventSectionNode = document.createElement("section");
+        eventSectionNode.classList.add("eventTimes");
+        eventSectionNode.classList.add("eventCardItem");
+
+        const dateNode = document.createElement("h3");
+        const dateTextNode = document.createTextNode(date.getUTCDate() + "/" + months[date.getUTCMonth()] + "/" + date.getUTCFullYear());
+        dateNode.appendChild(dateTextNode);
+
+        const timeNode = document.createElement("h3");
+        const timeTextNode = document.createTextNode(date.getUTCHours() + ":00");
+        timeNode.appendChild(timeTextNode);
+
+        const lengthNode = document.createElement("h3");
+        const lengthTextNode = document.createTextNode(element.length + " hours");
+        lengthNode.appendChild(lengthTextNode);
+
+        eventSectionNode.appendChild(dateNode);
+        eventSectionNode.appendChild(timeNode);
+        eventSectionNode.appendChild(lengthNode);
+
+        listNode.appendChild(titleNode);
+        listNode.appendChild(articleNode);
+        listNode.appendChild(eventSectionNode);
+
+        eventListCard.appendChild(listNode);
+    });
+}
+
+// ** Creates a new note item in the database **
+// Parameters:
+// - noteTitle: Title of the note (string)
+// - noteContent: Content of the note (string)
+async function newNoteItem(noteTitle, noteContent) {
+
+    const noteObject = {
+      title: noteTitle,
+      content: noteContent
+    };
+  
+    try {
+      await postNewNoteToDB(noteObject);
+    } catch (error) {
+      console.error('Error creating new note item:', error);
+    }
+  }
+  
+  // ** Creates a new checklist item in the database **
+  // Parameters:
+  // - checkListItem: Text content of the checklist item (string)
+  async function newCheckListItem(checkListItem) {
+    const checkListItemObject = {
+      item: checkListItem
+    };
+  
+    try {
+      await postNewCheckListItemToDB(checkListItemObject);
+    } catch (error) {
+      console.error('Error creating new note item:', error);
+    }
+  }
+  
+  // ** Creates a new time track item in the database **
+  // Parameters:
+  // - description: Description of the timed activity (string)
+  // - length: Duration of the activity (number)
+  // - time_unit: Unit of time for the length (e.g., "minutes", "hours")
+  async function newTimeTrackItem(description, length, time_unit) {
+    const timeTrackItemObject = {
+      description: description,
+      length: length,
+      time_unit: time_unit
+    };
+  
+    try {
+      await postNewTimeTrackItemToDB(timeTrackItemObject);
+    } catch (error) {
+      console.error('Error creating new note item:', error);
+    }
+  }
+  
+  // ** Creates a new event item in the database **
+  // Parameters:
+  // - title: Title of the event (string)
+  // - description: Description of the event (string)
+  // - start_date: Start date of the event in YYYY-MM-DD format (string)
+  // - start_time: Start time of the event in HH:MM format (string)
+  // - length: Length of the event (number)
+  async function newEventItem(title, description, start_date, start_time, length) {
+    const eventItemObject = {
+      title: title,
+      description: description,
+      start_time: start_date + "T" + start_time + ":00Z",
+      length: length
+    };
+  
+    try {
+      await postNewEventToDB(eventItemObject);
+    } catch (error) {
+      console.error('Error creating new note item:', error);
+    }
+  }
+  
+  // ** Posts a new note object to the database **
+  // Parameters:
+  // - noteObject: Object containing note data (see newNoteItem function)
+  async function postNewNoteToDB(noteObject) {
+    try {
+      const response = await apiHelper.post('/create/notes', noteObject);
+      console.log('Note successfully added:', response);
+    } catch (error) {
+      console.error('Error performing CRUD operation:', error);
+    }
+  }
+  
+  // ** Posts a new checklist item object to the database  **
+  // Parameters:
+  // - checkListObject: Object containing checklist item data (see newCheckListItem function)
+  async function postNewCheckListItemToDB(checkListObject) {
+    try {
+      const response = await apiHelper.post('/create/todo-items', checkListObject);
+      console.log('CheckListItem successfully added:', response);
+    } catch (error) {
+      console.error('Error performing CRUD operation:', error);
+    }
+  }
+  
+  // ** Posts a new time track item object to the database  **
+  // Parameters:
+  // - timeTrackObject: Object containing time track item data (see newTimeTrackItem function)
+  async function postNewTimeTrackItemToDB(timeTrackObject) {
+    try {
+      const response = await apiHelper.post('/create/time-tracker-items', timeTrackObject);
+      console.log('TimeTrackItem successfully added:', response);
+    } catch (error) {
+      console.error('Error performing CRUD operation:', error);
+    }
+  }
+
+// ** Posts a new event object to the database  **
+// Parameters:
+// - eventObject: Object containing event item data (see newEventItem function)
+async function postNewEventToDB(eventObject) {
+    try {
+      const response = await apiHelper.post('/create/appointments', eventObject);
+      console.log('Event successfully added:', response);
+    } catch (error) {
+      console.error('Error performing CRUD operation:', error);
+    }
+  }
+  
+  // ** Marks a note as deleted in the database **
+  // Parameters:
+  // - noteObjectID: Unique identifier of the note to delete (string)
+  async function markNoteDeleted(noteObjectID) {
+    try {
+      const response = await apiHelper.toggle('/remove/Notes/' + noteObjectID);
+      console.log('Note successfully removed:', response);
+    } catch (error) {
+      console.error('Error performing CRUD operation:', error);
+    }
+  }
+  
+  // ** Marks a checklist item as deleted in the database  **
+  // Parameters:
+  // - checkItemObjectID: Unique identifier of the checklist item to delete (string)
+  async function markCheckItemDeleted(checkItemObjectID) {
+    try {
+      const response = await apiHelper.toggle('/remove/TodoItems/' + checkItemObjectID);
+      console.log('Checklist item successfully removed:', response);
+    } catch (error) {
+      console.error('Error performing CRUD operation:', error);
+    }
+  }
+  
+  // ** Marks a time track item as deleted in the database  **
+  // Parameters:
+  // - timeTrackObjectID: Unique identifier of the time track item to delete (string)
+  async function markTimeTrackDeleted(timeTrackObjectID) {
+    try {
+      const response = await apiHelper.toggle('/remove/TimeTrackerItems/' + timeTrackObjectID);
+      console.log('Time Tracker item successfully removed:', response);
+    } catch (error) {
+      console.error('Error performing CRUD operation:', error);
+    }
+  }
+  
+  // ** Marks a event item as deleted in the database  **
+  // Parameters:
+  // - eventObjectID: Unique identifier of the event item to delete (string)
+  async function markEventDeleted(eventObjectID) {
+    try {
+      const response = await apiHelper.toggle('/remove/Appointments/' + eventObjectID);
+      console.log('Event successfully removed:', response);
+    } catch (error) {
+      console.error('Error performing CRUD operation:', error);
+    }
+  }
+  
+  // ** Toggles the completion status of a checklist item  **
+  // Parameters:
+  // - checkItemObjectID: Unique identifier of the checklist item (string)
+  async function toggleCheckListItemCompleted(checkItemObjectID) {
+    try {
+      const response = await apiHelper.toggle('/update/todo-item-completion/' + checkItemObjectID);
+      console.log('checklist item completion toggled', response);
+    } catch (error) {
+      console.error('Error performing CRUD operation:', error);
+    }
+  }
+  
+  
+  
+  // ** Updates the time unit of a time track item  **
+  // Parameters:
+  // - timeTrackObjectID: Unique identifier of the time track item (string)
+  // - newTimeUnitID: Unique identifier of the new time unit (string)
+  async function updateTimeTrackerTimeUnit(timeTrackObjectID, newTimeUnitID) {
+    const timeUnitObject = {
+      time_unit: newTimeUnitID,
+    };
+    try {
+      const response = await apiHelper.patch('/update/time-tracker-unit/' + timeTrackObjectID, timeUnitObject);
+      console.log('Time Tracker item successfully updated:', response);
+    } catch (error) {
+      console.error('Error performing CRUD operation:', error);
+    }
+  }
+  
+  // ** Updates the length of a time track item  **
+  // Parameters:
+  // - timeTrackObjectID: Unique identifier of the time track item (string)
+  // - newLength: New length of the time track item (number)
+  async function updateTimeTrackLength(timeTrackObjectID, newLength) {
+  
+    const lengthObject = {
+      length: newLength,
+    };
+    try {
+      const response = await apiHelper.patch('/update/time-tracker-length/' + timeTrackObjectID, lengthObject);
+      console.log('Time Tracker item successfully updated:', response);
+    } catch (error) {
+      console.error('Error performing CRUD operation:', error);
+    }
+  }
+
+// ** Retrieves all notes from the database  **
+// Returns:
+// - notes: Object containing all retrieved notes data
+async function getNotesFromDB() {
+    let notes = {};
+  
+    try {
+      const response = await apiHelper.get('/notes');
+      console.log('Notes retrieved successfully:', response);
+  
+      if (response) {
+        notes = response;
+      }
+    } catch (error) {
+      console.error('Error performing CRUD operation:', error);
+    }
+  
+    return notes;
+  }
+  
+  // ** Retrieves all checklist items from the database  **
+  // Returns:
+  // - checkList: Object containing all retrieved checklist item data
+  async function getCheckItemsFromDB() {
+    let checkList = {};
+  
+    try {
+      const response = await apiHelper.get('/todo-items');
+      console.log('Checklist items retrieved successfully:', response);
+  
+      if (response) {
+        checkList = response;
+      }
+    } catch (error) {
+      console.error('Error performing CRUD operation:', error);
+    }
+  
+    return checkList;
+  }
+  
+  // ** Retrieves all time track items from the database  **
+  // Returns:
+  // - timeTracks: Object containing all retrieved time tracker item data
+  async function getTimeTrackFromDB() {
+    let timeTracks = {};
+  
+    try {
+      const response = await apiHelper.get('/time-tracker-items');
+      console.log('Time tracker items retrieved successfully:', response);
+  
+      if (response) {
+        timeTracks = response;
+      }
+    } catch (error) {
+      console.error('Error performing CRUD operation:', error);
+    }
+  
+    return timeTracks;
+  }
+  
+  // ** Retrieves all events from the database  **
+  // Returns:
+  // - events: Object containing all retrieved event data
+  async function getEventsFromDB() {
+    let events = {};
+  
+
+    try {
+      const response = await apiHelper.get('/appointments');
+      console.log('Events retrieved successfully:', response);
+  
+      if (response) {
+        events = response;
+      }
+    } catch (error) {
+      console.error('Error performing CRUD operation:', error);
+    }
+  
+
+    return events;
+  }
