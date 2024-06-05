@@ -248,8 +248,10 @@ ul{
 .card{
     width: 30em;
     background-color: #ADE6E2;
-    height: 30em;
+    height: 32em;
     overflow: auto;
+    margin-bottom: 1em;
+    border-radius: 0.5em;
 
 }
 
