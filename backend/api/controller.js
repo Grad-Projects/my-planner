@@ -1,4 +1,5 @@
 const getPool = require("../database_connection");
+const handleErrorResponse = require("./error_util.js")
 const queries = require("./queries");
 const { getUserEmail } = require("./cognito_utils.js");
 const { allowedTables, checkUserExists } = require("./utils.js");
@@ -54,8 +55,7 @@ const getUserNotes = async (req, res) => {
             res.status(200).json(results.rows);
         });
     } catch (error) {
-        console.error('Error getting user email', error);
-        return res.status(500).json({ error: 'Internal Server Error' });
+        return handleErrorResponse(res, error, 'Error getting user email');
     }
 };
 
@@ -81,8 +81,7 @@ const getUserTodoItems = async (req, res) => {
             res.status(200).json(results.rows);
         });
     } catch (error) {
-        console.error('Error getting user email', error);
-        return res.status(500).json({ error: 'Internal Server Error' });
+        return handleErrorResponse(res, error, 'Error getting user email');
     }
 };
 
@@ -108,8 +107,7 @@ const getUserTimeTrackerItems = async (req, res) => {
             res.status(200).json(results.rows);
         });
     } catch (error) {
-        console.error('Error getting user email', error);
-        return res.status(500).json({ error: 'Internal Server Error' });
+        return handleErrorResponse(res, error, 'Error getting user email');
     }
 };
 
@@ -135,8 +133,7 @@ const getUserAppointments = async (req, res) => {
             res.status(200).json(results.rows);
         });
     } catch (error) {
-        console.error('Error getting user email', error);
-        return res.status(500).json({ error: 'Internal Server Error' });
+        return handleErrorResponse(res, error, 'Error getting user email');
     }
 };
 
@@ -168,8 +165,7 @@ const updateIsDeleted = async (req, res) => {
             res.status(200).json(results.rows[0]);
         });
     } catch (error) {
-        console.error('Error getting user email', error);
-        return res.status(500).json({ error: 'Internal Server Error' });
+        return handleErrorResponse(res, error, 'Error getting user email');
     }
 };
 
@@ -197,8 +193,7 @@ const updateTodoItemCompleted = async (req, res) => {
             res.status(200).json(results.rows[0]);
         });
     } catch (error) {
-        console.error('Error getting user email', error);
-        return res.status(500).json({ error: 'Internal Server Error' });
+        return handleErrorResponse(res, error, 'Error getting user email');
     }
 };
 
@@ -231,8 +226,7 @@ const updateTimeUnit = async (req, res) => {
             res.status(200).json(results.rows[0]);
         });
     } catch (error) {
-        console.error('Error getting user email', error);
-        return res.status(500).json({ error: 'Internal Server Error' });
+        return handleErrorResponse(res, error, 'Error getting user email');
     }
 };
 
@@ -267,8 +261,7 @@ const updateTimeTrackerItemLength = async (req, res) => {
             res.status(200).json(results.rows[0]);
         });
     } catch (error) {
-        console.error('Error getting user email', error);
-        return res.status(500).json({ error: 'Internal Server Error' });
+        return handleErrorResponse(res, error, 'Error getting user email');
     }
 };
 
@@ -282,24 +275,22 @@ const createAppointment = async (req, res) => {
         const userExists = await checkUserExists(userEmail);
 
         if (!userExists) {
-            return res.status(404).json({ error: 'User not found' });
+            return handleErrorResponse(res, new Error("User not found"), 'Error creating appointment');
         }
         
 
         if (!title || !description || !start_time || length <= 0) {
-            return res.status(400).json({ error: "Invalid input data" });
+            return handleErrorResponse(res, new Error("Invalid input data"), 'Error creating appointment');
         }
 
         pool.query(queries.createAppointment, [userEmail, title, description, start_time, length], (error, results) => {
             if (error) {
-                console.error('Error creating appointment', error);
-                return res.status(500).json({ error: 'Internal Server Error' });
+                return handleErrorResponse(res, error, 'Error creating appointment');
             }
             res.status(201).json(results.rows[0]);
         });
     } catch (error) {
-        console.error('Error creating appointment', error);
-        return res.status(500).json({ error: 'Internal Server Error' });
+        return handleErrorResponse(res, error, 'Error creating appointment');
     }
 };
 
@@ -312,24 +303,22 @@ const createNote = async (req, res) => {
         const userExists = await checkUserExists(userEmail);
 
         if (!userExists) {
-            return res.status(404).json({ error: 'User not found' });
+            return handleErrorResponse(res, new Error("User not found"), 'Error creating note');
         }
-        
+
 
         if (!title || !content) {
-            return res.status(400).json({ error: "Invalid input data" });
+            return handleErrorResponse(res, new Error("Invalid input data"), 'Error creating note');
         }
 
         pool.query(queries.createNote, [userEmail, title, content], (error, results) => {
             if (error) {
-                console.error('Error creating note', error);
-                return res.status(500).json({ error: 'Internal Server Error' });
+                return handleErrorResponse(res, error, 'Error creating note');
             }
             res.status(201).json(results.rows[0]);
         });
     } catch (error) {
-        console.error('Error creating note', error);
-        return res.status(500).json({ error: 'Internal Server Error' });
+        return handleErrorResponse(res, error, 'Error creating note');
     }
 };
 
@@ -352,14 +341,12 @@ const createTodoItem = async (req, res) => {
 
         pool.query(queries.createTodoItem, [userEmail, item], (error, results) => {
             if (error) {
-                console.error('Error creating todo item', error);
-                return res.status(500).json({ error: 'Internal Server Error' });
+                return handleErrorResponse(res, error, 'Error creating todo item');
             }
             res.status(201).json(results.rows[0]);
         });
     } catch (error) {
-        console.error('Error creating todo item', error);
-        return res.status(500).json({ error: 'Internal Server Error' });
+        return handleErrorResponse(res, error, 'Error creating todo item');
     }
 };
 
@@ -377,7 +364,7 @@ const createTimeTrackerItem = async (req, res) => {
         
 
         if (!description || !length || length <= 0 || ![1, 2].includes(time_unit)) {
-            return res.status(400).json({ error: "Invalid input data" });
+            return handleErrorResponse(res, new Error("Invalid input data"), 'Error creating time tracker item');
         }
 
         pool.query(queries.createTimeTrackerItem, [userEmail, description, length, time_unit], (error, results) => {
@@ -388,8 +375,7 @@ const createTimeTrackerItem = async (req, res) => {
             res.status(201).json(results.rows[0]);
         });
     } catch (error) {
-        console.error('Error creating time tracker item', error);
-        return res.status(500).json({ error: 'Internal Server Error' });
+        return handleErrorResponse(res, error, 'Error creating time tracker item');
     }
 };
 
@@ -408,8 +394,7 @@ const createUser = async (req, res) => {
         await pool.query(queries.createUser, [userEmail]);
         res.status(201).json({ message: 'User created successfully', email: userEmail});
     } catch (error) {
-        console.error('Error creating user', error);
-        return res.status(500).json({ error: 'Internal Server Error' });
+        return handleErrorResponse(res, error, 'Error creating user');
     }
 };
 
@@ -421,8 +406,7 @@ const createOauthStateAndCodeVerifier = async (req, res) => {
         pool.query(queries.createOauthStateAndCodeVerifier, [state, code_verifier]);
         res.status(201).json({ message: 'State and code verifier created successfully' });
     } catch (error) {
-        console.error('Error creating oauth state and code verifier', error);
-        return res.status(500).json({ error: 'Internal Server Error' });
+        return handleErrorResponse(res, error, 'Error creating oauth state and code verifier');
     }
 };
 
@@ -438,8 +422,7 @@ const validateToken = async (req, res) => {
             return res.status(404).json({ message: "Token is not valid" });
         }
     } catch (error) {
-        console.error('Error validating token', error);
-        return res.status(500).json({ error: 'Internal Server Error' });
+        return handleErrorResponse(res, error, 'Error validating token');
     }
 };
 
