@@ -5,8 +5,14 @@
 }
 
 body{
+    display: flex;
+    flex-direction: column;
+    align-items: space-between;
+    justify-content: start;
     background-color: rgb(253, 250, 251);
     margin: 0;
+    padding: 0 5%;
+    gap: 1em;
 }
 
 h1{
@@ -15,6 +21,7 @@ h1{
 
 ul{
     list-style-type: none;
+    padding: 0;
 }
 
 .header{
@@ -23,10 +30,11 @@ ul{
     align-items: center;
     justify-content: space-between;
     flex-wrap: wrap;
+    width: 100%;
 }
 
 .header h1{
-    margin: 0.3em;
+    margin: 0.3em 0 0;
 }
 
 .logoutButton{
@@ -103,19 +111,6 @@ ul{
     margin: 0;
 }
 
-.checkItem{
-    display: flex;
-    flex-direction: row;
-    align-items: baseline;
-    justify-content: space-between;
-    background-color: white;
-    border-radius: 0.5em;
-    margin-left: -0.9em;
-    width: 95%;
-    height: 3.5em;
-    margin-bottom: 0.5em;
-}
-
 .checkDesc{
     padding: 0.3em;
     text-align: center;
@@ -135,29 +130,33 @@ ul{
     align-items: center;
 }
 
-
 .weekList{
     list-style-type: none;
     display: flex;
+    flex-wrap: wrap;
     flex-direction: row;
     align-items: center;
     justify-content: space-around;
 
     background-color: #ADE6E2;
     border-radius: 0.5em;
-    max-width: 90em;
-    margin:auto;
-    margin-bottom: 1em;
+    width: 100%;
+    padding: .5em 0;
+    margin: 0;
     overflow: auto;
+    gap: .5em;
 }
 
 
 .weekItem{
+    display: flex;
+    justify-content: center;
+    text-align: center;
     background-color: white;
     border-radius: 0.5em;
-    width: 10em;
-    margin: 1em;
-    transition: 0.5s
+    padding: .5em 1em;
+    transition: 0.5s;
+    min-width: 6em;
 }
 
 .hoverCalendar:hover
@@ -203,8 +202,6 @@ ul{
     background-color: rgb(255, 255, 255);
     border-radius: 0.5em;
     width: 95%;
-    margin: 0.5em;
-    margin-left: -1em;
 
     justify-content: space-around;
 }
@@ -244,28 +241,34 @@ ul{
     flex-direction: row;
     flex-wrap: wrap;
     align-items: center;
-    justify-content: space-around;
+    justify-content: space-between;
+    gap: 1em;
 }
 
 .card{
-    width: 30em;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: start;
+    width: clamp(28em, 30%, 70%);
     background-color: #ADE6E2;
     height: 32em;
     overflow: auto;
-    margin-bottom: 1em;
     border-radius: 0.5em;
+}
 
+.cardHeader {
+    align-self: start;
+    margin: 0;
 }
 
 .innerCard{
     display: flex;
     flex-direction: row;
-    align-items: baseline;
+    align-items: center;
     background-color: rgb(255, 255, 255);
     border-radius: 0.5em;
     width: 95%;
-    margin: 0.5em;
-    margin-left: -1em;
 
     justify-content: space-between;
 }
@@ -294,18 +297,14 @@ p{
     padding: 1em;
 }
 
-.timeItem{
-    background-color: white;
-    padding: 0.3em;
-    width: 95%;
+#noteList, #checkList, #timeList {
     display: flex;
-    flex-direction: row;
-    margin-left: -1em;
-    justify-content: space-around;
-    align-items: baseline;
-    border-radius: 0.5em;
-    margin-bottom:0.5em;
-
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1em;
+    padding: 0;
+    width: 95%;
 }
 
 .eventsTitle{
@@ -313,7 +312,8 @@ p{
 }
 
 .inputTime{
-    width: 20%;
+    max-width: 20%;
+    margin-left: auto;
 }
 
 .makeNotePopUp{

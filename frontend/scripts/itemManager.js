@@ -747,7 +747,7 @@ function displayCheckItems(checkItemsList)
             {
                 const checkContent = item.item;
                 const listNode = document.createElement("li");
-                listNode.classList.add("checkItem");
+                listNode.classList.add("innerCard");
                 //PERHAPS: Here when we create the item in the db we make the ID of the li element the id in the db
         
                 const pNode = document.createElement("p");
@@ -796,7 +796,7 @@ function displayTimeTrackItems(timeTrackItemsList)
                 const timeLength = item.length;
                 const timeUnit = item.time_unit;
                 const timeListNode = document.createElement("li");
-                timeListNode.classList.add("timeItem");
+                timeListNode.classList.add("innerCard");
                 const timeDescNode = document.createElement("p");
                 const timeDescTextNode = document.createTextNode(timeContent);
                 timeDescNode.appendChild(timeDescTextNode);
