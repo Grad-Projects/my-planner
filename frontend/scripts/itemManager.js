@@ -830,6 +830,7 @@ async function postNewEventToDB(eventObject) {
   // - timeTrackObjectID: Unique identifier of the time track item (string)
   // - newTimeUnitID: Unique identifier of the new time unit (string)
   async function updateTimeTrackerTimeUnit(timeTrackObjectID, newTimeUnitID) {
+    const apiHelper = new ApiHelper(baseUrl);
     const timeUnitObject = {
       time_unit: newTimeUnitID,
     };
