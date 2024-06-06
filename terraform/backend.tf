@@ -253,9 +253,9 @@ resource "aws_elastic_beanstalk_environment" "env" {
     value     = "arn:aws:acm:eu-west-1:774089569115:certificate/9db79eee-1366-4ac6-b2c8-f3784e9371d2"
   }
   setting {
-    namespace = "aws:elasticbeanstalk:application",
-    name = "Application Healthcheck URL",
-    value = "HTTPS:443/health"
+    namespace = "aws:elasticbeanstalk:application"
+    name      = "Application Healthcheck URL"
+    value     = "HTTPS:443/health"
   }
   dynamic "setting" {
     for_each = var.environment_variables
