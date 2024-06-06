@@ -13,6 +13,7 @@ body{
     margin: 0;
     padding: 0 5%;
     gap: 1em;
+    overflow-wrap: break-word;
 }
 
 h1{
@@ -281,8 +282,19 @@ ul{
     width: 95%;
 
     justify-content: space-between;
+    
 }
 
+
+.noteTextHolder{
+    inline-size: 20em;
+    word-wrap: break-word;
+
+}
+.timeTextHolder{
+    inline-size: 10em;
+    word-wrap: break-word;
+}
 .eventCardHolder{
     display:flex;
     overflow: auto;
@@ -420,6 +432,7 @@ p{
   color: var(--blue-grey-600);
   margin:auto;
   text-align: center;
+  overflow-wrap: break-word;
 }
 
 .doneButton{
