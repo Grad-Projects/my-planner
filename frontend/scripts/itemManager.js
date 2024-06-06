@@ -841,7 +841,7 @@ async function postNewEventToDB(eventObject) {
   async function updateTimeTrackerTimeUnit(timeTrackObjectID, newTimeUnitID) {
     const apiHelper = new ApiHelper(baseUrl);
     const timeUnitObject = {
-      time_unit: newTimeUnitID,
+      time_unit: parseInt(newTimeUnitID),
     };
     try {
       const response = await apiHelper.patch('/update/time-tracker-unit/' + timeTrackObjectID, timeUnitObject);
