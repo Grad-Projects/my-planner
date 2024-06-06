@@ -664,7 +664,7 @@ function displayEvents(eventsList)
         eventSectionNode.classList.add("eventCardItem");
 
         const dateNode = document.createElement("h3");
-        const dateTextNode = document.createTextNode((date.getUTCDate()+1) + "/" + months[date.getUTCMonth()] + "/" + date.getUTCFullYear());
+        const dateTextNode = document.createTextNode((date.getDate()) + "/" + months[date.getUTCMonth()] + "/" + date.getUTCFullYear());
         dateNode.appendChild(dateTextNode);
 
         const timeNode = document.createElement("h3");
@@ -753,6 +753,7 @@ async function newNoteItem(noteTitle, noteContent) {
       start_time: start_date,
       length: length
     };
+    console.log(start_date);
   
     try {
       await postNewEventToDB(eventItemObject);

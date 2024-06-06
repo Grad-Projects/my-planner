@@ -61,21 +61,21 @@
 
     <section id="notePopUp" class="makeNotePopUp hide">
         <label for="noteTitle">Title of note:</label>
-        <input type="text" id="noteTitle">
+        <input maxlength="100" type="text" id="noteTitle"/>
         <label for="noteContent">Note content:</label>
-        <textArea id="noteContent"></textArea>
+        <textArea maxlength="255" id="noteContent"></textArea>
         <h3 onclick="addNoteItem()" class="doneButton">Done!</h3>
         <h3 onclick="cancelAddNote()" class="doneButton">Cancel</h3>
     </section>
     <section id="checkListPopUp" class="makeNotePopUp hide">
         <label for="checkListDesc">Task description:</label>
-        <input type="text" id="checkListDesc">
+        <input maxlength="100"> type="text" id="checkListDesc">
         <h3 onclick="addCheckListItem()" class="doneButton">Done!</h3>
         <h3 onclick="cancelAddNote()" class="doneButton">Cancel</h3>
     </section>
     <section id="timePopUp" class="makeNotePopUp hide">
         <label for="timeTrackDesc">Task description:</label>
-        <input type="text" id="timeTrackDesc">
+        <input maxlength="100"> type="text" id="timeTrackDesc">
         <h3 onclick="addTimeItem()" class="doneButton">Done!</h3>
         <h3 onclick="cancelAddNote()" class="doneButton">Cancel</h3>
     </section>
@@ -89,7 +89,7 @@
         <label for="eventTime">Time of event:</label>
         <input type="time" id="eventTime" name="eventTime" step="360000" min="00:00" max="23:00">
         <label for="inputEventLength">Length of Event: </label>
-        <input id="inputEventLength" type="number">
+        <input maxlength="2" id="inputEventLength" type="number"/>
         <h3 onclick="createCalendarEvent()" class="doneButton">Done!</h3>
         <h3 onclick="cancelAddNote()" class="doneButton">Cancel</h3>
     </section>
