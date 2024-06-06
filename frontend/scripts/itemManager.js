@@ -53,8 +53,14 @@ let tempInt = 0;
 let weekViewList = document.getElementById("weekListView");
 let eventListCard = document.getElementById("eventListCard");
 
+
 let daysOfWeek = ["Sunday","Monday", "Tuesday", "Wednesday","Thursday","Friday","Saturday"];
 var now = dayjs();
+const hostname = window.location.hostname;
+let prod = true;
+if (hostname.includes("localhost") || hostname.includes("127.0.0.1")) {
+  prod = false;
+}
 
 let calendarDayIDs = [
     "cal1", "cal2", "cal3", "cal4", "cal5", "cal6", "cal7",
@@ -288,7 +294,15 @@ async function createCalendarEvent()
     let dateTimeString = date.toISOString().split('T')[0] + 'T' + time + ':00Z';
 
     let dateTime = new Date(dateTimeString);
-    dateTime.setUTCHours(dateTime.getHours() + 2);
+    if(prod)
+      {
+        dateTime.setUTCHours(dateTime.getHours() -2);
+      }
+      else{
+        dateTime.setUTCHours(dateTime.getHours());
+      }
+    
+    
 
     dateTimeString = dateTime.toISOString();
 
@@ -303,6 +317,7 @@ async function createCalendarEvent()
     overlay.classList.add("hide");
     eventPopUp.classList.add("hide");
 }
+
 
 function closeCalendar()
 {
@@ -552,7 +567,6 @@ function displayTimeTrackItems(timeTrackItemsList)
                 const timeContent = item.description;
                 const timeLength = item.length;
                 const timeUnit = item.time_unit;
-                console.log(timeUnit);
                 const timeListNode = document.createElement("li");
                 timeListNode.id = "tim" + item.id;
                 timeListNode.classList.add("innerCard");
@@ -627,9 +641,6 @@ async function updateTimeTrackElementLength(event)
 
 async function updateTimeTrackUnit(event)
 {
-  console.log("TARGET: " + event.target);
-  console.log("ID: " + event.target.parentElement.id);
-  console.log("VALUE: " + event.target.value);
   await updateTimeTrackerTimeUnit(event.target.parentElement.id.substring(3),event.target.value)
 }
 
@@ -753,7 +764,6 @@ async function newNoteItem(noteTitle, noteContent) {
       start_time: start_date,
       length: length
     };
-    console.log(start_date);
   
     try {
       await postNewEventToDB(eventItemObject);
