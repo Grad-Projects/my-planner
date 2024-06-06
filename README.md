@@ -16,5 +16,8 @@ Your daily go-to planner app
 - Refer to our backend/Testing/test.rest file to see the list of valid API calls that can be made
 - For aquiring an access token to make your API calls, I would recommend to login using the frontend, and then inspect your browser's localStorage for the accessToken obtained, this should be placed in an `Authorization: Bearer <token>` heading with all of your requests
 
+## Test data
+- When the database server starts in the container it initialized the tables and test data using the SQL script in the backend/Testing folder
+
 ## API documentation
 https://documenter.getpostman.com/view/33335643/2sA3Qza8zu
