@@ -288,7 +288,7 @@ async function createCalendarEvent()
     let dateTimeString = date.toISOString().split('T')[0] + 'T' + time + ':00Z';
 
     let dateTime = new Date(dateTimeString);
-    dateTime.setHours(dateTime.getHours() + 2);
+    dateTime.setUTCHours(dateTime.getHours() + 2);
 
     dateTimeString = dateTime.toISOString();
 
