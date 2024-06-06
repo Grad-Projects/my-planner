@@ -64,20 +64,20 @@
         <input maxlength="100" type="text" id="noteTitle"/>
         <label for="noteContent">Note content:</label>
         <textArea maxlength="255" id="noteContent"></textArea>
-        <h3 onclick="addNoteItem()" class="doneButton">Done!</h3>
-        <h3 onclick="cancelAddNote()" class="doneButton">Cancel</h3>
+        <button id="addNoteButton" onclick="addNoteItem()" class="doneButton">Done!</button>
+        <button onclick="cancelAddNote()" class="doneButton">Cancel</button>
     </section>
     <section id="checkListPopUp" class="makeNotePopUp hide">
         <label for="checkListDesc">Task description:</label>
         <input maxlength="100" type="text" id="checkListDesc"/>
-        <h3 onclick="addCheckListItem()" class="doneButton">Done!</h3>
-        <h3 onclick="cancelAddNote()" class="doneButton">Cancel</h3>
+        <button id="addChecklistButton" onclick="addCheckListItem()" class="doneButton">Done!</button>
+        <button onclick="cancelAddNote()" class="doneButton">Cancel</button>
     </section>
     <section id="timePopUp" class="makeNotePopUp hide">
         <label for="timeTrackDesc">Task description:</label>
         <input maxlength="100" type="text" id="timeTrackDesc"/>
-        <h3 onclick="addTimeItem()" class="doneButton">Done!</h3>
-        <h3 onclick="cancelAddNote()" class="doneButton">Cancel</h3>
+        <button id="addTimeitemButton" onclick="addTimeItem()" class="doneButton">Done!</button>
+        <button onclick="cancelAddNote()" class="doneButton">Cancel</button>
     </section>
     <section id="eventPopUp" class="makeNotePopUp hide">
         <label for="eventTitle">Title of event:</label>
@@ -90,15 +90,15 @@
         <input type="time" id="eventTime" name="eventTime" step="360000" min="00:00" max="23:00">
         <label for="inputEventLength">Event Duration (Hours): </label>
         <input maxlength="2" id="inputEventLength" type="number"/>
-        <h3 onclick="createCalendarEvent()" class="doneButton">Done!</h3>
-        <h3 onclick="cancelAddNote()" class="doneButton">Cancel</h3>
+        <button  onclick="createCalendarEvent()" class="doneButton">Done!</button>
+        <button onclick="cancelAddNote()" class="doneButton">Cancel</button>
     </section>
     <section id="calendar" class="calendarPopUp hide">
         <section class="calendarNav">
-            <h3 onclick="switchMonth(-1)" class="doneButton">Prev</h3>
+            <button onclick="switchMonth(-1)" class="doneButton">Prev</button>
             <h1 id="monthTitle" class="monthHeading">Month 2024</h1>
-            <h3 onclick="switchMonth(1)" class="doneButton">Next</h3>
-            <h3 onclick="closeCalendar()" class="doneButton">Close</h3>
+            <button onclick="switchMonth(1)" class="doneButton">Next</button>
+            <button onclick="closeCalendar()" class="doneButton">Close</button>
         </section>
         
         <header class="day-of-week">
