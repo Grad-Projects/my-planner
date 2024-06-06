@@ -1,28 +1,28 @@
 #Get the REST Client extension by Huachao Mao and click Send Request above each endpoint 
 #on this file if you would like to test these endpoints in vscode 👍
 
-GET http://localhost:8080/hello
+GET https://localhost:8080/hello
 ###
 
 #__________________________________GET___________________________________________________________________
 
 # GET all entity items for the authenticated user. 
-GET http://localhost:8080/api/v1/notes
+GET https://localhost:8080/api/v1/notes 
 ###
-GET http://localhost:8080/api/v1/todo-items
+GET https://localhost:8080/api/v1/todo-items
 ###
-GET http://localhost:8080/api/v1/time-tracker-items
+GET https://localhost:8080/api/v1/time-tracker-items
 ###
-GET http://localhost:8080/api/v1/appointments
+GET https://localhost:8080/api/v1/appointments
 ###
 #_______________________________________________________________________________________________________
 
 
 #__________________________________PATCH is_deleted_____________________________________________________
 # "delete" a :table item at specified :id...  /remove/:table/:id  The table name must match the database
-PATCH http://localhost:8080/api/v1/remove/TimeTrackerItems/1
+PATCH https://localhost:8080/api/v1/remove/TimeTrackerItems/1
 ###
-PATCH http://localhost:8080/api/v1/remove/Appointments/1
+PATCH https://localhost:8080/api/v1/remove/Appointments/1
 ###
 #_______________________________________________________________________________________________________
 
@@ -30,10 +30,10 @@ PATCH http://localhost:8080/api/v1/remove/Appointments/1
 #__________________________________PATCH updates________________________________________________________
 
 #the endpoint below toggles between true and false for is_completed
-PATCH http://localhost:8080/api/v1/update/todo-item-completion/1   
+PATCH https://localhost:8080/api/v1/update/todo-item-completion/1   
 ###
 
-PATCH http://localhost:8080/api/v1/update/time-tracker-unit/1
+PATCH https://localhost:8080/api/v1/update/time-tracker-unit/1
 Content-Type: application/json
 
 {
@@ -43,7 +43,7 @@ Content-Type: application/json
 ###
 
 #update length of time tracker item
-PATCH http://localhost:8080/api/v1/update/time-tracker-length/1
+PATCH https://localhost:8080/api/v1/update/time-tracker-length/1
 Content-Type: application/json
 
 {
@@ -56,11 +56,11 @@ Content-Type: application/json
 
 #__________________________________POST_________________________________________________________________
 # Create Appointment
-POST http://localhost:8080/api/v1/create/appointments
+POST https://localhost:8080/api/v1/create/appointments
 Content-Type: application/json
 
 {
-  "title": "Team Meeting",
+  "title": "Team Meeting2",
   "description": "Discuss project updates and upcoming tasks.",
   "start_time": "2024-06-15T10:00:00Z",
   "length": 6
@@ -69,18 +69,18 @@ Content-Type: application/json
 ###
 
 # Create Note
-POST http://localhost:8080/api/v1/create/notes
+POST https://localhost:8080/api/v1/create/notes
 Content-Type: application/json
 
 {
-  "title": "Project Notes",
-  "content": "Discussed progress on current tasks."
+  "title": "Project Notes2ss",
+  "content": "Discussed progress many things"
 }
 
 ###
 
 # Create Time Tracker Item
-POST http://localhost:8080/api/v1/create/time-tracker-items
+POST https://localhost:8080/api/v1/create/time-tracker-items
 Content-Type: application/json
 
 {
@@ -92,7 +92,7 @@ Content-Type: application/json
 ###
 
 # Create Todo Item
-POST http://localhost:8080/api/v1/create/todo-items
+POST https://localhost:8080/api/v1/create/todo-items
 Content-Type: application/json
 
 {
@@ -101,7 +101,7 @@ Content-Type: application/json
 ###
 
 # Add user
-POST http://localhost:8080/api/v1/create/user
+POST https://localhost:8080/api/v1/create/user
 Content-Type: application/json
 
 #_______________________________________________________________________________________________________

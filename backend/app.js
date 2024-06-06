@@ -10,11 +10,11 @@ const https = require('https');
 const app = express();
 const port = 8080;
 
-const fifteenMinutes = 15 * 60 * 1000;
+const fiveMinutes = 5 * 60 * 1000;
 const apiLimiter = rateLimit({
-    windowMs: fifteenMinutes, // 15 minutes
-    max: 100, 
-    message: 'Too many requests from this IP, please try again after 15 minutes'
+    windowMs: fiveMinutes,
+    max: 250, 
+    message: 'Too many requests from this IP, please try again after 5 minutes'
   });
 
 const corsOptions = {
