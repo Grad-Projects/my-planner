@@ -77,9 +77,10 @@ let months = [
 ]
 
 function validateDateLength(hourOfDay, lengthInHours){
-    if(hourOfDay + lengthInHours > 24){
+    if((hourOfDay + lengthInHours) > 24){
         return false;
     }
+
     return true;
 }
 
@@ -289,6 +290,32 @@ async function createCalendarEvent()
       return;
     }
 
+    if((eventTime.value.split(":")[0]) == 0)
+      {
+        alert("Time cannot be 00:00 (gremlins)");
+        return;
+      }
+      if(eventDate.value == ""){
+        alert("Please enter a date!!");
+        return;
+      }
+      if(eventTime.value == "")
+        {
+          alert("Please add a time!");
+          return;
+        }
+
+      if(eventTitle.value == "")
+        {
+          alert("Please enter a title for your event!");
+          return;
+        }
+      if(eventDesc.value == "")
+        {
+          alert("Please enter a description for your event!");
+          return;
+        }
+
     let date = new Date(eventDate.value);
     let time = eventTime.value;
     let dateTimeString = date.toISOString().split('T')[0] + 'T' + time + ':00Z';
@@ -306,7 +333,7 @@ async function createCalendarEvent()
 
     dateTimeString = dateTime.toISOString();
 
-    await newEventItem(eventTitle.value, eventDesc.value, dateTimeString, eventLength.value);
+    await newEventItem(eventTitle.value, eventDesc.value, dateTimeString, parseInt(eventLength.value));
     eventTitle.value = "";
     eventDesc.value = "";
     eventDate.value = "";
