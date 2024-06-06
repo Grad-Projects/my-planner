@@ -23,7 +23,6 @@ async function getUserEmail(accessToken)
             throw new Error('User email not found');
         } 
     } catch (error) {
-        console.error('Error fetching user attributes:', error);
         throw error;
     }
 }

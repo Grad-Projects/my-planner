@@ -1,6 +1,7 @@
 import { isTokenValid, logout } from "./authManager.js";
 
 const accessToken = localStorage.getItem('accessToken');
+let loggedIn = false;
 
 if (!accessToken) {
     document.getElementById('login').classList.remove('hide');
@@ -8,6 +9,10 @@ if (!accessToken) {
 else if (!isTokenValid(accessToken)) {
     logout();
 } else {
+    loggedIn = true;
+    document.body.classList.remove('blue');
+
+
     document.getElementById('emailAddress').textContent = localStorage.getItem('email');
     document.querySelector('.logoutButton').addEventListener('click', logout);
     document.getElementById('login').classList.add('hide');
@@ -17,3 +22,5 @@ else if (!isTokenValid(accessToken)) {
     document.getElementById('weekListView').classList.remove('hide');
     document.querySelector('.plannerCards').classList.remove('hide');
 }
+
+export { loggedIn };

@@ -9,7 +9,6 @@ async function getSecret(secretName) {
     return new Promise((resolve, reject) => {
         client.getSecretValue({ SecretId: secretName }, (err, data) => {
             if (err) {
-                console.error('Error retrieving secret:', err);
                 reject(err);
             } else {
                 resolve(JSON.parse(data.SecretString));

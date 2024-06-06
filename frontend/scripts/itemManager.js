@@ -1,5 +1,6 @@
 import {ApiHelper } from "./apiHelper.js";
 import {backendUrl} from "./apiConfig.js";
+import {loggedIn} from "./index.js";
 
 window.deleteNoteItem = deleteNoteItem;
 window.deleteCheckItem = deleteCheckItem;
@@ -69,6 +70,13 @@ let months = [
     "Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"
 ]
 
+function validateDateLength(hourOfDay, lengthInHours){
+    if(hourOfDay + lengthInHours > 24){
+        return false;
+    }
+    return true;
+}
+
 document.getElementById("eventTime").addEventListener('input', function(event) {
     const value = event.target.value;
     const minutes = value.split(':')[1];
@@ -87,13 +95,15 @@ async function displayPageItems()
     displayTimeTrackItems(await getTimeTrackFromDB());
 }
 
-displayPageItems();
+if (loggedIn){
+    displayPageItems();
+    makeWeekList();
+}
 
 //Set a checked object
 //updating time tracker time
 //"deleting"
 
-makeWeekList();
 
 var currentDate;
 function cancelAddNote()
@@ -241,20 +251,29 @@ async function addTimeItem()
     }
 }
 
-function createCalendarEvent()
+async function createCalendarEvent()
 {
-    let date = new Date(eventDate.value);
-    date = date.toUTCString();
+    if (!validateDateLength(parseInt(eventTime.value.split(":")[0]),parseInt(eventLength.value))){
+        alert("Event's length exceeds the day's limit");
+        return;
+    }
 
-    const newEvent = newEventItem(eventTitle.value,eventDesc.value, date, eventTime.value, eventLength.value);
-    postNewEventToDB(newEvent);
+    let date = new Date(eventDate.value);
+    let time = eventTime.value;
+    let dateTimeString = date.toISOString().split('T')[0] + 'T' + time + ':00Z';
+
+    let dateTime = new Date(dateTimeString);
+    dateTime.setHours(dateTime.getHours() + 2);
+
+    dateTimeString = dateTime.toISOString();
+
+    await newEventItem(eventTitle.value, eventDesc.value, dateTimeString, eventLength.value);
     eventTitle.value = "";
     eventDesc.value = "";
     eventDate.value = "";
     eventTime.value = "";
     eventLength.value = "";
     makeWeekList();
-
 
     overlay.classList.add("hide");
     eventPopUp.classList.add("hide");
@@ -699,11 +718,11 @@ async function newNoteItem(noteTitle, noteContent) {
   // - start_date: Start date of the event in YYYY-MM-DD format (string)
   // - start_time: Start time of the event in HH:MM format (string)
   // - length: Length of the event (number)
-  async function newEventItem(title, description, start_date, start_time, length) {
+  async function newEventItem(title, description, start_date, length) {
     const eventItemObject = {
       title: title,
       description: description,
-      start_time: start_date + "T" + start_time + ":00Z",
+      start_time: start_date,
       length: length
     };
   

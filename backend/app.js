@@ -1,4 +1,5 @@
 const express = require('express');
+const handleErrorResponse = require('./api/error_util.js')
 const rateLimit = require('express-rate-limit');
 const endpoints = require("./api/routes");
 const helmet = require('helmet');
@@ -45,20 +46,19 @@ app.get('/health', async (req, res) => {
     await pool.query('SELECT 1');
     res.status(200).json({ status: 'Database is up' });
   } catch (error) {
-    console.error('Error connecting to the database:', error);
-    res.status(500).json({ error: 'Database connection error' });
+    return handleErrorResponse(res, new Error('Database connection error'), 'health check error');
   } finally {
     // Close the database connection
     await pool.end();
   }
 });
 
-const serverOptions = {
-  key: fs.readFileSync('server.key'),
-  cert: fs.readFileSync('server.cert')
-};
-
 if (process.env.ENVIRONMENT !== 'prod') {
+  const serverOptions = {
+    key: fs.readFileSync('server.key'),
+    cert: fs.readFileSync('server.cert')
+  };
+
   https.createServer(serverOptions, app).listen(port, () => {
     console.log(`Server has started on port: ${port} ✔️`);
   });
