@@ -523,35 +523,34 @@ function displayTimeTrackItems(timeTrackItemsList)
                 selectTimeUnit.setAttribute("name","time");
                 selectTimeUnit.setAttribute("onchange","updateTimeTrackUnit(event)");
         
-                const minOption = document.createElement("option");
-                minOption.setAttribute("value","2");
-                minOption.innerText = "Min";
                 const hrOption = document.createElement("option");
                 hrOption.setAttribute("value","1");
                 hrOption.innerText = "Hr";
+                const minOption = document.createElement("option");
+                minOption.setAttribute("value","2");
+                minOption.innerText = "Min";
                 const secOption = document.createElement("option");
                 secOption.setAttribute("value","3");
                 secOption.innerText = "Sec";
-
-                selectTimeUnit.appendChild(minOption);
+ 
                 selectTimeUnit.appendChild(hrOption);
+                selectTimeUnit.appendChild(minOption);
                 selectTimeUnit.appendChild(secOption);
 
-                switch(timeUnit) {
-                    case 1:
-                      // code block
-                      selectTimeUnit.value = "Hr";
-                      break;
-                    case 2:
-                      selectTimeUnit.value = "Min";
-                      break;
-                    case 3:
-                        selectTimeUnit.value = "Sec";
-                        break;
-                    default:
-                        selectTimeUnit.value = "Hr";
-                      // code block
-                  }
+                switch (timeUnit) {
+                  case 1:
+                    hrOption.setAttribute("selected","selected");
+                    break;
+                  case 2:
+                    minOption.setAttribute("selected","selected");
+                    break;
+                  case 3:
+                    secOption.setAttribute("selected","selected");
+                    break;
+                
+                  default:
+                    break;
+                }
 
                 const spanNode = document.createElement("span");
                 spanNode.setAttribute("onclick","deleteTimeItem(event)");
