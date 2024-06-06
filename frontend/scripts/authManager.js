@@ -1,11 +1,9 @@
-import { backendUrl } from './apiConfig.js';
+import { backendUrl, cognitoDomain, clientId, logoutRedirectUri } from './apiConfig.js';
 
 function logout() {
-    localStorage.removeItem("accessToken");
-    localStorage.removeItem("idToken");
-    localStorage.removeItem("refreshToken");
-    localStorage.removeItem("email");
-    window.location.href = "/index.html";
+    const authUrl = `https://${cognitoDomain}/logout?client_id=${clientId}&logout_uri=${logoutRedirectUri}`;
+    document.getElementById('login').classList.add('hide');
+    window.location.href = authUrl;
 }
 
 async function isTokenValid(token) {
