@@ -1,5 +1,6 @@
 import {ApiHelper } from "./apiHelper.js";
 import {backendUrl} from "./apiConfig.js";
+import {loggedIn} from "./index.js";
 
 window.deleteNoteItem = deleteNoteItem;
 window.deleteCheckItem = deleteCheckItem;
@@ -92,13 +93,15 @@ async function displayPageItems()
     displayTimeTrackItems(await getTimeTrackFromDB());
 }
 
-displayPageItems();
+if (loggedIn){
+    displayPageItems();
+    makeWeekList();
+}
 
 //Set a checked object
 //updating time tracker time
 //"deleting"
 
-makeWeekList();
 
 var currentDate;
 function cancelAddNote()
