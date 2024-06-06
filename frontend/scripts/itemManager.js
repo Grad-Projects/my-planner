@@ -213,10 +213,14 @@ function closeEvents()
 }
 
 async function addNoteItem(){
+    const button = document.getElementById("addNoteButton");
+    button.disabled = true;
+
     const noteTitle = noteTitleInput.value;
     const noteContent = noteContentInput.value;
 
     if (!validateInputLength(noteTitle) || !validateInputLength(noteContent) ){
+      button.disabled = false;
       return;
     }
 
@@ -228,19 +232,24 @@ async function addNoteItem(){
         notePopUp.classList.add("hide");
         await newNoteItem(noteTitle, noteContent);
         displayPageItems();
+        button.disabled = false;
     }
     else
     {
-        alert("PUT SOME CONTENT IN THERE BIG DAWG >:(")
+        alert("PUT SOME CONTENT IN THERE BIG DAWG >:(");
+        button.disabled = false;
     }
-
 }
 
 async function addCheckListItem()
 {
+    const button = document.getElementById("addChecklistButton");
+    button.disabled = true;
+
     const checkContent = checkListContent.value;
 
     if (!validateInputLength(checkContent)){
+      button.disabled = false;
       return;
     }
 
@@ -251,32 +260,38 @@ async function addCheckListItem()
         overlay.classList.add("hide");
         checkListPopUp.classList.add("hide");
         displayCheckItems(await getCheckItemsFromDB());
-
+        button.disabled = false;
     }
     else
     {
-        alert("PUT SOME CONTENT IN THERE BIG DAWG >:(")
+        alert("PUT SOME CONTENT IN THERE BIG DAWG >:(");
+        button.disabled = false;
     }
 }
 
 async function addTimeItem()
 {
+    const button = document.getElementById("addTimeitemButton");
+    button.disabled = true;
+
     if (!validateInputLength(timeTrackContent.value)){
+      button.disabled = false;
       return;
     }
 
     if(timeTrackContent.value != "")
     { 
+        await newTimeTrackItem(timeTrackContent.value,0,1);
         overlay.classList.add("hide");
         eventPopUp.classList.add("hide");
-        await newTimeTrackItem(timeTrackContent.value,0,1);
         timeTrackContent.value = "";
         displayTimeTrackItems(await getTimeTrackFromDB());
-        
+        button.disabled = false;
     }
     else
     {
-        alert("PUT SOME CONTENT IN THERE BIG DAWG >:(")
+        alert("PUT SOME CONTENT IN THERE BIG DAWG >:(");
+        button.disabled = false;
     }
 }
 
@@ -605,6 +620,8 @@ function displayTimeTrackItems(timeTrackItemsList)
                 inputTimeNode.classList.add("inputTime");
                 inputTimeNode.setAttribute("onchange","updateTimeTrackElementLength(event)")
                 inputTimeNode.setAttribute("type","number");
+                inputTimeNode.setAttribute("max","24");
+                inputTimeNode.setAttribute("min","0");
                 inputTimeNode.value = timeLength;
         
                 const selectTimeUnit = document.createElement("select");

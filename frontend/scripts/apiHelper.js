@@ -21,8 +21,7 @@ export class ApiHelper {
             }
             return await response.json();
         } catch (error) {
-            console.error('There was a problem with the fetch operation:', error);
-            throw error;
+            console.error('There was a problem with the fetch operation');
         }
     }
 
@@ -42,8 +41,7 @@ export class ApiHelper {
             }
             return await response.json();
         } catch (error) {
-            console.error('There was a problem with the fetch operation:', error);
-            throw error;
+            console.error('There was a problem with the fetch operation');
         }
     }
 
@@ -65,8 +63,7 @@ export class ApiHelper {
             }
             return await response.json();
         } catch (error) {
-            console.error('There was a problem with the fetch operation:', error);
-            throw error;
+            console.error('There was a problem with the fetch operation');
         }
     }
 
@@ -87,8 +84,7 @@ export class ApiHelper {
             }
             return await response.json();
         } catch (error) {
-            console.error('There was a problem with the fetch operation:', error);
-            throw error;
+            console.error('There was a problem with the fetch operation');
         }
     }
 }

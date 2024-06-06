@@ -64,19 +64,19 @@
         <input maxlength="100" type="text" id="noteTitle"/>
         <label for="noteContent">Note content:</label>
         <textArea maxlength="255" id="noteContent"></textArea>
-        <button onclick="addNoteItem()" class="doneButton">Done!</button>
+        <button id="addNoteButton" onclick="addNoteItem()" class="doneButton">Done!</button>
         <button onclick="cancelAddNote()" class="doneButton">Cancel</button>
     </section>
     <section id="checkListPopUp" class="makeNotePopUp hide">
         <label for="checkListDesc">Task description:</label>
         <input maxlength="100" type="text" id="checkListDesc"/>
-        <button onclick="addCheckListItem()" class="doneButton">Done!</button>
+        <button id="addChecklistButton" onclick="addCheckListItem()" class="doneButton">Done!</button>
         <button onclick="cancelAddNote()" class="doneButton">Cancel</button>
     </section>
     <section id="timePopUp" class="makeNotePopUp hide">
         <label for="timeTrackDesc">Task description:</label>
         <input maxlength="100" type="text" id="timeTrackDesc"/>
-        <button onclick="addTimeItem()" class="doneButton">Done!</button>
+        <button id="addTimeitemButton" onclick="addTimeItem()" class="doneButton">Done!</button>
         <button onclick="cancelAddNote()" class="doneButton">Cancel</button>
     </section>
     <section id="eventPopUp" class="makeNotePopUp hide">
