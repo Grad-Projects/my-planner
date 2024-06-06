@@ -53,12 +53,12 @@ app.get('/health', async (req, res) => {
   }
 });
 
-const serverOptions = {
-  key: fs.readFileSync('server.key'),
-  cert: fs.readFileSync('server.cert')
-};
-
 if (process.env.ENVIRONMENT !== 'prod') {
+  const serverOptions = {
+    key: fs.readFileSync('server.key'),
+    cert: fs.readFileSync('server.cert')
+  };
+
   https.createServer(serverOptions, app).listen(port, () => {
     console.log(`Server has started on port: ${port} ✔️`);
   });
