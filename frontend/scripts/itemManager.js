@@ -74,6 +74,14 @@ function validateDateLength(hourOfDay, lengthInHours){
     return true;
 }
 
+function validateInputLength(content){
+  if (content.length > 255){
+    alert("Maximum length of text inputs is 255 characters");
+    return false
+  }
+  return true;
+}
+
 document.getElementById("eventTime").addEventListener('input', function(event) {
     const value = event.target.value;
     const minutes = value.split(':')[1];
@@ -200,6 +208,10 @@ async function addNoteItem(){
     const noteTitle = noteTitleInput.value;
     const noteContent = noteContentInput.value;
 
+    if (!validateInputLength(noteTitle) || !validateInputLength(noteContent) ){
+      return;
+    }
+
     if(noteTitle != "" && noteContent != "")
     {
         noteTitleInput.value = "";
@@ -219,6 +231,11 @@ async function addNoteItem(){
 async function addCheckListItem()
 {
     const checkContent = checkListContent.value;
+
+    if (!validateInputLength(checkContent)){
+      return;
+    }
+
     if(checkContent != "")
     {
         await newCheckListItem(checkListContent.value);
@@ -236,6 +253,10 @@ async function addCheckListItem()
 
 async function addTimeItem()
 {
+    if (!validateInputLength(timeTrackContent.value)){
+      return;
+    }
+
     if(timeTrackContent.value != "")
     { 
         await newTimeTrackItem(timeTrackContent.value,0,1);
@@ -255,6 +276,10 @@ async function createCalendarEvent()
     if (!validateDateLength(parseInt(eventTime.value.split(":")[0]),parseInt(eventLength.value))){
         alert("Event's length exceeds the day's limit");
         return;
+    }
+
+    if (!validateInputLength(eventTitle.value) || !validateInputLength(eventDesc.value)){
+      return;
     }
 
     let date = new Date(eventDate.value);
