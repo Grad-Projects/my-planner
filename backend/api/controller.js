@@ -246,13 +246,12 @@ const updateTimeTrackerItemLength = async (req, res) => {
         const pool = await getPool();
         const userEmail = await getUserEmail(accessToken);
         const userExists = await checkUserExists(userEmail);
-
         if (!userExists) {
             return res.status(404).json({ error: 'User not found' });
         }
         
 
-        if (!Number.isInteger(length) || length <= 0) {
+        if (!(Number.isInteger(parseInt(length))) || (length < 0)) {
             return res.status(400).json({ error: 'Length must be a positive integer' });
         }
 

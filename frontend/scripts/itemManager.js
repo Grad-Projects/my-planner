@@ -20,6 +20,8 @@ window.closeEvents = closeEvents;
 window.popUpCreateEvent = popUpCreateEvent;
 window.addCheckListItem = addCheckListItem;
 window.popUpCreateTimeItem = popUpCreateTimeItem;
+window.updateTimeTrackElementLength = updateTimeTrackElementLength;
+window.updateTimeTrackUnit = updateTimeTrackUnit;
 
 const baseUrl = `${backendUrl}/api/v1`;
 
@@ -161,7 +163,6 @@ async function popUpShowEvents(date,month,year)
     overlay.classList.remove("hide");
     eventListPopUp.classList.remove("hide");
     const events = await getEventsFromDB();
-    console.log("DATE: " + date + " MONTH: " + months[month-1] + " YEAR: " + year);
     const thisDate = new Date();
 
     thisDate.setFullYear(year, month-1, date);
@@ -172,11 +173,8 @@ async function popUpShowEvents(date,month,year)
     titleEventsPage.innerText = "Events for: " + date + " " +  months[month-1] +  " " + year;
     events.forEach(element => {
         const jsdate = new Date(element.start_time);
-        console.log("JSDATE: " + jsdate);
-        console.log("THISDATE: " + thisDate);
         if((jsdate.getFullYear() == thisDate.getFullYear()) && (jsdate.getMonth() == thisDate.getMonth()) && (thisDate.getDate() == jsdate.getDate()))
             {
-                console.log("WTF???");
                 todaysEvents.push(element);
             }
     });
@@ -248,7 +246,6 @@ function createCalendarEvent()
     let date = new Date(eventDate.value);
     date = date.toUTCString();
 
-    console.log("TIME: " + eventTime.value);
     const newEvent = newEventItem(eventTitle.value,eventDesc.value, date, eventTime.value, eventLength.value);
     postNewEventToDB(newEvent);
     eventTitle.value = "";
@@ -396,13 +393,10 @@ async function makeWeekList()
 
 async function displayNotes(notesList)
 {
-    console.log(notesList);
     while((noteList.getElementsByTagName("li")).length > 0) 
     {
 	    noteList.removeChild(noteList.getElementsByTagName("li")[0]);
     }
-    console.log("HERE NOW");
-    console.log(notesList);
     notesList.forEach(item => 
     {
         if(item.is_deleted == 0)
@@ -512,6 +506,7 @@ function displayTimeTrackItems(timeTrackItemsList)
                 const timeContent = item.description;
                 const timeLength = item.length;
                 const timeUnit = item.time_unit;
+                console.log(timeUnit);
                 const timeListNode = document.createElement("li");
                 timeListNode.id = "tim" + item.id;
                 timeListNode.classList.add("innerCard");
@@ -520,20 +515,22 @@ function displayTimeTrackItems(timeTrackItemsList)
                 timeDescNode.appendChild(timeDescTextNode);
                 const inputTimeNode = document.createElement("input");
                 inputTimeNode.classList.add("inputTime");
+                inputTimeNode.setAttribute("onchange","updateTimeTrackElementLength(event)")
                 inputTimeNode.setAttribute("type","number");
                 inputTimeNode.value = timeLength;
         
                 const selectTimeUnit = document.createElement("select");
                 selectTimeUnit.setAttribute("name","time");
+                selectTimeUnit.setAttribute("onchange","updateTimeTrackUnit(event)");
         
                 const minOption = document.createElement("option");
-                minOption.setAttribute("value","Min");
+                minOption.setAttribute("value","2");
                 minOption.innerText = "Min";
                 const hrOption = document.createElement("option");
-                hrOption.setAttribute("value","Hr");
+                hrOption.setAttribute("value","1");
                 hrOption.innerText = "Hr";
                 const secOption = document.createElement("option");
-                secOption.setAttribute("value","Sec");
+                secOption.setAttribute("value","3");
                 secOption.innerText = "Sec";
 
                 selectTimeUnit.appendChild(minOption);
@@ -557,7 +554,7 @@ function displayTimeTrackItems(timeTrackItemsList)
                   }
 
                 const spanNode = document.createElement("span");
-                spanNode.setAttribute("onclick","deleteNoteItem(event)");
+                spanNode.setAttribute("onclick","deleteTimeItem(event)");
                 spanNode.classList.add("material-symbols-outlined");
                 spanNode.classList.add("deleteHolder");
                 spanNode.innerText = "delete";
@@ -576,14 +573,26 @@ function displayTimeTrackItems(timeTrackItemsList)
     });
 }
 
+async function updateTimeTrackElementLength(event)
+{
+  await updateTimeTrackLength(event.target.parentElement.id.substring(3),event.target.value);
+}
+
+
+async function updateTimeTrackUnit(event)
+{
+  console.log("TARGET: " + event.target);
+  console.log("ID: " + event.target.parentElement.id);
+  console.log("VALUE: " + event.target.value);
+  await updateTimeTrackerTimeUnit(event.target.parentElement.id.substring(3),event.target.value)
+}
+
 function displayEvents(eventsList)
 {
   
-    console.log("here we are ye");
     //empty the display
     while((eventListCard.getElementsByTagName("li")).length > 0) {
 	    eventListCard.removeChild(eventListCard.getElementsByTagName("li")[0]);
-        console.log("REMOVED BITCH");
     }
     eventsList.forEach(element => {
         const date = new Date(element.start_time);
@@ -847,7 +856,7 @@ async function postNewEventToDB(eventObject) {
   // - timeTrackObjectID: Unique identifier of the time track item (string)
   // - newLength: New length of the time track item (number)
   async function updateTimeTrackLength(timeTrackObjectID, newLength) {
-  
+    const apiHelper = new ApiHelper(baseUrl);
     const lengthObject = {
       length: newLength,
     };
@@ -943,10 +952,8 @@ async function getNotesFromDB() {
 
   function markItemDeleted(item)
   {
-    console.log(item);
     let typeSubStr = item.substring(0,3);
     let idVal = item.substring(3);
-    console.log(typeSubStr);
     switch (typeSubStr) {
         case "not":
             markNoteDeleted(idVal);
