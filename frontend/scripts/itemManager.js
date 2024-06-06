@@ -267,11 +267,12 @@ async function addTimeItem()
 
     if(timeTrackContent.value != "")
     { 
-        await newTimeTrackItem(timeTrackContent.value,0,1);
         overlay.classList.add("hide");
-        timePopUp.classList.add("hide");
+        eventPopUp.classList.add("hide");
+        await newTimeTrackItem(timeTrackContent.value,0,1);
         timeTrackContent.value = "";
         displayTimeTrackItems(await getTimeTrackFromDB());
+        
     }
     else
     {
@@ -315,6 +316,8 @@ async function createCalendarEvent()
           alert("Please enter a description for your event!");
           return;
         }
+      overlay.classList.add("hide");
+      eventPopUp.classList.add("hide");
 
     let date = new Date(eventDate.value);
     let time = eventTime.value;
@@ -340,9 +343,6 @@ async function createCalendarEvent()
     eventTime.value = "";
     eventLength.value = "";
     makeWeekList();
-
-    overlay.classList.add("hide");
-    eventPopUp.classList.add("hide");
 }
 
 
