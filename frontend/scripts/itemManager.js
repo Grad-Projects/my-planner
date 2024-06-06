@@ -765,7 +765,7 @@ async function newNoteItem(noteTitle, noteContent) {
     const apiHelper = new ApiHelper(baseUrl);
     try {
       const response = await apiHelper.post('/create/notes', noteObject);
-      console.log('Note successfully added:', response);
+      // console.log('Note successfully added:', response);
     } catch (error) {
       console.error('Error performing CRUD operation:', error);
     }
@@ -778,7 +778,7 @@ async function newNoteItem(noteTitle, noteContent) {
     const apiHelper = new ApiHelper(baseUrl);
     try {
       const response = await apiHelper.post('/create/todo-items', checkListObject);
-      console.log('CheckListItem successfully added:', response);
+      // console.log('CheckListItem successfully added:', response);
     } catch (error) {
       console.error('Error performing CRUD operation:', error);
     }
@@ -791,7 +791,7 @@ async function newNoteItem(noteTitle, noteContent) {
     const apiHelper = new ApiHelper(baseUrl);
     try {
       const response = await apiHelper.post('/create/time-tracker-items', timeTrackObject);
-      console.log('TimeTrackItem successfully added:', response);
+      // console.log('TimeTrackItem successfully added:', response);
     } catch (error) {
       console.error('Error performing CRUD operation:', error);
     }
@@ -804,7 +804,7 @@ async function postNewEventToDB(eventObject) {
     const apiHelper = new ApiHelper(baseUrl);
     try {
       const response = await apiHelper.post('/create/appointments', eventObject);
-      console.log('Event successfully added:', response);
+      // console.log('Event successfully added:', response);
     } catch (error) {
       console.error('Error performing CRUD operation:', error);
     }
@@ -817,7 +817,7 @@ async function postNewEventToDB(eventObject) {
     const apiHelper = new ApiHelper(baseUrl);
     try {
       const response = await apiHelper.toggle('/remove/Notes/' + noteObjectID);
-      console.log('Note successfully removed:', response);
+      // console.log('Note successfully removed:', response);
     } catch (error) {
       console.error('Error performing CRUD operation:', error);
     }
@@ -830,7 +830,7 @@ async function postNewEventToDB(eventObject) {
     const apiHelper = new ApiHelper(baseUrl);
     try {
       const response = await apiHelper.toggle('/remove/TodoItems/' + checkItemObjectID);
-      console.log('Checklist item successfully removed:', response);
+      // console.log('Checklist item successfully removed:', response);
     } catch (error) {
       console.error('Error performing CRUD operation:', error);
     }
@@ -843,7 +843,7 @@ async function postNewEventToDB(eventObject) {
     const apiHelper = new ApiHelper(baseUrl);
     try {
       const response = await apiHelper.toggle('/remove/TimeTrackerItems/' + timeTrackObjectID);
-      console.log('Time Tracker item successfully removed:', response);
+      // console.log('Time Tracker item successfully removed:', response);
     } catch (error) {
       console.error('Error performing CRUD operation:', error);
     }
@@ -856,7 +856,7 @@ async function postNewEventToDB(eventObject) {
     const apiHelper = new ApiHelper(baseUrl);
     try {
       const response = await apiHelper.toggle('/remove/Appointments/' + eventObjectID);
-      console.log('Event successfully removed:', response);
+      // console.log('Event successfully removed:', response);
     } catch (error) {
       console.error('Error performing CRUD operation:', error);
     }
@@ -869,7 +869,7 @@ async function postNewEventToDB(eventObject) {
     const apiHelper = new ApiHelper(baseUrl);
     try {
       const response = await apiHelper.toggle('/update/todo-item-completion/' + checkItemObjectID);
-      console.log('checklist item completion toggled', response);
+      // console.log('checklist item completion toggled', response);
     } catch (error) {
       console.error('Error performing CRUD operation:', error);
     }
@@ -888,7 +888,7 @@ async function postNewEventToDB(eventObject) {
     };
     try {
       const response = await apiHelper.patch('/update/time-tracker-unit/' + timeTrackObjectID, timeUnitObject);
-      console.log('Time Tracker item successfully updated:', response);
+      // console.log('Time Tracker item successfully updated:', response);
     } catch (error) {
       console.error('Error performing CRUD operation:', error);
     }
@@ -905,7 +905,7 @@ async function postNewEventToDB(eventObject) {
     };
     try {
       const response = await apiHelper.patch('/update/time-tracker-length/' + timeTrackObjectID, lengthObject);
-      console.log('Time Tracker item successfully updated:', response);
+      // console.log('Time Tracker item successfully updated:', response);
     } catch (error) {
       console.error('Error performing CRUD operation:', error);
     }
@@ -916,12 +916,11 @@ async function postNewEventToDB(eventObject) {
 // - notes: Object containing all retrieved notes data
 async function getNotesFromDB() {
   const apiHelper = new ApiHelper(baseUrl);
-    console.log(apiHelper);
     let notes = [];
   
     try {
       const response = await apiHelper.get('/notes');
-      console.log('Notes retrieved successfully:', response);
+      // console.log('Notes retrieved successfully:', response);
         
       if (response) {
         notes = response;
@@ -941,7 +940,7 @@ async function getNotesFromDB() {
     const apiHelper = new ApiHelper(baseUrl);
     try {
       const response = await apiHelper.get('/todo-items');
-      console.log('Checklist items retrieved successfully:', response);
+      // console.log('Checklist items retrieved successfully:', response);
   
       if (response) {
         checkList = response;
@@ -962,7 +961,7 @@ async function getNotesFromDB() {
   
     try {
       const response = await apiHelper.get('/time-tracker-items');
-      console.log('Time tracker items retrieved successfully:', response);
+      // console.log('Time tracker items retrieved successfully:', response);
   
       if (response) {
         timeTracks = response;
@@ -982,7 +981,7 @@ async function getNotesFromDB() {
     try {
       const apiHelper = new ApiHelper(baseUrl);
       const response = await apiHelper.get('/appointments');
-      console.log('Events retrieved successfully:', response);
+      // console.log('Events retrieved successfully:', response);
   
       if (response) {
         events = response;
