@@ -29,9 +29,10 @@
         <p id="addEvent" onclick="popUpCreateEvent()" class="addItem">+</p>
     </section>
     </ul>
+    <section class="cardContainer">
     <section class="plannerCards hide">
         <section class="card">
-            <h2>Notes</h2>
+            <h2 class="cardHeader">Notes</h2>
             <ul id="noteList">
                 <section class="addCard">
                     <p id="addNote" onclick="popUpCreateNote()" class="addItem">+</p>
@@ -39,7 +40,7 @@
             </ul>
         </section>
         <section class="card">
-            <h2>Checklist</h2>
+            <h2 class="cardHeader">Checklist</h2>
             <ul id="checkList">
                 <section class="addCard">
                     <p id="addCheckItem" onclick="popUpCreateCheckListItem()" class="addItem">+</p>
@@ -48,7 +49,7 @@
             
         </section>
         <section class="card">
-            <h2>Time Tracker</h2>
+            <h2 class="cardHeader">Time Tracker</h2>
             <ul id ="timeList">
                 <section class="addCard">
                     <p id="addTimeItem" onclick="popUpCreateTimeItem()" class="addItem">+</p>
@@ -56,6 +57,7 @@
             </ul>
         </section>
     </section>
+</section>
 
     <section id="notePopUp" class="makeNotePopUp hide">
         <label for="noteTitle">Title of note:</label>
@@ -155,7 +157,7 @@
         </ul>
     </section>
     <section id="eventListPopUp" class="calendarPopUp hide">
-        <h3 class="eventsTitle" id="titleEventsPage">Events for 4 June</h3>
+        <h3 class="eventsTitle" id="titleEventsPage"></h3>
         <ul class="eventCardHolder" id="eventListCard">
         </ul>
         <h3 onclick="closeEvents()" class="doneButton">Close</h3>
@@ -163,9 +165,7 @@
     <div id="overlay" class="hide"></div>
 
     <script src="https://cdn.jsdelivr.net/npm/dayjs@1/dayjs.min.js"></script>
-    <script src="scripts/weeklyListRender.js"></script>
-    <script src="scripts/checkBox.js"></script>
-    <script src="scripts/itemManager.js"></script>
+    <script type="module" src="scripts/itemManager.js"></script>
     <script type="module" src="scripts/index.js"></script>
     <script type="module" src="scripts/login.js"></script>
 </body>

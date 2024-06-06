@@ -348,7 +348,7 @@ const createTimeTrackerItem = async (req, res) => {
             return handleErrorResponse(res, new Error("User not found"), 'Error creating time tracker item');
         }
 
-        if (!description || !length || length <= 0 || ![1, 2].includes(time_unit)) {
+        if (!description || length === null || length < 0 || ![1, 2].includes(time_unit)) {
             return handleErrorResponse(res, new Error("Invalid input data"), 'Error creating time tracker item');
         }
 
