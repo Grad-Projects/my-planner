@@ -45,9 +45,6 @@ const getUserNotes = async (req, res) => {
             if (error) {
                 return handleErrorResponse(res, error, 'Error getting user notes');
             }
-            if (results.rows.length === 0) {
-                return handleErrorResponse(res, new Error('No notes found for the specified user'), 'Error getting user notes');
-            }
             res.status(200).json(results.rows);
         });
     } catch (error) {
@@ -69,9 +66,6 @@ const getUserTodoItems = async (req, res) => {
         pool.query(queries.getUserTodoItems, [userEmail], (error, results) => {
             if (error) {
                 return handleErrorResponse(res, error, 'Error getting user todo item');
-            }
-            if (results.rows.length === 0) {
-                return handleErrorResponse(res, new Error('No todo items found for the specified user'), 'Error getting  user todo items');
             }
             res.status(200).json(results.rows);
         });
@@ -95,9 +89,6 @@ const getUserTimeTrackerItems = async (req, res) => {
             if (error) {
                 return handleErrorResponse(res, error, 'Error getting user time tracker item');
             }
-            if (results.rows.length === 0) {
-                return handleErrorResponse(res, new Error('No time tracker items found for the specified user'), 'Error getting user time tracker item');
-            }
             res.status(200).json(results.rows);
         });
     } catch (error) {
@@ -119,9 +110,6 @@ const getUserAppointments = async (req, res) => {
         pool.query(queries.getUserAppointments, [userEmail], (error, results) => {
             if (error) {
                 return handleErrorResponse(res, error, 'Error getting user appointments');
-            }
-            if (results.rows.length === 0) {
-                return handleErrorResponse(res, new Error('No appointments found for the specified user'), 'Error getting user appointments');
             }
             res.status(200).json(results.rows);
         });
