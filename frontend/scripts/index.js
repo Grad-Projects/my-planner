@@ -10,6 +10,8 @@ else if (!isTokenValid(accessToken)) {
     logout();
 } else {
     loggedIn = true;
+    document.body.classList.remove('blue');
+
 
     document.getElementById('emailAddress').textContent = localStorage.getItem('email');
     document.querySelector('.logoutButton').addEventListener('click', logout);
