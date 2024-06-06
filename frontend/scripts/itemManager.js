@@ -452,6 +452,7 @@ async function displayNotes(notesList)
         listNode.id = "not" + item.id;
         listNode.classList.add("innerCard");
         const sectionNode = document.createElement("section")
+        sectionNode.classList.add("noteTextHolder");
         const titleNode = document.createElement("h3");
         const contentNode = document.createElement("p");
         //const dateNode = document.createElement("h4");
@@ -499,6 +500,7 @@ function displayCheckItems(checkItemsList)
                 //PERHAPS: Here when we create the item in the db we make the ID of the li element the id in the db
         
                 const pNode = document.createElement("p");
+                pNode.classList.add("noteTextHolder");
                 const checkTextNode = document.createTextNode(checkContent);
                 pNode.appendChild(checkTextNode);
         
@@ -555,6 +557,7 @@ function displayTimeTrackItems(timeTrackItemsList)
                 timeListNode.id = "tim" + item.id;
                 timeListNode.classList.add("innerCard");
                 const timeDescNode = document.createElement("p");
+                timeDescNode.classList.add("timeTextHolder");
                 const timeDescTextNode = document.createTextNode(timeContent);
                 timeDescNode.appendChild(timeDescTextNode);
                 const inputTimeNode = document.createElement("input");
@@ -901,7 +904,7 @@ async function postNewEventToDB(eventObject) {
   async function updateTimeTrackLength(timeTrackObjectID, newLength) {
     const apiHelper = new ApiHelper(baseUrl);
     const lengthObject = {
-      length: newLength,
+      length: parseInt(newLength),
     };
     try {
       const response = await apiHelper.patch('/update/time-tracker-length/' + timeTrackObjectID, lengthObject);
