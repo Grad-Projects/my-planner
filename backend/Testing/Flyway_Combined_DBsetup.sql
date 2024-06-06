@@ -1,4 +1,5 @@
 -- Drop tables if they exist
+DROP TABLE IF EXISTS "OauthStates" CASCADE;
 DROP TABLE IF EXISTS "Appointments" CASCADE;
 DROP TABLE IF EXISTS "Notes" CASCADE;
 DROP TABLE IF EXISTS "TodoItems" CASCADE;
@@ -102,10 +103,6 @@ BEFORE UPDATE ON "Users"
 FOR EACH ROW
 EXECUTE FUNCTION prevent_email_update();
 
--- Insert test user
-INSERT INTO "Users" ("email")
-VALUES ('user@example.com');
-
 -- Insert hours time unit
 INSERT INTO "TimeUnits" ("description")
 VALUES ('Hours');
@@ -118,41 +115,79 @@ VALUES ('Minutes');
 INSERT INTO "TimeUnits" ("description")
 VALUES ('Seconds');
 
--- Insert a new appointment into the Appointments table
+-- Insert test users
+INSERT INTO "Users" ("email") VALUES ('user1@example.com');
+INSERT INTO "Users" ("email") VALUES ('user2@example.com');
+INSERT INTO "Users" ("email") VALUES ('user3@example.com');
+
+-- Insert test appointments
 INSERT INTO "Appointments" ("user_id", "title", "description", "start_time", "length", "is_deleted")
 VALUES (
-    (SELECT "id" FROM "Users" ORDER BY "id" LIMIT 1),
-    'Meeting',
-    'Discuss project plans',
+    (SELECT "id" FROM "Users" WHERE "email" = 'user1@example.com'),
+    'Appointment 1',
+    'Description for appointment 1',
     now(),
     1,
     false
 );
+INSERT INTO "Appointments" ("user_id", "title", "description", "start_time", "length", "is_deleted")
+VALUES (
+    (SELECT "id" FROM "Users" WHERE "email" = 'user2@example.com'),
+    'Appointment 2',
+    'Description for appointment 2',
+    now(),
+    2,
+    false
+);
 
--- Insert a new note into the Notes table
+-- Insert test notes
 INSERT INTO "Notes" ("user_id", "title", "content", "is_deleted")
 VALUES (
-    (SELECT "id" FROM "Users" ORDER BY "id" LIMIT 1),
-    'Meeting Notes',
-    'Discussed project milestones.',
+    (SELECT "id" FROM "Users" WHERE "email" = 'user1@example.com'),
+    'Note 1',
+    'Content for note 1',
     false
 );
-
--- Insert a new item into the TimeTrackerItems table
-INSERT INTO "TimeTrackerItems" ("user_id", "description", "length", "time_unit", "is_deleted")
+INSERT INTO "Notes" ("user_id", "title", "content", "is_deleted")
 VALUES (
-    (SELECT "id" FROM "Users" ORDER BY "id" LIMIT 1),
-    'Worked on project XYZ',
-    2,
-    (SELECT "id" FROM "TimeUnits" where description = 'Hours'  LIMIT 1),
+    (SELECT "id" FROM "Users" WHERE "email" = 'user3@example.com'),
+    'Note 2',
+    'Content for note 2',
     false
 );
 
--- Insert a new item into the TodoItems table
+-- Insert test todo items
 INSERT INTO "TodoItems" ("user_id", "item", "is_completed", "is_deleted")
 VALUES (
-    (SELECT "id" FROM "Users" ORDER BY "id" LIMIT 1),
-    'Finish report',
+    (SELECT "id" FROM "Users" WHERE "email" = 'user2@example.com'),
+    'Todo item 1',
     false,
     false
 );
+INSERT INTO "TodoItems" ("user_id", "item", "is_completed", "is_deleted")
+VALUES (
+    (SELECT "id" FROM "Users" WHERE "email" = 'user3@example.com'),
+    'Todo item 2',
+    true,
+    false
+);
+
+-- Insert test time tracker items
+INSERT INTO "TimeTrackerItems" ("user_id", "description", "length", "time_unit", "is_deleted")
+VALUES (
+    (SELECT "id" FROM "Users" WHERE "email" = 'user1@example.com'),
+    'Time tracker item 1',
+    2,
+    (SELECT "id" FROM "TimeUnits" WHERE "description" = 'Hours'),
+    false
+);
+INSERT INTO "TimeTrackerItems" ("user_id", "description", "length", "time_unit", "is_deleted")
+VALUES (
+    (SELECT "id" FROM "Users" WHERE "email" = 'user2@example.com'),
+    'Time tracker item 2',
+    3,
+    (SELECT "id" FROM "TimeUnits" WHERE "description" = 'Hours'),
+    false
+);
+
+
