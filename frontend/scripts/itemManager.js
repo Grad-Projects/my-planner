@@ -904,7 +904,7 @@ async function postNewEventToDB(eventObject) {
   async function updateTimeTrackLength(timeTrackObjectID, newLength) {
     const apiHelper = new ApiHelper(baseUrl);
     const lengthObject = {
-      length: newLength,
+      length: parseInt(newLength),
     };
     try {
       const response = await apiHelper.patch('/update/time-tracker-length/' + timeTrackObjectID, lengthObject);
