@@ -1,3 +1,5 @@
+import { logout } from './authManager.js';
+
 export class ApiHelper {
     constructor(baseURL) {
         this.baseURL = baseURL;
@@ -16,6 +18,9 @@ export class ApiHelper {
 
         try {
             const response = await fetch(url, options);
+            if (response.status === 401) {
+                logout();
+            }
             if (!response.ok) {
                 throw new Error(`Network response was not ok: ${response.statusText}`);
             }
@@ -37,6 +42,9 @@ export class ApiHelper {
 
         try {
             const response = await fetch(url, options);
+            if (response.status === 401) {
+                logout();
+            }
             if (!response.ok) {
                 throw new Error(`Network response was not ok: ${response.statusText}`);
             }
@@ -60,6 +68,9 @@ export class ApiHelper {
 
         try {
             const response = await fetch(url, options);
+            if (response.status === 401) {
+                logout();
+            }
             if (!response.ok) {
                 throw new Error(`Network response was not ok: ${response.statusText}`);
             }
@@ -82,6 +93,9 @@ export class ApiHelper {
     
         try {
             const response = await fetch(url, options);
+            if (response.status === 401) {
+                logout();
+            }
             if (!response.ok) {
                 throw new Error(`Network response was not ok: ${response.statusText}`);
             }
