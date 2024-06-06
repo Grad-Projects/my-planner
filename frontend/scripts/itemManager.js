@@ -296,6 +296,9 @@ function changeIcon(event){
     const itemParent = item.parentElement;
     const checkParent = itemParent.parentElement; //Here we can get the parent container of the checkList item
                                                   //It might be a good idea to make the id of the item the id in the database so we set the checked/unchecked
+    const checkID = checkParent.id.substring(3);
+    toggleCheckListItemCompleted(checkID);
+    
     if(item.innerText == "radio_button_unchecked"){
         item.innerText = "check_circle";
     }else{
@@ -468,7 +471,14 @@ function displayCheckItems(checkItemsList)
                 checkSpan.setAttribute("onclick","changeIcon(event)");
                 checkSpan.classList.add("material-symbols-outlined");
                 checkSpan.classList.add("checkBox");
-                const checkedTextNode = document.createTextNode("radio_button_unchecked");
+                let checkedTextNode = "";
+                if(item.is_completed == 1)
+                {
+                  checkedTextNode = document.createTextNode("check_circle");
+                }else{
+                    checkedTextNode = document.createTextNode("radio_button_unchecked");
+                }
+                
                 checkSpan.appendChild(checkedTextNode);
         
                 const deleteSpan = document.createElement("span");
@@ -599,7 +609,7 @@ function displayEvents(eventsList)
         eventSectionNode.classList.add("eventCardItem");
 
         const dateNode = document.createElement("h3");
-        const dateTextNode = document.createTextNode(date.getUTCDate() + "/" + months[date.getUTCMonth()] + "/" + date.getUTCFullYear());
+        const dateTextNode = document.createTextNode((date.getUTCDate()+1) + "/" + months[date.getUTCMonth()] + "/" + date.getUTCFullYear());
         dateNode.appendChild(dateTextNode);
 
         const timeNode = document.createElement("h3");
@@ -804,6 +814,7 @@ async function postNewEventToDB(eventObject) {
   // Parameters:
   // - checkItemObjectID: Unique identifier of the checklist item (string)
   async function toggleCheckListItemCompleted(checkItemObjectID) {
+    const apiHelper = new ApiHelper(baseUrl);
     try {
       const response = await apiHelper.toggle('/update/todo-item-completion/' + checkItemObjectID);
       console.log('checklist item completion toggled', response);
